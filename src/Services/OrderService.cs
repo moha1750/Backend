@@ -18,7 +18,7 @@ namespace BackendTeamwork.Services
             _orderRepository = orderRepository;
         }
 
-        public List<string> FindAll()
+        public IEnumerable<Order> FindAll()
         {
             return _orderRepository.FindAll();
         }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -19,7 +20,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet]
-        public List<string> FindAll()
+        public IEnumerable<Order> FindAll()
         {
             return _orderService.FindAll();
         }

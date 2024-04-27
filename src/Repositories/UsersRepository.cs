@@ -2,18 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using BackendTeamwork.Abstractions;
-using BackendTeamwork.Entities;
 using BackendTeamwork.Databases;
+using BackendTeamwork.Entities;
 
 namespace BackendTeamwork.Repositories
 {
-    public class OrderRepository : IOrderRepository
+    public class UsersRepository : IUsersRepository
     {
-        public IEnumerable<Order> FindAll()
+        public IEnumerable<Users> FindMany()
         {
-            return new OrderContext().Orders;
+            return new DatabaseContext().Userss;
         }
     }
 }

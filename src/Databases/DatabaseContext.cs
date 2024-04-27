@@ -1,23 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BackendTeamwork.Entities;
 
 namespace BackendTeamwork.Databases
 {
     public class DatabaseContext
     {
-        public List<string> orders;
+        public IEnumerable<Users> Userss;
 
         public DatabaseContext()
         {
-            this.orders = ["order1",
-                            "order2",
-                            "order3",
-                            "order4",
-                            "order5",
-                            ];
+            this.Userss =
+            [
+                new Users{
+                    Id = new Guid(),
+                    FirstName = "Almuhannad",
+                    LastName = "Almhari",
+                    Email = "Almuhannad@example.com",
+                    Password = "12345",
+                    Phone = "1234567890",
+                    Role = "Admin",
+                    Address = "null",
+                    Wishlist = "null"
+                }
+            ];
         }
 
     }

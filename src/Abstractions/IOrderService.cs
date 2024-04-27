@@ -8,6 +8,6 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IOrderService
     {
-        public List<string> FindAll();
+        public IEnumerable<Order> FindAll();
     }
 }
