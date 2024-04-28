@@ -7,13 +7,13 @@ namespace BackendTeamwork.Repositories
     public class PaymentRepository : IPaymentRepository
     {
 
-        public IEnumerable<Payment> FindOne()
+        public Payment? FindOne(Guid id)
         {
-            return new DatabaseContext().Payments;
+            return new DatabaseContext().Payments.FirstOrDefault(payment => payment.Id == id);
         }
-        public IEnumerable<Payment> CreateOne()
+        public Payment CreateOne()
         {
-            return new DatabaseContext().Payments;
+            return new DatabaseContext().Payments.First();
         }
     }
 

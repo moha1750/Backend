@@ -70,7 +70,7 @@ namespace BackendTeamwork.Databases
             ];
 
             this.Payments = [
-                new Payment (new Guid(),123,"Cash",new DateTime(), new Guid()),
+                new Payment (new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),145678923,"Cash",new DateTime(), new Guid()),
                 new Payment (new Guid(),456,"free",new DateTime(), new Guid()),
                 new Payment (new Guid(),789,"visa",new DateTime(), new Guid()),
 

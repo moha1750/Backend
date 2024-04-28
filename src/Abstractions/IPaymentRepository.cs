@@ -5,7 +5,7 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IPaymentRepository
     {
-        public IEnumerable<Payment> FindOne();
-        public IEnumerable<Payment> CreateOne();
+        public Payment? FindOne(Guid id);
+        public Payment CreateOne();
     }
 }

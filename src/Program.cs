@@ -1,4 +1,5 @@
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.Controllers;
 using BackendTeamwork.Repositories;
 using BackendTeamwork.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,9 @@ builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true
 // dependency injection
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 
 var app = builder.Build();

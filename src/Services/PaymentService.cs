@@ -12,24 +12,16 @@ namespace BackendTeamwork.Controllers
             _paymentRepository = PaymentRepository;
         }
 
-        public IEnumerable<Payment> FindOne()
+        public Payment? FindOne(Guid id)
         {
-            return _paymentRepository.FindOne();
+            return _paymentRepository.FindOne(id);
         }
-        public IEnumerable<Payment> CreateOne()
+        public Payment CreateOne()
         {
             return _paymentRepository.CreateOne();
         }
 
-        Payment IPaymentService.FindOne()
-        {
-            throw new NotImplementedException();
-        }
 
-        Payment IPaymentService.CreateOne()
-        {
-            throw new NotImplementedException();
-        }
     }
 
 
