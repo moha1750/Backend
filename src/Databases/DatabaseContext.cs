@@ -5,6 +5,8 @@ namespace BackendTeamwork.Databases
     public class DatabaseContext
     {
         public IEnumerable<User> Users;
+        public IEnumerable<Payment> Payments;
+
 
         public DatabaseContext()
         {
@@ -66,7 +68,15 @@ namespace BackendTeamwork.Databases
                     new Guid()
                 ),
             ];
+
+            this.Payments = [
+                new Payment (new Guid(),123,"Cash",new DateTime(), new Guid()),
+                new Payment (new Guid(),456,"free",new DateTime(), new Guid()),
+                new Payment (new Guid(),789,"visa",new DateTime(), new Guid()),
+
+                    ];
         }
+
 
     }
 }

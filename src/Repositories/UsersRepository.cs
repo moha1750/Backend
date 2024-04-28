@@ -10,9 +10,9 @@ namespace BackendTeamwork.Repositories
 {
     public class UsersRepository : IUsersRepository
     {
-        public IEnumerable<Users> FindMany()
+        public IEnumerable<User> FindMany()
         {
-            return new DatabaseContext().Userss;
+            return new DatabaseContext().Users;
         }
     }
 }

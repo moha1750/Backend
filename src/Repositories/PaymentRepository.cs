@@ -1,3 +1,5 @@
+using BackendTeamwork.Abstractions;
+using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
 
 namespace BackendTeamwork.Repositories
@@ -5,9 +7,13 @@ namespace BackendTeamwork.Repositories
     public class PaymentRepository : IPaymentRepository
     {
 
-        public IEnumerable<Payment> FindAll()
+        public IEnumerable<Payment> FindOne()
         {
-            return new DatabaseContext().Payment;
+            return new DatabaseContext().Payments;
+        }
+        public IEnumerable<Payment> CreateOne()
+        {
+            return new DatabaseContext().Payments;
         }
     }
 

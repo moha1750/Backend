@@ -4,6 +4,6 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IUsersRepository
     {
-        public IEnumerable<Users> FindMany();
+        public IEnumerable<User> FindMany();
     }
 }
