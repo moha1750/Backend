@@ -14,14 +14,16 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet]
+        // [ProducesResponseType(StatusCodes.Status204NoContent)]
+        // [ProducesResponseType(200)]
         public IEnumerable<User> FindMany()
         {
             return _UserService.FindMany();
         }
 
         [HttpGet(":{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public ActionResult<User> FindOne(string id)
         {
             User? user = _UserService.FindOne(new Guid(id));
@@ -32,5 +34,10 @@ namespace BackendTeamwork.Controllers
             return NoContent();
         }
 
+        [HttpPost]
+        public ActionResult<User> CreateOne([FromBody] User newUser)
+        {
+            return _UserService.CreateOne(newUser);
+        }
     }
 }

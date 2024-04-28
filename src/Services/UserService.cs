@@ -22,5 +22,9 @@ namespace BackendTeamwork.Services
             return user;
         }
 
+        public User CreateOne(User newUser)
+        {
+            return _UserRepository.CreateOne(newUser);
+        }
     }
 }
