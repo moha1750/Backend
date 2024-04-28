@@ -1,0 +1,34 @@
+using BackendTeamwork.Abstractions;
+using BackendTeamwork.Entities;
+using BackendTeamwork.Repositories;
+
+namespace BackendTeamwork.Services
+{
+    public class ProductService : IProductService
+    {
+
+        private IProductRepository _productRepository;
+
+        public ProductService(IProductRepository productRepository)
+        {
+            _productRepository = productRepository;
+        }
+
+        public IEnumerable<Product> FindMany()
+        {
+            return _productRepository.FindMany();
+        }
+
+        public Product? FindOne(Guid id)
+        {
+            Product? targetProduct = _productRepository.FindOne(id);
+
+            if (targetProduct is not null)
+            {
+                return targetProduct;
+            }
+            return null;
+        }
+
+    }
+}

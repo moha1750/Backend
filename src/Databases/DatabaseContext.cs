@@ -6,6 +6,8 @@ namespace BackendTeamwork.Databases
     {
         public IEnumerable<User> Users;
 
+        public IEnumerable<Product> products;
+
         public DatabaseContext()
         {
             this.Users =
@@ -65,6 +67,14 @@ namespace BackendTeamwork.Databases
                     new Guid(),
                     new Guid()
                 ),
+            ];
+
+            products = [
+                new Product( new Guid("00000000-0000-0000-0000-000000000001"), "apple", 10, "image 1", "this is an apple"),
+                new Product( new Guid("00000000-0000-0000-0000-000000000002"), "banana", 13, "image 2", "this is a banana"),
+                new Product( new Guid("00000000-0000-0000-0000-000000000003"), "orange", 15, "image 3", "this is an orange"),
+                new Product( new Guid("00000000-0000-0000-0000-000000000004"), "avocado", 20, "image 4", "this is an avocado"),
+                new Product( new Guid("00000000-0000-0000-0000-000000000005"), "strawberyy", 8, "image 5", "this is a strawberry"),
             ];
         }
 
