@@ -6,17 +6,31 @@ namespace BackendTeamwork.Controllers
 {
     public class UsersController : BaseController
     {
-        private IUsersService _UsersService;
+        private IUserService _UserService;
 
-        public UsersController(IUsersService UsersService)
+        public UsersController(IUserService UserService)
         {
-            _UsersService = UsersService;
+            _UserService = UserService;
         }
 
         [HttpGet]
-        public IEnumerable<Users> FindMany()
+        public IEnumerable<User> FindMany()
         {
-            return _UsersService.FindMany();
+            return _UserService.FindMany();
         }
+
+        [HttpGet(":{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(200)]
+        public ActionResult<User> FindOne(string id)
+        {
+            User? user = _UserService.FindOne(new Guid(id));
+            if (user is not null)
+            {
+                return user;
+            }
+            return NoContent();
+        }
+
     }
 }
