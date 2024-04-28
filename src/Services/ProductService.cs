@@ -14,6 +14,7 @@ namespace BackendTeamwork.Services
             _productRepository = productRepository;
         }
 
+
         public IEnumerable<Product> FindMany()
         {
             return _productRepository.FindMany();
@@ -28,6 +29,11 @@ namespace BackendTeamwork.Services
                 return targetProduct;
             }
             return null;
+        }
+
+        public Product CreateOne(Product newProduct)
+        {
+            return _productRepository.CreateOne(newProduct);
         }
 
     }

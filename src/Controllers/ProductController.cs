@@ -35,6 +35,16 @@ namespace BackendTeamwork.Controllers
         }
 
         // createOne
+        [HttpPost]
+        public ActionResult<Product> CreateOne([FromBody] Product newProduct)
+        {
+            if (newProduct is not null)
+            {
+                _productService.CreateOne(newProduct);
+                return CreatedAtAction(nameof(CreateOne), newProduct);
+            }
+            return BadRequest();
+        }
 
         // updateOne
 
