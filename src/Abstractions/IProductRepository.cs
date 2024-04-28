@@ -9,5 +9,7 @@ namespace BackendTeamwork.Abstractions
         public Product? FindOne(Guid id);
 
         public Product CreateOne(Product newProduct);
+
+        public Product UpdateOne(Product updatedProduct);
     }
 }

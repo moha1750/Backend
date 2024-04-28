@@ -36,5 +36,21 @@ namespace BackendTeamwork.Services
             return _productRepository.CreateOne(newProduct);
         }
 
+        public Product? UpdateOne(Guid id, Product updatedProduct)
+        {
+            Product? targetProduct = _productRepository.FindOne(id);
+
+            if (targetProduct is not null)
+            {
+                targetProduct.Name = updatedProduct.Name;
+                targetProduct.Price = updatedProduct.Price;
+                targetProduct.Image = updatedProduct.Image;
+                targetProduct.Description = updatedProduct.Description;
+
+                return _productRepository.UpdateOne(targetProduct);
+            }
+            return null;
+        }
+
     }
 }

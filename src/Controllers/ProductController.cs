@@ -47,8 +47,16 @@ namespace BackendTeamwork.Controllers
         }
 
         // updateOne
+        [HttpPut(":productId")]
+        public ActionResult<Product> UpdateOne(Guid id, [FromBody] Product updatedProduct)
+        {
+            _productService.UpdateOne(id, updatedProduct);
+            return new OkObjectResult(updatedProduct);
+        }
+
 
         // deleteOne
+
 
 
 

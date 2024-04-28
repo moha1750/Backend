@@ -32,5 +32,23 @@ namespace BackendTeamwork.Repositories
             _products.ToList().ForEach(product => Console.WriteLine(product.Name));
             return newProduct;
         }
+
+        public Product UpdateOne(Product updatedProduct)
+        {
+            var updatedCollection = _products.Select(product =>
+            {
+                if (product.Id == updatedProduct.Id)
+                {
+                    return updatedProduct;
+                }
+                return product;
+            });
+            
+            _products = updatedCollection;
+            return updatedProduct;
+        }
+
+
+
     }
 }
