@@ -47,6 +47,7 @@ namespace BackendTeamwork.Services
 
         public void DeleteOne(Guid id)
         {
+            _stockRepository.DeleteOne(id);
 
         }
 

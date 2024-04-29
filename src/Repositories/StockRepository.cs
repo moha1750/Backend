@@ -15,7 +15,6 @@ namespace BackendTeamwork.Repositories
 
         public StockRepository()
         {
-            //_products = new DatabaseContext().products;
             _stocks = new DatabaseContext().Stocks;
         }
 
@@ -38,14 +37,25 @@ namespace BackendTeamwork.Repositories
         }
 
 
-        public void DeleteOne(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Stock? UpdateOne(Stock updateStock)
         {
-            throw new NotImplementedException();
+            var updatedCollection = _stocks.Select(stock =>
+            {
+                if (stock.Id == updateStock.Id)
+                {
+                    return updateStock;
+                }
+                return null;
+            });
+            _stocks = updatedCollection!;
+            return updateStock;
         }
+
+
+        public void DeleteOne(Guid id)
+        {
+            _stocks = _stocks.Where(stock => stock.Id != id);
+        }
+
     }
 }
