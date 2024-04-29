@@ -7,6 +7,7 @@ namespace BackendTeamwork.Databases
         public IEnumerable<User> Users;
         public IEnumerable<Payment> Payments;
 
+        public IEnumerable<Address> Addresses;
 
         public DatabaseContext()
         {
@@ -31,7 +32,7 @@ namespace BackendTeamwork.Databases
                     "12345",
                     "1234567890",
                     "Admin",
-                    new Guid(),
+                    new Guid("99999999-9999-9999-9999-999999999999"),
                     new Guid()
                 ),
                 new User(
@@ -75,6 +76,9 @@ namespace BackendTeamwork.Databases
                 new Payment (new Guid(),789,"visa",new DateTime(), new Guid()),
 
                     ];
+            this.Addresses = [
+                new Address(new Guid("99999999-9999-9999-9999-999999999999"), "Riyadh", "12461", "Hisham Ibn Abd Al Malek, Al Mursalat", new Guid("22222222-2222-2222-2222-222222222222"))
+            ];
         }
 
 

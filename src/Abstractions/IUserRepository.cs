@@ -6,5 +6,10 @@ namespace BackendTeamwork.Abstractions
     {
         public IEnumerable<User> FindMany();
         public User? FindOne(Guid id);
+
+        public User CreateOne(User newUser);
+        public User UpdateOne(User UpdatedUser);
+        public bool DeleteOne(Guid id);
+        public bool DeleteMany(IEnumerable<Guid> ids);
     }
 }

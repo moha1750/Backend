@@ -14,14 +14,16 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IEnumerable<User> FindMany()
         {
             return _UserService.FindMany();
         }
 
         [HttpGet(":{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public ActionResult<User> FindOne(string id)
         {
             User? user = _UserService.FindOne(new Guid(id));
@@ -30,6 +32,46 @@ namespace BackendTeamwork.Controllers
                 return user;
             }
             return NoContent();
+        }
+
+        [HttpPost]
+        public ActionResult<User> CreateOne([FromBody] User newUser)
+        {
+            return _UserService.CreateOne(newUser);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public User UpdateOne([FromBody] User updatedUser)
+        {
+            return _UserService.UpdateOne(updatedUser);
+        }
+
+        [HttpDelete(":{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult DeleteOne(Guid id)
+        {
+            bool response = _UserService.DeleteOne(id);
+            if (response)
+            {
+                return NoContent();
+            }
+            return NotFound();
+        }
+
+        [HttpDelete()]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult DeleteMany([FromBody] IEnumerable<Guid> ids)
+        {
+            bool response = _UserService.DeleteMany(ids);
+            if (response)
+            {
+                return NoContent();
+            }
+            return NotFound();
         }
 
     }
