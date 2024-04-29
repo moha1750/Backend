@@ -6,7 +6,7 @@ namespace BackendTeamwork.Abstractions
     public interface IPaymentService
     {
         public Payment? FindOne(Guid id);
-        public Payment CreateOne();
+        public Payment CreateOne(Payment newPayment);
 
     }
 }

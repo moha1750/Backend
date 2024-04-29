@@ -24,6 +24,11 @@ namespace BackendTeamwork.Controllers
       }
       return NoContent();
     }
+    [HttpPost]
+    public ActionResult<Payment> CreateOne([FromBody] Payment newPayment)
+    {
+      return _paymentService.CreateOne(newPayment);
+    }
 
 
   }

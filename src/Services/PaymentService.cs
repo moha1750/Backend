@@ -16,9 +16,9 @@ namespace BackendTeamwork.Controllers
         {
             return _paymentRepository.FindOne(id);
         }
-        public Payment CreateOne()
+        public Payment CreateOne(Payment newPayment)
         {
-            return _paymentRepository.CreateOne();
+            return _paymentRepository.CreateOne(newPayment);
         }
 
 
