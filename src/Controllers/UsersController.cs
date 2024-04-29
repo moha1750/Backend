@@ -14,8 +14,8 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet]
-        // [ProducesResponseType(StatusCodes.Status204NoContent)]
-        // [ProducesResponseType(200)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IEnumerable<User> FindMany()
         {
             return _UserService.FindMany();
@@ -41,6 +41,8 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public User UpdateOne([FromBody] User updatedUser)
         {
             return _UserService.UpdateOne(updatedUser);
