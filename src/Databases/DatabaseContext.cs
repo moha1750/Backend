@@ -5,6 +5,8 @@ namespace BackendTeamwork.Databases
     public class DatabaseContext
     {
         public IEnumerable<User> Users;
+        public IEnumerable<Payment> Payments;
+
         public IEnumerable<Address> Addresses;
 
         public IEnumerable<Product> products;
@@ -70,6 +72,7 @@ namespace BackendTeamwork.Databases
                 ),
             ];
 
+
             products = [
                 new Product( new Guid("00000000-0000-0000-0000-000000000001"), "apple", 10, "image 1", "this is an apple"),
                 new Product( new Guid("00000000-0000-0000-0000-000000000002"), "banana", 13, "image 2", "this is a banana"),
@@ -79,10 +82,18 @@ namespace BackendTeamwork.Databases
             ];
 
             
+            this.Payments = [
+                new Payment (new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),145678923,"Cash",new DateTime(), new Guid()),
+                new Payment (new Guid(),456,"free",new DateTime(), new Guid()),
+                new Payment (new Guid(),789,"visa",new DateTime(), new Guid()),
+
+                    ];
+
             this.Addresses = [
                 new Address(new Guid("99999999-9999-9999-9999-999999999999"), "Riyadh", "12461", "Hisham Ibn Abd Al Malek, Al Mursalat", new Guid("22222222-2222-2222-2222-222222222222"))
             ];
         }
+
 
     }
 }
