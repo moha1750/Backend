@@ -8,9 +8,9 @@ namespace BackendTeamwork.Abstractions
         public User? FindOne(Guid id);
 
         public User CreateOne(User newUser);
-        // public User UpdateOne(User UpdatedUser);
-        // public void DeleteOne(Guid id);
-        // public void DeleteMany(IEnumerable<Guid> ids);
+        public User UpdateOne(User UpdatedUser);
+        public bool DeleteOne(Guid id);
+        public bool DeleteMany(IEnumerable<Guid> ids);
 
     }
 }

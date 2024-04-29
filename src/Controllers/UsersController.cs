@@ -39,5 +39,38 @@ namespace BackendTeamwork.Controllers
         {
             return _UserService.CreateOne(newUser);
         }
+
+        [HttpPut]
+        public User UpdateOne([FromBody] User updatedUser)
+        {
+            return _UserService.UpdateOne(updatedUser);
+        }
+
+        [HttpDelete(":{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult DeleteOne(Guid id)
+        {
+            bool response = _UserService.DeleteOne(id);
+            if (response)
+            {
+                return NoContent();
+            }
+            return NotFound();
+        }
+
+        [HttpDelete()]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult DeleteMany([FromBody] IEnumerable<Guid> ids)
+        {
+            bool response = _UserService.DeleteMany(ids);
+            if (response)
+            {
+                return NoContent();
+            }
+            return NotFound();
+        }
+
     }
 }

@@ -26,5 +26,21 @@ namespace BackendTeamwork.Services
         {
             return _UserRepository.CreateOne(newUser);
         }
+
+        public User UpdateOne(User updatedUser)
+        {
+            return _UserRepository.UpdateOne(updatedUser);
+        }
+
+        public bool DeleteOne(Guid id)
+        {
+            return _UserRepository.DeleteOne(id);
+        }
+
+        public bool DeleteMany(IEnumerable<Guid> ids)
+        {
+            return _UserRepository.DeleteMany(ids);
+        }
+
     }
 }
