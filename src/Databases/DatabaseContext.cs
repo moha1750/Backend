@@ -10,6 +10,8 @@ namespace BackendTeamwork.Databases
         public IEnumerable<Address> Addresses;
 
         public IEnumerable<Product> products;
+        public IEnumerable<Review> Reviews;
+
 
         public DatabaseContext()
         {
@@ -81,7 +83,7 @@ namespace BackendTeamwork.Databases
                 new Product( new Guid("00000000-0000-0000-0000-000000000005"), "strawberyy", 8, "image 5", "this is a strawberry"),
             ];
 
-            
+
             this.Payments = [
                 new Payment (new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),145678923,"Cash",new DateTime(), new Guid()),
                 new Payment (new Guid(),456,"free",new DateTime(), new Guid()),
@@ -91,6 +93,11 @@ namespace BackendTeamwork.Databases
 
             this.Addresses = [
                 new Address(new Guid("99999999-9999-9999-9999-999999999999"), "Riyadh", "12461", "Hisham Ibn Abd Al Malek, Al Mursalat", new Guid("22222222-2222-2222-2222-222222222222"))
+            ];
+            this.Reviews = [
+                new Review (new Guid(),5,"hala",new Guid(),new Guid()),
+                new Review (new Guid(),4,"Ola",new Guid(),new Guid()),
+                new Review (new Guid(),3,"Ana",new Guid(),new Guid()),
             ];
         }
 
