@@ -9,10 +9,13 @@ namespace BackendTeamwork.Databases
 
         public IEnumerable<Address> Addresses;
 
-        public IEnumerable<Product> products;
+        public IEnumerable<Product> Products;
+
+        public IEnumerable<Stock> Stocks;
 
         public DatabaseContext()
         {
+
             this.Users =
             [
                 new User(
@@ -73,7 +76,7 @@ namespace BackendTeamwork.Databases
             ];
 
 
-            products = [
+            Products = [
                 new Product( new Guid("00000000-0000-0000-0000-000000000001"), "apple", 10, "image 1", "this is an apple"),
                 new Product( new Guid("00000000-0000-0000-0000-000000000002"), "banana", 13, "image 2", "this is a banana"),
                 new Product( new Guid("00000000-0000-0000-0000-000000000003"), "orange", 15, "image 3", "this is an orange"),
@@ -81,7 +84,7 @@ namespace BackendTeamwork.Databases
                 new Product( new Guid("00000000-0000-0000-0000-000000000005"), "strawberyy", 8, "image 5", "this is a strawberry"),
             ];
 
-            
+
             this.Payments = [
                 new Payment (new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),145678923,"Cash",new DateTime(), new Guid()),
                 new Payment (new Guid(),456,"free",new DateTime(), new Guid()),
@@ -92,8 +95,16 @@ namespace BackendTeamwork.Databases
             this.Addresses = [
                 new Address(new Guid("99999999-9999-9999-9999-999999999999"), "Riyadh", "12461", "Hisham Ibn Abd Al Malek, Al Mursalat", new Guid("22222222-2222-2222-2222-222222222222"))
             ];
-        }
 
+            Stocks = [
+                new Stock ( new Guid("00000000-0000-0000-0000-000000000011"), 10, "256GB", "black"),
+                new Stock ( new Guid("00000000-0000-0000-0000-000000000022"), 15, "128GB", "silver"),
+                new Stock ( new Guid("00000000-0000-0000-0000-000000000033"), 15, "64GB", "white"),
+                new Stock ( new Guid("00000000-0000-0000-0000-000000000044"), 20, "512GB", "green"),
+                new Stock ( new Guid("00000000-0000-0000-0000-000000000055"), 25, "1TB", "blue"),
+
+            ];
+        }
 
     }
 }
