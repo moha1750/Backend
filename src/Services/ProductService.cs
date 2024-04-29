@@ -52,5 +52,18 @@ namespace BackendTeamwork.Services
             return null;
         }
 
+        public bool DeleteOne(Guid id)
+        {
+            IEnumerable<Product> updatedCollection = _productRepository.FindMany();
+
+            Product? targetProduct = _productRepository.FindOne(id);
+            if (targetProduct is not null)
+            {
+                updatedCollection = updatedCollection.Where(product => product.Id != id);
+                return _productRepository.DeleteOne(updatedCollection);
+            }
+            return false;
+        }
+
     }
 }

@@ -12,5 +12,7 @@ namespace BackendTeamwork.Abstractions
         public Product CreateOne(Product newProduct);
 
         public Product? UpdateOne(Guid id, Product updatedProduct);
+
+        public bool DeleteOne(Guid id);
     }
 }

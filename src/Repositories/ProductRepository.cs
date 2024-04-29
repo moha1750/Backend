@@ -27,6 +27,8 @@ namespace BackendTeamwork.Repositories
 
         public Product CreateOne(Product newProduct)
         {
+            // @TODO: check if product exists first 
+
             _products = _products.Append(newProduct);
 
             _products.ToList().ForEach(product => Console.WriteLine(product.Name));
@@ -43,11 +45,16 @@ namespace BackendTeamwork.Repositories
                 }
                 return product;
             });
-            
+
             _products = updatedCollection;
             return updatedProduct;
         }
 
+        public bool DeleteOne(IEnumerable<Product> updatedCollection)
+        {
+            _products = updatedCollection;
+            return true;
+        }
 
 
     }

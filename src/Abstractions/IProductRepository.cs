@@ -11,5 +11,7 @@ namespace BackendTeamwork.Abstractions
         public Product CreateOne(Product newProduct);
 
         public Product UpdateOne(Product updatedProduct);
+
+        public bool DeleteOne(IEnumerable<Product> updatedCollection);
     }
 }

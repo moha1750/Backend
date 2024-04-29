@@ -56,9 +56,12 @@ namespace BackendTeamwork.Controllers
 
 
         // deleteOne
+        [HttpDelete(":productId")]
+        public ActionResult<bool> DeleteOne(Guid id)
+        {
+            return _productService.DeleteOne(id);
 
-
-
+        }
 
     }
 }
