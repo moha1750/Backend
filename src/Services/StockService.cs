@@ -44,12 +44,10 @@ namespace BackendTeamwork.Services
             return null;
         }
 
-
         public void DeleteOne(Guid id)
         {
             _stockRepository.DeleteOne(id);
 
         }
-
     }
 }
