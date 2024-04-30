@@ -9,7 +9,7 @@ namespace BackendTeamwork.Databases
 
         public IEnumerable<Address> Addresses;
 
-        public IEnumerable<Product> products;
+        public IEnumerable<Product> Products;
 
         public DatabaseContext()
         {
