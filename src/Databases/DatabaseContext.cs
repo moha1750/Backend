@@ -14,6 +14,7 @@ namespace BackendTeamwork.Databases
         public IEnumerable<OrderStock> OrderStock;
         public IEnumerable<Review> Reviews;
         public IEnumerable<Stock> Stocks;
+        public IEnumerable<Category> Categories;
 
         public DatabaseContext()
         {
@@ -130,6 +131,15 @@ namespace BackendTeamwork.Databases
                 new Stock ( new Guid("00000000-0000-0000-0000-000000000044"), 20, "512GB", "green"),
                 new Stock ( new Guid("00000000-0000-0000-0000-000000000055"), 25, "1TB", "blue"),
 
+            ];
+
+            Categories = [
+
+                new Category( new Guid("00000000-0000-0000-0000-000000000066"), "Phones", "smart phones"),
+                new Category( new Guid("00000000-0000-0000-0000-000000000077"), "Labtops", "gaming laptops"),
+                new Category( new Guid("00000000-0000-0000-0000-000000000088"), "Desktops", "workstations"),
+                new Category( new Guid("00000000-0000-0000-0000-000000000099"), "Monitors", "widescreen monitors"),
+                new Category( new Guid("00000000-0000-0000-0000-000000000100"), "Harddrives", "fast M.2 storage units"),
             ];
         }
 
