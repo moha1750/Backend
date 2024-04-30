@@ -9,9 +9,7 @@ namespace BackendTeamwork.Databases
 
         public IEnumerable<Address> Addresses;
 
-        public IEnumerable<Product> Products;
-
-        public IEnumerable<Stock> Stocks;
+        public IEnumerable<Product> products;
 
         public DatabaseContext()
         {
@@ -95,16 +93,8 @@ namespace BackendTeamwork.Databases
             this.Addresses = [
                 new Address(new Guid("99999999-9999-9999-9999-999999999999"), "Riyadh", "12461", "Hisham Ibn Abd Al Malek, Al Mursalat", new Guid("22222222-2222-2222-2222-222222222222"))
             ];
-
-            Stocks = [
-                new Stock ( new Guid("00000000-0000-0000-0000-000000000011"), 10, "256GB", "black"),
-                new Stock ( new Guid("00000000-0000-0000-0000-000000000022"), 15, "128GB", "silver"),
-                new Stock ( new Guid("00000000-0000-0000-0000-000000000033"), 15, "64GB", "white"),
-                new Stock ( new Guid("00000000-0000-0000-0000-000000000044"), 20, "512GB", "green"),
-                new Stock ( new Guid("00000000-0000-0000-0000-000000000055"), 25, "1TB", "blue"),
-
-            ];
         }
+
 
     }
 }
