@@ -11,6 +11,7 @@ namespace BackendTeamwork.Databases
 
         public IEnumerable<Product> products;
         public IEnumerable<Order> Orders;
+        public IEnumerable<OrderStock> OrderStock;
 
         public DatabaseContext()
         {
@@ -102,6 +103,15 @@ namespace BackendTeamwork.Databases
                 new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("22222222-2222-2222-2222-222222222222")),
                 new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("22222222-2222-2222-2222-222222222222")),
                 new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("33333333-3333-3333-3333-333333333333")),
+            ];
+
+            this.OrderStock = [
+                new OrderStock(new Guid(), 12, new Guid()),
+                new OrderStock(new Guid(), 12, new Guid()),
+                new OrderStock(new Guid(), 12, new Guid()),
+                new OrderStock(new Guid(), 12, new Guid()),
+                new OrderStock(new Guid(), 12, new Guid()),
+                new OrderStock(new Guid(), 12, new Guid()),
             ];
         }
 
