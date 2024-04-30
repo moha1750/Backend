@@ -1,5 +1,6 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Controllers;
+using BackendTeamwork.Databases;
 using BackendTeamwork.Repositories;
 using BackendTeamwork.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-
+builder.Services.AddDbContext<DatabaseContext>();
 
 // dependency injection
 builder.Services.AddScoped<IUserRepository, UserRepository>();

@@ -1,17 +1,21 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private IEnumerable<User> _users;
+        private DbSet<User> _users;
+        private DatabaseContext _databaseContext;
 
-        public UserRepository()
+        public UserRepository(DatabaseContext databaseContext)
         {
-            _users = new DatabaseContext().Users;
+            _users = databaseContext.Users;
+            _databaseContext = databaseContext;
         }
+
 
         public IEnumerable<User> FindMany()
         {
@@ -24,13 +28,8 @@ namespace BackendTeamwork.Repositories
 
         public User CreateOne(User newUser)
         {
-            _users = _users.Append(newUser);
-
-            _users.ToList().ForEach(user =>
-            {
-                Console.WriteLine($"{user.Email}");
-            });
-
+            _users.Add(newUser);
+            _databaseContext.SaveChanges();
             return newUser;
         }
 
@@ -45,7 +44,7 @@ namespace BackendTeamwork.Repositories
         {
             if (this.FindOne(id) is not null)
             {
-                _users = _users.Where(user => user.Id != id);
+                // _users = _users.Where(user => user.Id != id);
                 return true;
             }
             return false;
@@ -63,7 +62,7 @@ namespace BackendTeamwork.Repositories
 
             foreach (Guid id in ids)
             {
-                _users = _users.Where(user => user.Id != id);
+                // _users = _users.Where(user => user.Id != id);
             }
 
             _users.ToList().ForEach(user =>
