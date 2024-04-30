@@ -12,6 +12,8 @@ namespace BackendTeamwork.Databases
         public IEnumerable<Product> products;
         public IEnumerable<Order> Orders;
         public IEnumerable<OrderStock> OrderStock;
+        public IEnumerable<Review> Reviews;
+
 
         public DatabaseContext()
         {
@@ -112,6 +114,10 @@ namespace BackendTeamwork.Databases
                 new OrderStock(new Guid(), 12, new Guid()),
                 new OrderStock(new Guid(), 12, new Guid()),
                 new OrderStock(new Guid(), 12, new Guid()),
+            this.Reviews = [
+                new Review (new Guid(),5,"hala",new Guid(),new Guid()),
+                new Review (new Guid(),4,"Ola",new Guid(),new Guid()),
+                new Review (new Guid(),3,"Ana",new Guid(),new Guid()),
             ];
         }
 
