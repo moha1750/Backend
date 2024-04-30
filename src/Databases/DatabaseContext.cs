@@ -114,6 +114,8 @@ namespace BackendTeamwork.Databases
                 new OrderStock(new Guid(), 12, new Guid()),
                 new OrderStock(new Guid(), 12, new Guid()),
                 new OrderStock(new Guid(), 12, new Guid()),
+            ];
+
             this.Reviews = [
                 new Review (new Guid(),5,"hala",new Guid(),new Guid()),
                 new Review (new Guid(),4,"Ola",new Guid(),new Guid()),
