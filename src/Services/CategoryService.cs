@@ -2,29 +2,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BackendTeamwork.Abstractions;
+using BackendTeamwork.Entities;
 
 namespace BackendTeamwork.Services
 {
-    public class CategoryService
+    public class CategoryService : ICategoryService
     {
+        private ICategoryRepository _categoryRepository;
 
-
-
-
-        /*
-         public Stock? UpdateOne(Guid id, Stock updateStock)
+        public CategoryService(ICategoryRepository categoryRepository)
         {
-            Stock? targetStock = _stockRepository.FindOne(id);
-            if (targetStock is not null)
-            {
-                targetStock.Quantity = updateStock.Quantity;
-                targetStock.Size = updateStock.Size;
-                targetStock.Color = updateStock.Color;
+            _categoryRepository = categoryRepository;
+        }
 
-                return _stockRepository.UpdateOne(targetStock);
+        public Category? CreateOne(Category newCategory)
+        {
+            return _categoryRepository.CreateOne(newCategory);
+        }
+
+        public void DeleteOne(Guid id)
+        {
+            _categoryRepository.DeleteOne(id);
+        }
+
+        public Category? UpdateOne(Guid id, Category updateCategory)
+        {
+            Category? targetCategory = _categoryRepository.FindOne(id);
+
+            if (targetCategory is not null)
+            {
+                targetCategory.Name = updateCategory.Name;
+                targetCategory.Description = updateCategory.Description;
+                return _categoryRepository.UpdateOne(targetCategory);
             }
             return null;
-        }*/
-
+        }
     }
 }
