@@ -10,6 +10,7 @@ namespace BackendTeamwork.Databases
         public IEnumerable<Address> Addresses;
 
         public IEnumerable<Product> products;
+        public IEnumerable<Order> Orders;
 
         public DatabaseContext()
         {
@@ -81,7 +82,7 @@ namespace BackendTeamwork.Databases
                 new Product( new Guid("00000000-0000-0000-0000-000000000005"), "strawberyy", 8, "image 5", "this is a strawberry"),
             ];
 
-            
+
             this.Payments = [
                 new Payment (new Guid("3fa85f64-5717-4562-b3fc-2c963f66afa6"),145678923,"Cash",new DateTime(), new Guid()),
                 new Payment (new Guid(),456,"free",new DateTime(), new Guid()),
@@ -91,6 +92,16 @@ namespace BackendTeamwork.Databases
 
             this.Addresses = [
                 new Address(new Guid("99999999-9999-9999-9999-999999999999"), "Riyadh", "12461", "Hisham Ibn Abd Al Malek, Al Mursalat", new Guid("22222222-2222-2222-2222-222222222222"))
+            ];
+
+
+            this.Orders = [
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("11111111-1111-1111-1111-111111111111")),
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("11111111-1111-1111-1111-111111111111")),
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("11111111-1111-1111-1111-111111111111")),
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("22222222-2222-2222-2222-222222222222")),
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("22222222-2222-2222-2222-222222222222")),
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("33333333-3333-3333-3333-333333333333")),
             ];
         }
 
