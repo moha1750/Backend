@@ -27,16 +27,17 @@ namespace BackendTeamwork.Controllers
         }
 
         // updateOne
-        [HttpPut("/id")]
+        [HttpPut("id")]
         public ActionResult<Stock?> UpdateOne(Guid id, Stock updateStock)
         {
             return Ok(_stockService.UpdateOne(id, updateStock));
         }
 
         // deleteOne
-        [HttpDelete("/id")]
+        [HttpDelete("id")]
         public ActionResult DeleteOne(Guid id)
         {
+            _stockService.DeleteOne(id);
             return NoContent();
         }
 
