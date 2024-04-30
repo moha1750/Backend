@@ -13,8 +13,8 @@ namespace BackendTeamwork.Controllers
     }
 
     [HttpGet(":{id}")]
-    [ProducesResponseType(204)]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult<Payment> FindOne(string id)
     {
       Payment? payment = _paymentService.FindOne(new Guid(id));
@@ -22,12 +22,13 @@ namespace BackendTeamwork.Controllers
       {
         return payment;
       }
-      return NoContent();
+      return NotFound();
     }
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult<Payment> CreateOne([FromBody] Payment newPayment)
     {
-      return _paymentService.CreateOne(newPayment);
+      return Ok(_paymentService.CreateOne(newPayment));
     }
 
 
