@@ -10,6 +10,11 @@ namespace BackendTeamwork.Databases
         public IEnumerable<Address> Addresses;
 
         public IEnumerable<Product> Products;
+        public IEnumerable<Product> products;
+        public IEnumerable<Order> Orders;
+        public IEnumerable<OrderStock> OrderStock;
+        public IEnumerable<Review> Reviews;
+
 
         public DatabaseContext()
         {
@@ -92,6 +97,31 @@ namespace BackendTeamwork.Databases
 
             this.Addresses = [
                 new Address(new Guid("99999999-9999-9999-9999-999999999999"), "Riyadh", "12461", "Hisham Ibn Abd Al Malek, Al Mursalat", new Guid("22222222-2222-2222-2222-222222222222"))
+            ];
+
+
+            this.Orders = [
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("11111111-1111-1111-1111-111111111111")),
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("11111111-1111-1111-1111-111111111111")),
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("11111111-1111-1111-1111-111111111111")),
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("22222222-2222-2222-2222-222222222222")),
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("22222222-2222-2222-2222-222222222222")),
+                new Order(new Guid(), "pending", DateTime.Now, new Guid(), new Guid("33333333-3333-3333-3333-333333333333")),
+            ];
+
+            this.OrderStock = [
+                new OrderStock(new Guid(), 12, new Guid()),
+                new OrderStock(new Guid(), 12, new Guid()),
+                new OrderStock(new Guid(), 12, new Guid()),
+                new OrderStock(new Guid(), 12, new Guid()),
+                new OrderStock(new Guid(), 12, new Guid()),
+                new OrderStock(new Guid(), 12, new Guid()),
+            ];
+
+            this.Reviews = [
+                new Review (new Guid(),5,"hala",new Guid(),new Guid()),
+                new Review (new Guid(),4,"Ola",new Guid(),new Guid()),
+                new Review (new Guid(),3,"Ana",new Guid(),new Guid()),
             ];
         }
 
