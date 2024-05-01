@@ -12,16 +12,16 @@ namespace BackendTeamwork.Abstractions
         //findMany
         public IEnumerable<Stock> FindMany();
 
-        public Stock? FindOne(Guid id);
+        public Stock? FindOne(Guid stockId);
 
         // createOne
         public Stock CreateOne(Stock newStock);
 
         // updateOne
-        public Stock? UpdateOne(Stock updateStock);
+        public Stock UpdateOne(Stock updatedStock);
 
         // deleteOne
-        public void DeleteOne(Guid id);
+        public void DeleteOne(Guid stockId);
 
     }
 }

@@ -18,6 +18,8 @@ namespace BackendTeamwork.Databases
 
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<Stock> Stocks { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
        => optionsBuilder.UseNpgsql(@"");

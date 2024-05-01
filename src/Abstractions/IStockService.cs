@@ -13,8 +13,8 @@ namespace BackendTeamwork.Abstractions
 
         public Stock CreateOne(Stock newStock);
 
-        public Stock? UpdateOne(Guid id, Stock updateStock);
+        public Stock? UpdateOne(Guid stockId, Stock updatedStock);
 
-        public void DeleteOne(Guid id);
+        public void DeleteOne(Guid stockId);
     }
 }

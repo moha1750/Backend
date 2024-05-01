@@ -24,37 +24,62 @@ namespace BackendTeamwork.Repositories
             return _stocks;
         }
 
-        public Stock? FindOne(Guid id)
+        public Stock? FindOne(Guid stockId)
         {
-            return _stocks.FirstOrDefault(stock => stock.Id == id);
+            var targetStock = _stocks.FirstOrDefault(stock => stock.Id == stockId);
+            if (targetStock is not null)
+            {
+                return targetStock;
+            }
+            return null;
         }
 
 
         public Stock CreateOne(Stock newStock)
         {
-            _stocks = _stocks.Append(newStock);
-            return newStock;
+            Stock? createdStock = FindOne(newStock.Id);
+            if (createdStock is null)
+            {
+                _stocks = _stocks.Append(newStock);
+                return newStock;
+            }
+            return null!;
         }
 
 
-        public Stock? UpdateOne(Stock updateStock)
+        public Stock UpdateOne(Stock updatedStock)
         {
             var updatedCollection = _stocks.Select(stock =>
             {
-                if (stock.Id == updateStock.Id)
+                if (stock.Id == updatedStock.Id)
                 {
-                    return updateStock;
+                    return updatedStock;
                 }
                 return null;
             });
             _stocks = updatedCollection!;
-            return updateStock;
+            return updatedStock;
         }
 
-
-        public void DeleteOne(Guid id)
+        /* public Product UpdateOne(Product updatedProduct)
         {
-            _stocks = _stocks.Where(stock => stock.Id != id);
+            var updatedCollection = _products.Select(product =>
+            {
+                if (product.Id == updatedProduct.Id)
+                {
+                    return updatedProduct;
+                }
+                return product;
+            });
+
+            _products = updatedCollection;
+            return updatedProduct;
+        }*/
+
+
+        public void DeleteOne(Guid stockId)
+        {
+            _stocks = _stocks.Where(stock => stock.Id != stockId);
         }
 
     }
