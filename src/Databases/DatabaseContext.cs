@@ -21,6 +21,7 @@ namespace BackendTeamwork.Databases
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-       => optionsBuilder.UseNpgsql(@"Host=aws-0-eu-central-1.pooler.supabase.com;Username=postgres.xjkkxefgmmzwkgxpypui;Password=L326tuCH3RwWAUPJ;Database=postgres");
+       => optionsBuilder.UseNpgsql(@"");
     }
 }
+// Host=aws-0-eu-central-1.pooler.supabase.com;Username=postgres.xjkkxefgmmzwkgxpypui;Password=L326tuCH3RwWAUPJ;Database=postgres
