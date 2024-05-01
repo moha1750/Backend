@@ -12,7 +12,7 @@ namespace BackendTeamwork.Repositories
 
         public ProductRepository()
         {
-            _products = new DatabaseContext().products;
+            _products = new DatabaseContext().Products;
         }
 
         public IEnumerable<Product> FindMany()
@@ -27,12 +27,13 @@ namespace BackendTeamwork.Repositories
 
         public Product CreateOne(Product newProduct)
         {
-            // @TODO: check if product exists first 
-
-            _products = _products.Append(newProduct);
-
-            _products.ToList().ForEach(product => Console.WriteLine(product.Name));
-            return newProduct;
+            Product? checkProduct = FindOne(newProduct.Id);
+            if (checkProduct is null)
+            {
+                _products = _products.Append(newProduct);
+                return newProduct;
+            }
+            return null!;
         }
 
         public Product UpdateOne(Product updatedProduct)

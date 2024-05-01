@@ -33,6 +33,7 @@ namespace BackendTeamwork.Services
 
         public Product CreateOne(Product newProduct)
         {
+            
             return _productRepository.CreateOne(newProduct);
         }
 
