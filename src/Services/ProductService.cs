@@ -47,8 +47,7 @@ namespace BackendTeamwork.Services
                 targetProduct.Price = updatedProduct.Price;
                 targetProduct.Image = updatedProduct.Image;
                 targetProduct.Description = updatedProduct.Description;
-                _productRepository.UpdateOne(targetProduct);
-                return targetProduct;
+                return _productRepository.UpdateOne(targetProduct);
             }
             return null;
         }
