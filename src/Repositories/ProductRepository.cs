@@ -3,16 +3,20 @@ using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private IEnumerable<Product> _products;
+        private DbSet<Product> _products;
+        private DatabaseContext _databaseContext;
 
-        public ProductRepository()
+        public ProductRepository(DatabaseContext databaseContext)
         {
-            _products = new DatabaseContext().Products;
+            _products = databaseContext.Products;
+            _databaseContext = databaseContext;
+
         }
 
         public IEnumerable<Product> FindMany()
@@ -20,39 +24,23 @@ namespace BackendTeamwork.Repositories
             return _products;
         }
 
-        public Product? FindOne(Guid productId)
+
+        public async Task<Product?> FindOne(Guid productId)
         {
-            var targetProduct = _products.FirstOrDefault(product => product.Id == productId);
-            if (targetProduct is not null)
-            {
-                return targetProduct;
-            }
-            return null;
+            return await _products.FirstOrDefaultAsync(product => product.Id == productId);
         }
 
-        public Product CreateOne(Product newProduct)
+        public async Task<Product> CreateOne(Product newProduct)
         {
-            Product? checkProduct = FindOne(newProduct.Id);
-            if (checkProduct is null)
-            {
-                _products = _products.Append(newProduct);
-                return newProduct;
-            }
-            return null!;
+            await _products.AddAsync(newProduct);
+            await _databaseContext.SaveChangesAsync();
+            return newProduct;
         }
 
-        public Product UpdateOne(Product updatedProduct)
+        public async Task<Product> UpdateOne(Product updatedProduct)
         {
-            var updatedCollection = _products.Select(product =>
-            {
-                if (product.Id == updatedProduct.Id)
-                {
-                    return updatedProduct;
-                }
-                return product;
-            });
-
-            _products = updatedCollection;
+            _products.Update(updatedProduct);
+            await _databaseContext.SaveChangesAsync();
             return updatedProduct;
         }
 
