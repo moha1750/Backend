@@ -6,10 +6,10 @@ namespace BackendTeamwork.Abstractions
     {
         public IEnumerable<Review> FindMany();
 
-        public Review? FindOne(Guid id);
+        public Task<Review?> FindOne(Guid reviewId);
 
-        public Review CreateOne(Review newReview);
+        public Task<Review> CreateOne(Review newReview);
 
-        public Review? UpdateOne(Review updatedReview);
+        public Task<Review?> UpdateOne(Review updatedReview);
     }
 }

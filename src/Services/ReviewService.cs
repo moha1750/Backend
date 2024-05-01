@@ -20,9 +20,9 @@ namespace BackendTeamwork.Services
         {
             return _reviewRepository.FindMany();
         }
-        public Review? FindOne(Guid id)
+        public async Task<Review?> FindOne(Guid reviewId)
         {
-            Review? targetReview = _reviewRepository.FindOne(id);
+            Review? targetReview = await _reviewRepository.FindOne(reviewId);
 
             if (targetReview is not null)
             {
@@ -30,19 +30,19 @@ namespace BackendTeamwork.Services
             }
             return null;
         }
-        public Review CreateOne(Review newReview)
+        public async Task<Review> CreateOne(Review newReview)
         {
-            return _reviewRepository.CreateOne(newReview);
+            return await _reviewRepository.CreateOne(newReview);
         }
-        public Review? UpdateOne(Review updatedReview)
+        public async Task<Review?> UpdateOne(Review updatedReview)
         {
-            Review? targetReview = _reviewRepository.FindOne(updatedReview.Id);
+            Review? targetReview = await _reviewRepository.FindOne(updatedReview.Id);
 
             if (targetReview is not null)
             {
                 targetReview.Rating = updatedReview.Rating;
                 targetReview.Comment = updatedReview.Comment;
-                return _reviewRepository.UpdateOne(targetReview);
+                return await _reviewRepository.UpdateOne(targetReview);
             }
             return null;
         }

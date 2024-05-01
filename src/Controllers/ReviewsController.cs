@@ -27,18 +27,18 @@ namespace BackendTeamwork.Controllers
 
         // findOne
         [HttpGet(":reviewId")]
-        public Review? FindOne(Guid id)
+        public async Task<Review?> FindOne(Guid reviewId)
         {
-            return _reviewService.FindOne(id);
+            return await _reviewService.FindOne(reviewId);
         }
 
         // createOne
         [HttpPost]
-        public ActionResult<Review> CreateOne([FromBody] Review newReview)
+        public async Task<ActionResult<Review>> CreateOne([FromBody] Review newReview)
         {
             if (newReview is not null)
             {
-                _reviewService.CreateOne(newReview);
+                await _reviewService.CreateOne(newReview);
                 return CreatedAtAction(nameof(CreateOne), newReview);
             }
             return BadRequest();
@@ -46,9 +46,9 @@ namespace BackendTeamwork.Controllers
 
         // updateOne
         [HttpPut(":reviewId")]
-        public ActionResult<Review?> UpdateOne([FromBody] Review updatedReview)
+        public async Task<ActionResult<Review?>> UpdateOne([FromBody] Review updatedReview)
         {
-            return _reviewService.UpdateOne(updatedReview);
+            return await _reviewService.UpdateOne(updatedReview);
         }
 
     }
