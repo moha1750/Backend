@@ -23,31 +23,30 @@ namespace BackendTeamwork.Services
             return _stockRepository.FindMany();
         }
 
-
-        public Stock CreateOne(Stock newStock)
+        public IEnumerable<Stock> FindMany(Guid productId)
         {
-            return _stockRepository.CreateOne(newStock);
+            return _stockRepository.FindMany(productId);
         }
 
+        public async Task<Stock> CreateOne(Stock newStock)
 
-        public Stock? UpdateOne(Guid id, Stock updateStock)
         {
-            Stock? targetStock = _stockRepository.FindOne(id);
-            if (targetStock is not null)
+            return await _stockRepository.CreateOne(newStock);
+        }
+
+        public async Task<Stock?> UpdateOne(Guid stockId, Stock updatedStock)
+        {
+            Stock? targetStock = await _stockRepository.FindOne(stockId);
+            if (targetStock is null)
             {
-                targetStock.Quantity = updateStock.Quantity;
-                targetStock.Size = updateStock.Size;
-                targetStock.Color = updateStock.Color;
-
-                return _stockRepository.UpdateOne(targetStock);
+                return null;
             }
-            return null;
+            return await _stockRepository.UpdateOne(updatedStock);
         }
 
-        public void DeleteOne(Guid id)
+        public void DeleteOne(Guid stockId)
         {
-            _stockRepository.DeleteOne(id);
-
+            _stockRepository.DeleteOne(stockId);
         }
     }
 }

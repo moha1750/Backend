@@ -5,82 +5,64 @@ using System.Threading.Tasks;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Repositories
 {
     public class StockRepository : IStockRepository
     {
 
-        private IEnumerable<Stock> _stocks;
+        private DbSet<Stock> _stocks;
+        private DatabaseContext _databaseContext;
 
-        public StockRepository()
+        public StockRepository(DatabaseContext databaseContext)
         {
-            _stocks = new DatabaseContext().Stocks;
-        }
+            _stocks = databaseContext.Stocks;
+            _databaseContext = databaseContext;
 
+        }
 
         public IEnumerable<Stock> FindMany()
         {
             return _stocks;
         }
 
-        public Stock? FindOne(Guid stockId)
+        public IEnumerable<Stock> FindMany(Guid productId)
         {
-            var targetStock = _stocks.FirstOrDefault(stock => stock.Id == stockId);
-            if (targetStock is not null)
-            {
-                return targetStock;
-            }
-            return null;
+            IEnumerable<Stock> targetStocks = _stocks.Where(stock => stock.ProductId == productId);
+            return targetStocks;
+        }
+
+        public async Task<Stock?> FindOne(Guid stockId)
+        {
+            return await _stocks.FirstOrDefaultAsync(stock => stock.Id == stockId);
         }
 
 
-        public Stock CreateOne(Stock newStock)
+        public async Task<Stock> CreateOne(Stock newStock)
         {
-            Stock? createdStock = FindOne(newStock.Id);
-            if (createdStock is null)
-            {
-                _stocks = _stocks.Append(newStock);
-                return newStock;
-            }
-            return null!;
+            await _stocks.AddAsync(newStock);
+            await _databaseContext.SaveChangesAsync();
+            return newStock;
         }
 
 
-        public Stock UpdateOne(Stock updatedStock)
+        public async Task<Stock> UpdateOne(Stock updatedStock)
         {
-            var updatedCollection = _stocks.Select(stock =>
-            {
-                if (stock.Id == updatedStock.Id)
-                {
-                    return updatedStock;
-                }
-                return null;
-            });
-            _stocks = updatedCollection!;
+            _stocks.Update(updatedStock);
+            await _databaseContext.SaveChangesAsync();
             return updatedStock;
         }
 
-        /* public Product UpdateOne(Product updatedProduct)
+
+        public async void DeleteOne(Guid stockId)
         {
-            var updatedCollection = _products.Select(product =>
+            Stock? targetStock = _stocks.FirstOrDefault(stock => stock.Id == stockId);
+            if (targetStock is not null)
             {
-                if (product.Id == updatedProduct.Id)
-                {
-                    return updatedProduct;
-                }
-                return product;
-            });
-
-            _products = updatedCollection;
-            return updatedProduct;
-        }*/
-
-
-        public void DeleteOne(Guid stockId)
-        {
-            _stocks = _stocks.Where(stock => stock.Id != stockId);
+                _stocks.Remove(targetStock);
+                await _databaseContext.SaveChangesAsync();
+            }
         }
-
     }
 }

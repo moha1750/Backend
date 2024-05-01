@@ -15,14 +15,28 @@ namespace BackendTeamwork.Controllers
             _stockService = stockService;
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<Stock>> FindMany()
+        {
+            return Ok(_stockService.FindMany());
+        }
+
+        [HttpGet("productId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<Stock>> FindMany(Guid productId)
+        {
+            return Ok(_stockService.FindMany(productId));
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Stock> CreateOne([FromBody] Stock newStock)
+        public async Task<ActionResult<Stock>> CreateOne([FromBody] Stock newStock)
         {
             if (newStock is not null)
             {
-                _stockService.CreateOne(newStock);
+                await _stockService.CreateOne(newStock);
                 return CreatedAtAction(nameof(CreateOne), newStock);
             }
             return BadRequest();
