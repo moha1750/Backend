@@ -4,8 +4,8 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IAddressService
     {
-        public Address? FindOne(Guid Id);
-        public Address CreateOne(Address newAddress);
-        public Address? UpdateOne(Address updatedAddress);
+        public Task<Address?> FindOne(Guid addressId);
+        public Task<Address> CreateOne(Address newAddress);
+        public Task<Address?> UpdateOne(Guid addressId, Address updatedAddress);
     }
 }
