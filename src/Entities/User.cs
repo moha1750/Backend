@@ -11,18 +11,5 @@ namespace BackendTeamwork.Entities
         public string Role { get; set; }
         public Guid Address { get; set; }
         public Guid Wishlist { get; set; }
-
-        public User(Guid id, string firstName, string lastName, string email, string password, string phone, string role, Guid address, Guid wishlist)
-        {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            Password = password;
-            Phone = phone;
-            Role = role;
-            Address = address;
-            Wishlist = wishlist;
-        }
     }
 }

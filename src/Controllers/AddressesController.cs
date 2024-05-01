@@ -7,39 +7,42 @@ namespace BackendTeamwork.Controllers
     public class AddressesController : BaseController
     {
         private IAddressService _AddressService;
-
         public AddressesController(IAddressService AddressService)
         {
             _AddressService = AddressService;
         }
 
-        [HttpGet(":{Id}")]
+        [HttpGet(":{addressId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public ActionResult<Address> FindOne(Guid Id)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Address>> FindOne(Guid addressId)
         {
-            Address? address = _AddressService.FindOne(Id);
-
+            Address? address = await _AddressService.FindOne(addressId);
             if (address is not null)
             {
-                return address;
+                return Ok(address);
             }
-            return NoContent();
+            return NotFound();
         }
 
         [HttpPost]
-        public Address CreateOne([FromBody] Address newAddress)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<Address> CreateOne([FromBody] Address newAddress)
         {
-            return _AddressService.CreateOne(newAddress);
+            return Ok(_AddressService.CreateOne(newAddress));
         }
 
-        [HttpPut]
-        public Address? UpdateOne(Address updatedAddress)
+        [HttpPut(":{addressId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Address>> UpdateOne(Guid addressId, Address updatedAddress)
         {
-            return _AddressService.UpdateOne(updatedAddress);
+            Address? updated = await _AddressService.UpdateOne(addressId, updatedAddress);
+            if (updated is not null)
+            {
+                return Ok(updated);
+            }
+            return NotFound();
         }
-
-
-
     }
 }

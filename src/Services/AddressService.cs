@@ -12,19 +12,24 @@ namespace BackendTeamwork.Services
             _addressRepository = addressRepository;
         }
 
-        public Address? FindOne(Guid Id)
+        public async Task<Address?> FindOne(Guid addressId)
         {
-            return _addressRepository.FindOne(Id);
+            return await _addressRepository.FindOne(addressId);
         }
 
-        public Address CreateOne(Address newAddress)
+        public async Task<Address> CreateOne(Address newAddress)
         {
-            return _addressRepository.CreateOne(newAddress);
+            return await _addressRepository.CreateOne(newAddress);
         }
 
-        public Address? UpdateOne(Address updatedAddress)
+        public async Task<Address?> UpdateOne(Guid addressId, Address updatedAddress)
         {
-            return _addressRepository.UpdateOne(updatedAddress);
+            Address? oldAddress = await _addressRepository.FindOne(addressId);
+            if (oldAddress is null)
+            {
+                return null;
+            }
+            return await _addressRepository.UpdateOne(addressId, updatedAddress);
         }
 
 

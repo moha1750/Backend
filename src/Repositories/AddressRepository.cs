@@ -1,44 +1,40 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Repositories
 {
     public class AddressRepository : IAddressRepository
     {
-        private IEnumerable<Address> _addresses;
 
-        public AddressRepository()
+        private DbSet<Address> _addresses;
+        private DatabaseContext _databaseContext;
+
+        public AddressRepository(DatabaseContext databaseContext)
         {
-            _addresses = new DatabaseContext().Addresses;
+            _addresses = databaseContext.Addresses;
+            _databaseContext = databaseContext;
+
         }
 
-        public Address? FindOne(Guid Id)
+        public async Task<Address?> FindOne(Guid AddressId)
         {
-            return _addresses.FirstOrDefault(address => address.Id == Id);
+            return await _addresses.FirstOrDefaultAsync(address => address.Id == AddressId);
         }
 
-        public Address CreateOne(Address newAddress)
+        public async Task<Address> CreateOne(Address newAddress)
         {
-            _addresses = _addresses.Append(newAddress);
-
-            _addresses.ToList().ForEach(address =>
-            {
-                Console.WriteLine($"{address.Id}");
-            });
-
+            await _addresses.AddAsync(newAddress);
+            await _databaseContext.SaveChangesAsync();
             return newAddress;
         }
 
-        public Address? UpdateOne(Address updatedAddress)
+        public async Task<Address> UpdateOne(Guid addressId, Address updatedAddress)
         {
-            Address? oldAddress = this.FindOne(updatedAddress.Id);
-            if (oldAddress is null)
-            {
-                return null;
-            }
-            oldAddress = updatedAddress;
-            return oldAddress;
+            _addresses.Update(updatedAddress);
+            await _databaseContext.SaveChangesAsync();
+            return updatedAddress;
         }
 
 
