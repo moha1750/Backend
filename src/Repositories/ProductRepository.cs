@@ -20,9 +20,14 @@ namespace BackendTeamwork.Repositories
             return _products;
         }
 
-        public Product? FindOne(Guid id)
+        public Product? FindOne(Guid productId)
         {
-            return _products.FirstOrDefault(product => product.Id == id);
+            var targetProduct = _products.FirstOrDefault(product => product.Id == productId);
+            if (targetProduct is not null)
+            {
+                return targetProduct;
+            }
+            return null;
         }
 
         public Product CreateOne(Product newProduct)
@@ -51,12 +56,10 @@ namespace BackendTeamwork.Repositories
             return updatedProduct;
         }
 
-        public bool DeleteOne(IEnumerable<Product> updatedCollection)
+        public void DeleteOne(Guid productId)
         {
-            _products = updatedCollection;
-            return true;
+            _products = _products.Where(product => product.Id != productId);
         }
-
 
     }
 }

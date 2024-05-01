@@ -20,9 +20,9 @@ namespace BackendTeamwork.Services
             return _productRepository.FindMany();
         }
 
-        public Product? FindOne(Guid id)
+        public Product? FindOne(Guid productId)
         {
-            Product? targetProduct = _productRepository.FindOne(id);
+            Product? targetProduct = _productRepository.FindOne(productId);
 
             if (targetProduct is not null)
             {
@@ -33,13 +33,13 @@ namespace BackendTeamwork.Services
 
         public Product CreateOne(Product newProduct)
         {
-            
+
             return _productRepository.CreateOne(newProduct);
         }
 
-        public Product? UpdateOne(Guid id, Product updatedProduct)
+        public Product? UpdateOne(Guid productId, Product updatedProduct)
         {
-            Product? targetProduct = _productRepository.FindOne(id);
+            Product? targetProduct = _productRepository.FindOne(productId);
 
             if (targetProduct is not null)
             {
@@ -47,24 +47,15 @@ namespace BackendTeamwork.Services
                 targetProduct.Price = updatedProduct.Price;
                 targetProduct.Image = updatedProduct.Image;
                 targetProduct.Description = updatedProduct.Description;
-
-                return _productRepository.UpdateOne(targetProduct);
+                _productRepository.UpdateOne(targetProduct);
+                return targetProduct;
             }
             return null;
         }
 
-        public bool DeleteOne(Guid id)
+        public void DeleteOne(Guid productId)
         {
-            IEnumerable<Product> updatedCollection = _productRepository.FindMany();
-
-            Product? targetProduct = _productRepository.FindOne(id);
-            if (targetProduct is not null)
-            {
-                updatedCollection = updatedCollection.Where(product => product.Id != id);
-                return _productRepository.DeleteOne(updatedCollection);
-            }
-            return false;
+            _productRepository.DeleteOne(productId);
         }
-
     }
 }

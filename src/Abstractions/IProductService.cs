@@ -7,12 +7,12 @@ namespace BackendTeamwork.Abstractions
     {
         public IEnumerable<Product> FindMany();
 
-        public Product? FindOne(Guid id);
+        public Product? FindOne(Guid productId);
 
         public Product CreateOne(Product newProduct);
 
-        public Product? UpdateOne(Guid id, Product updatedProduct);
+        public Product? UpdateOne(Guid productId, Product updatedProduct);
 
-        public bool DeleteOne(Guid id);
+        public void DeleteOne(Guid productId);
     }
 }
