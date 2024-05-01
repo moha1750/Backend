@@ -9,19 +9,17 @@ namespace BackendTeamwork.Abstractions
     public interface IStockRepository
     {
 
-        //findMany
         public IEnumerable<Stock> FindMany();
 
-        public Stock? FindOne(Guid id);
+        public IEnumerable<Stock> FindMany(Guid productId);
 
-        // createOne
-        public Stock CreateOne(Stock newStock);
+        public Task<Stock?> FindOne(Guid stockId);
 
-        // updateOne
-        public Stock? UpdateOne(Stock updateStock);
+        public Task<Stock> CreateOne(Stock newStock);
 
-        // deleteOne
-        public void DeleteOne(Guid id);
+        public Task<Stock> UpdateOne(Stock updatedStock);
+
+        public void DeleteOne(Guid stockId);
 
     }
 }

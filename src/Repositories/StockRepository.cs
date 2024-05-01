@@ -5,57 +5,64 @@ using System.Threading.Tasks;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Repositories
 {
     public class StockRepository : IStockRepository
     {
 
-        private IEnumerable<Stock> _stocks;
+        private DbSet<Stock> _stocks;
+        private DatabaseContext _databaseContext;
 
-        public StockRepository()
+        public StockRepository(DatabaseContext databaseContext)
         {
-            _stocks = new DatabaseContext().Stocks;
-        }
+            _stocks = databaseContext.Stocks;
+            _databaseContext = databaseContext;
 
+        }
 
         public IEnumerable<Stock> FindMany()
         {
             return _stocks;
         }
 
-        public Stock? FindOne(Guid id)
+        public IEnumerable<Stock> FindMany(Guid productId)
         {
-            return _stocks.FirstOrDefault(stock => stock.Id == id);
+            IEnumerable<Stock> targetStocks = _stocks.Where(stock => stock.ProductId == productId);
+            return targetStocks;
+        }
+
+        public async Task<Stock?> FindOne(Guid stockId)
+        {
+            return await _stocks.FirstOrDefaultAsync(stock => stock.Id == stockId);
         }
 
 
-        public Stock CreateOne(Stock newStock)
+        public async Task<Stock> CreateOne(Stock newStock)
         {
-            _stocks = _stocks.Append(newStock);
+            await _stocks.AddAsync(newStock);
+            await _databaseContext.SaveChangesAsync();
             return newStock;
         }
 
 
-        public Stock? UpdateOne(Stock updateStock)
+        public async Task<Stock> UpdateOne(Stock updatedStock)
         {
-            var updatedCollection = _stocks.Select(stock =>
+            _stocks.Update(updatedStock);
+            await _databaseContext.SaveChangesAsync();
+            return updatedStock;
+        }
+
+
+        public async void DeleteOne(Guid stockId)
+        {
+            Stock? targetStock = _stocks.FirstOrDefault(stock => stock.Id == stockId);
+            if (targetStock is not null)
             {
-                if (stock.Id == updateStock.Id)
-                {
-                    return updateStock;
-                }
-                return null;
-            });
-            _stocks = updatedCollection!;
-            return updateStock;
+                _stocks.Remove(targetStock);
+                await _databaseContext.SaveChangesAsync();
+            }
         }
-
-
-        public void DeleteOne(Guid id)
-        {
-            _stocks = _stocks.Where(stock => stock.Id != id);
-        }
-
     }
 }

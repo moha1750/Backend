@@ -15,16 +15,7 @@ namespace BackendTeamwork.Entities
 
         public string Color { get; set; }
 
-        public Guid Product_id { get; set; }
-
-        public Stock(Guid id, int quantity, string size, string color)
-        {
-            Id = id;
-            Quantity = quantity;
-            Size = size;
-            Color = color;
-            Product_id = new Guid();
-        }
+        public Guid ProductId { get; set; }
 
     }
 }
