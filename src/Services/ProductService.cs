@@ -20,36 +20,25 @@ namespace BackendTeamwork.Services
             return _productRepository.FindMany();
         }
 
-        public Product? FindOne(Guid productId)
+        public async Task<Product?> FindOne(Guid productId)
         {
-            Product? targetProduct = _productRepository.FindOne(productId);
-
-            if (targetProduct is not null)
-            {
-                return targetProduct;
-            }
-            return null;
+            return await _productRepository.FindOne(productId);
         }
 
-        public Product CreateOne(Product newProduct)
+        public async Task<Product> CreateOne(Product newProduct)
         {
 
-            return _productRepository.CreateOne(newProduct);
+            return await _productRepository.CreateOne(newProduct);
         }
 
-        public Product? UpdateOne(Guid productId, Product updatedProduct)
+        public async Task<Product?> UpdateOne(Guid productId, Product updatedProduct)
         {
-            Product? targetProduct = _productRepository.FindOne(productId);
-
-            if (targetProduct is not null)
+            Product? oldProduct = await _productRepository.FindOne(productId);
+            if (oldProduct is null)
             {
-                targetProduct.Name = updatedProduct.Name;
-                targetProduct.Price = updatedProduct.Price;
-                targetProduct.Image = updatedProduct.Image;
-                targetProduct.Description = updatedProduct.Description;
-                return _productRepository.UpdateOne(targetProduct);
+                return null;
             }
-            return null;
+            return await _productRepository.UpdateOne(updatedProduct);
         }
 
         public void DeleteOne(Guid productId)

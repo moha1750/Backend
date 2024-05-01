@@ -44,9 +44,14 @@ namespace BackendTeamwork.Repositories
             return updatedProduct;
         }
 
-        public void DeleteOne(Guid productId)
+        public async void DeleteOne(Guid productId)
         {
-            _products = _products.Where(product => product.Id != productId);
+            Product? targetProduct = _products.FirstOrDefault(product => product.Id == productId);
+            if (targetProduct is not null)
+            {
+                _products.Remove(targetProduct);
+                await _databaseContext.SaveChangesAsync();
+            }
         }
 
     }
