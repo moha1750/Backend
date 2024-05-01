@@ -11,13 +11,13 @@ namespace BackendTeamwork.Databases
 
         public DbSet<Address> Addresses { get; set; }
 
-        public DbSet<Product> products { get; set; }
+        public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderStock> OrderStock { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-       => optionsBuilder.UseNpgsql(@"");
+       => optionsBuilder.UseNpgsql(@"Host=https://aws-0-eu-central-1.pooler.supabase.com/;Username=postgres.xjkkxefgmmzwkgxpypui;Password=L326tuCH3RwWAUPJ;Database=postgres");
     }
 }
