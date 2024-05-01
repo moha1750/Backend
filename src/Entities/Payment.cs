@@ -14,14 +14,7 @@ namespace BackendTeamwork.Entities
         public DateTime Date { get; set; }
         public Guid UserId { get; set; }
 
-        public Payment(Guid id, int amount, string method, DateTime date, Guid userId)
-        {
-            Id = id;
-            Amount = amount;
-            Method = method;
-            Date = date;
-            UserId = userId;
-        }
+
     }
 
 }

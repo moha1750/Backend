@@ -16,10 +16,10 @@ namespace BackendTeamwork.Repositories
             _payments = databaseContext.Payments;
             _databaseContext = databaseContext;
         }
-        public async Task<Payment?> FindOne(Guid id)
+        public async Task<Payment?> FindOne(Guid paymentId)
         {
 
-            return await _payments.FirstOrDefaultAsync(payment => payment.Id == id);
+            return await _payments.FirstOrDefaultAsync(payment => payment.Id == paymentId);
         }
         public async Task<Payment> CreateOne(Payment newPayment)
         {

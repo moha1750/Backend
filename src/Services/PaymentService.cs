@@ -11,9 +11,9 @@ namespace BackendTeamwork.Controllers
         {
             _paymentRepository = PaymentRepository;
         }
-        public async Task<Payment?> FindOne(Guid id)
+        public async Task<Payment?> FindOne(Guid paymentId)
         {
-            return await _paymentRepository.FindOne(id);
+            return await _paymentRepository.FindOne(paymentId);
         }
         public async Task<Payment> CreateOne(Payment newPayment)
         {
