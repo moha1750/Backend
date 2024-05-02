@@ -11,26 +11,23 @@ namespace BackendTeamwork.Controllers
     {
       _paymentService = paymentService;
     }
-
-    [HttpGet(":{id}")]
+    [HttpGet(":{paymentId}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<Payment> FindOne(string id)
+    public async Task<ActionResult<Payment>> FindOne(string paymentId)
     {
-      Payment? payment = _paymentService.FindOne(new Guid(id));
+      Payment? payment = await _paymentService.FindOne(new Guid(paymentId));
       if (payment is not null)
       {
-        return payment;
+        return Ok(payment);
       }
       return NotFound();
     }
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<Payment> CreateOne([FromBody] Payment newPayment)
+    public async Task<ActionResult<Payment>> CreateOne([FromBody] Payment newPayment)
     {
-      return Ok(_paymentService.CreateOne(newPayment));
+      return Ok(await _paymentService.CreateOne(newPayment));
     }
-
-
   }
 }

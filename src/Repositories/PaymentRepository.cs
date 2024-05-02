@@ -1,24 +1,30 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Repositories
 {
     public class PaymentRepository : IPaymentRepository
     {
-        private IEnumerable<Payment> _payments;
-        public PaymentRepository()
-        {
-            _payments = new DatabaseContext().Payments;
-        }
 
-        public Payment? FindOne(Guid id)
+        private DbSet<Payment> _payments;
+        private DatabaseContext _databaseContext;
+        public PaymentRepository(DatabaseContext databaseContext)
         {
-            return _payments.FirstOrDefault(payment => payment.Id == id);
+
+            _payments = databaseContext.Payments;
+            _databaseContext = databaseContext;
         }
-        public Payment CreateOne(Payment newPayment)
+        public async Task<Payment?> FindOne(Guid paymentId)
         {
-            _payments = _payments.Append(newPayment);
+
+            return await _payments.FirstOrDefaultAsync(payment => payment.Id == paymentId);
+        }
+        public async Task<Payment> CreateOne(Payment newPayment)
+        {
+            await _payments.AddAsync(newPayment);
+            await _databaseContext.SaveChangesAsync();
             return newPayment;
         }
     }
