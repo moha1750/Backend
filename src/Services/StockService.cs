@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Entities;
@@ -28,6 +29,11 @@ namespace BackendTeamwork.Services
             return _stockRepository.FindMany(productId);
         }
 
+        public async Task<Stock?> FindOne(Guid stockId)
+        {
+            return await _stockRepository.FindOne(stockId);
+        }
+
         public async Task<Stock> CreateOne(Stock newStock)
 
         {
@@ -44,9 +50,14 @@ namespace BackendTeamwork.Services
             return await _stockRepository.UpdateOne(updatedStock);
         }
 
-        public void DeleteOne(Guid stockId)
+        public async Task<Stock?> DeleteOne(Guid stockId)
         {
-            _stockRepository.DeleteOne(stockId);
+            Stock? stock = await _stockRepository.FindOne(stockId);
+            if (stock is not null)
+            {
+                return await _stockRepository.DeleteOne(stock);
+            }
+            return null;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace BackendTeamwork.Abstractions
 
         public Task<Stock> UpdateOne(Stock updatedStock);
 
-        public void DeleteOne(Guid stockId);
+        public Task<Stock> DeleteOne(Stock deleteStock);
 
     }
 }
