@@ -90,6 +90,8 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PaymentId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
@@ -113,6 +115,8 @@ namespace Backend.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("StockId");
 
                     b.ToTable("OrderStock");
                 });
@@ -238,6 +242,7 @@ namespace Backend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
@@ -271,11 +276,19 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("BackendTeamwork.Entities.Order", b =>
                 {
+                    b.HasOne("BackendTeamwork.Entities.Payment", "Payment")
+                        .WithMany("Orders")
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BackendTeamwork.Entities.User", null)
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.OrderStock", b =>
@@ -283,6 +296,12 @@ namespace Backend.Migrations
                     b.HasOne("BackendTeamwork.Entities.Order", "Order")
                         .WithMany("OrderStocks")
                         .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BackendTeamwork.Entities.Stock", null)
+                        .WithMany("OrderStocks")
+                        .HasForeignKey("StockId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -341,11 +360,21 @@ namespace Backend.Migrations
                     b.Navigation("OrderStocks");
                 });
 
+            modelBuilder.Entity("BackendTeamwork.Entities.Payment", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("BackendTeamwork.Entities.Product", b =>
                 {
                     b.Navigation("Reviews");
 
                     b.Navigation("Stocks");
+                });
+
+            modelBuilder.Entity("BackendTeamwork.Entities.Stock", b =>
+                {
+                    b.Navigation("OrderStocks");
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.User", b =>

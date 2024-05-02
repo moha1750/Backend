@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace BackendTeamwork.Entities
 {
     public class Order
@@ -8,7 +10,9 @@ namespace BackendTeamwork.Entities
         public string? Status { get; set; }
         public DateTime Date { get; set; }
         public Guid PaymentId { get; set; }
+        [Required]
         public Guid UserId { get; set; }
+        [Required]
         public IEnumerable<OrderStock> OrderStocks { get; set; }
 
     }
