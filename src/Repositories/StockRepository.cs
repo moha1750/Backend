@@ -35,7 +35,7 @@ namespace BackendTeamwork.Repositories
 
         public async Task<Stock?> FindOne(Guid stockId)
         {
-            return await _stocks.FirstOrDefaultAsync(stock => stock.Id == stockId);
+            return await _stocks.AsNoTracking().FirstOrDefaultAsync(stock => stock.Id == stockId);
         }
 
 
@@ -49,20 +49,19 @@ namespace BackendTeamwork.Repositories
 
         public async Task<Stock> UpdateOne(Stock updatedStock)
         {
+            Console.WriteLine($"{updatedStock}");
+
             _stocks.Update(updatedStock);
             await _databaseContext.SaveChangesAsync();
             return updatedStock;
         }
 
 
-        public async void DeleteOne(Guid stockId)
+        public async Task<Stock> DeleteOne(Stock deleteStock)
         {
-            Stock? targetStock = _stocks.FirstOrDefault(stock => stock.Id == stockId);
-            if (targetStock is not null)
-            {
-                _stocks.Remove(targetStock);
-                await _databaseContext.SaveChangesAsync();
-            }
+            _stocks.Remove(deleteStock);
+            await _databaseContext.SaveChangesAsync();
+            return deleteStock;
         }
     }
 }
