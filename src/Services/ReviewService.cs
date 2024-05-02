@@ -22,30 +22,26 @@ namespace BackendTeamwork.Services
         }
         public async Task<Review?> FindOne(Guid reviewId)
         {
-            Review? targetReview = await _reviewRepository.FindOne(reviewId);
-
-            if (targetReview is not null)
-            {
-                return targetReview;
-            }
-            return null;
+            return await _reviewRepository.FindOne(reviewId);
         }
         public async Task<Review> CreateOne(Review newReview)
         {
             return await _reviewRepository.CreateOne(newReview);
         }
-        public async Task<Review?> UpdateOne(Review updatedReview)
+        public async Task<Review?> UpdateOne(Guid reviewId, Review updatedReview)
         {
-            Review? targetReview = await _reviewRepository.FindOne(updatedReview.Id);
-
+            Review? targetReview = await _reviewRepository.FindOne(reviewId);
             if (targetReview is not null)
             {
-                targetReview.Rating = updatedReview.Rating;
-                targetReview.Comment = updatedReview.Comment;
-                return await _reviewRepository.UpdateOne(targetReview);
+                return await _reviewRepository.UpdateOne(updatedReview);
             }
             return null;
         }
+        public Task<Review> DeleteOne(Review deleteReview)
+        {
+            return _reviewRepository.DeleteOne(deleteReview);
+        }
+
 
     }
 }

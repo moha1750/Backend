@@ -4,8 +4,6 @@ namespace BackendTeamwork.Entities
 {
     public class OrderStock
     {
-
-
         public Guid Id { get; set; }
         [Required]
         public Guid OrderId { get; set; }

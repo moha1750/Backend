@@ -11,12 +11,10 @@ namespace BackendTeamwork.Entities
         public Guid Id { get; set; }
         [Required]
         public int Quantity { get; set; }
-
         public string Size { get; set; }
-
         public string Color { get; set; }
-
         public Guid ProductId { get; set; }
+        public IEnumerable<OrderStock> OrderStocks { get; set; }
 
     }
 }

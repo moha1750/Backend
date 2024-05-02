@@ -22,11 +22,10 @@ namespace BackendTeamwork.Repositories
         }
         public async Task<Review?> FindOne(Guid reviewId)
         {
-            return await _reviews.FirstOrDefaultAsync(review => review.Id == reviewId);
+            return await _reviews.AsNoTracking().FirstOrDefaultAsync(review => review.Id == reviewId);
         }
         public async Task<Review> CreateOne(Review newReview)
         {
-
             await _reviews.AddAsync(newReview);
             await _databaseContext.SaveChangesAsync();
             return newReview;
@@ -38,5 +37,13 @@ namespace BackendTeamwork.Repositories
             await _databaseContext.SaveChangesAsync();
             return updatedReview;
         }
+
+        public async Task<Review> DeleteOne(Review deleteReview)
+        {
+            _reviews.Remove(deleteReview);
+            await _databaseContext.SaveChangesAsync();
+            return deleteReview;
+        }
+
     }
 }

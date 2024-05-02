@@ -20,36 +20,49 @@ namespace BackendTeamwork.Controllers
 
         // findMany
         [HttpGet]
-        public IEnumerable<Review> FindMany()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<Review>> FindMany()
         {
-            return _reviewService.FindMany();
+            return Ok(_reviewService.FindMany());
         }
 
         // findOne
         [HttpGet(":reviewId")]
-        public async Task<Review?> FindOne(Guid reviewId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Review?>> FindOne(Guid reviewId)
         {
-            return await _reviewService.FindOne(reviewId);
+            return Ok(await _reviewService.FindOne(reviewId));
         }
 
         // createOne
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Review>> CreateOne([FromBody] Review newReview)
         {
-            if (newReview is not null)
+            Review? review = await _reviewService.CreateOne(newReview);
+            if (review is not null)
             {
-                await _reviewService.CreateOne(newReview);
-                return CreatedAtAction(nameof(CreateOne), newReview);
+                return Ok(review);
             }
-            return BadRequest();
+            return NotFound();
         }
 
         // updateOne
         [HttpPut(":reviewId")]
-        public async Task<ActionResult<Review?>> UpdateOne([FromBody] Review updatedReview)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Review?>> UpdateOne(Guid reviewId, [FromBody] Review updatedReview)
         {
-            return await _reviewService.UpdateOne(updatedReview);
+            Review? review = await _reviewService.UpdateOne(reviewId, updatedReview);
+            if (review is not null)
+            {
+                return Ok(review);
+            }
+            return NotFound();
         }
+
 
     }
 }

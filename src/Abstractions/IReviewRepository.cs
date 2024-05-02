@@ -10,5 +10,6 @@ namespace BackendTeamwork.Abstractions
         public Task<Review> CreateOne(Review newReview);
 
         public Task<Review> UpdateOne(Review updatedReview);
+        public Task<Review> DeleteOne(Review deleteReview);
     }
 }
