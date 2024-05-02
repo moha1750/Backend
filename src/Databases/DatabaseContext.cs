@@ -20,8 +20,14 @@ namespace BackendTeamwork.Databases
         public DbSet<Category> Categories { get; set; }
 
 
+        private IConfiguration _config;
+        public DatabaseContext(IConfiguration config)
+        {
+            _config = config;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-       => optionsBuilder.UseNpgsql(@"");
+       => optionsBuilder.UseNpgsql(_config["DB"]);
     }
 }
 // Host=aws-0-eu-central-1.pooler.supabase.com;Username=postgres.xjkkxefgmmzwkgxpypui;Password=L326tuCH3RwWAUPJ;Database=postgres

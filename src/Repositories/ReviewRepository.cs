@@ -12,8 +12,7 @@ namespace BackendTeamwork.Repositories
         private DatabaseContext _databaseContext;
         public ReviewRepository(DatabaseContext databaseContext)
         {
-            _reviews = databaseContext.Reviews;
-            _databaseContext = databaseContext;
+            _reviews = new DatabaseContext().Reviews;
         }
 
         public IEnumerable<Review> FindMany()
