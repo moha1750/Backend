@@ -20,36 +20,49 @@ namespace BackendTeamwork.Controllers
 
         // findMany
         [HttpGet]
-        public IEnumerable<Review> FindMany()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<Review>> FindMany()
         {
-            return _reviewService.FindMany();
+            return Ok(_reviewService.FindMany());
         }
 
         // findOne
         [HttpGet(":reviewId")]
-        public Review? FindOne(Guid id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Review?>> FindOne(Guid reviewId)
         {
-            return _reviewService.FindOne(id);
+            return Ok(await _reviewService.FindOne(reviewId));
         }
 
         // createOne
         [HttpPost]
-        public ActionResult<Review> CreateOne([FromBody] Review newReview)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Review>> CreateOne([FromBody] Review newReview)
         {
-            if (newReview is not null)
+            Review? review = await _reviewService.CreateOne(newReview);
+            if (review is not null)
             {
-                _reviewService.CreateOne(newReview);
-                return CreatedAtAction(nameof(CreateOne), newReview);
+                return Ok(review);
             }
-            return BadRequest();
+            return NotFound();
         }
 
         // updateOne
         [HttpPut(":reviewId")]
-        public ActionResult<Review?> UpdateOne([FromBody] Review updatedReview)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Review?>> UpdateOne(Guid reviewId, [FromBody] Review updatedReview)
         {
-            return _reviewService.UpdateOne(updatedReview);
+            Review? review = await _reviewService.UpdateOne(reviewId, updatedReview);
+            if (review is not null)
+            {
+                return Ok(review);
+            }
+            return NotFound();
         }
+
 
     }
 }

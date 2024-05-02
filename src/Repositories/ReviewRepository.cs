@@ -2,12 +2,13 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Repositories
 {
     public class ReviewRepository : IReviewRepository
     {
-        private IEnumerable<Review> _reviews;
+        private DbSet<Review> _reviews;
         private DatabaseContext _databaseContext;
 
         public ReviewRepository(DatabaseContext databaseContext)
@@ -21,28 +22,28 @@ namespace BackendTeamwork.Repositories
         {
             return _reviews;
         }
-        public Review? FindOne(Guid id)
+        public async Task<Review?> FindOne(Guid reviewId)
         {
-            return _reviews.FirstOrDefault(review => review.Id == id);
+            return await _reviews.AsNoTracking().FirstOrDefaultAsync(review => review.Id == reviewId);
         }
-        public Review CreateOne(Review newReview)
+        public async Task<Review> CreateOne(Review newReview)
         {
-            _reviews = _reviews.Append(newReview);
+            await _reviews.AddAsync(newReview);
+            await _databaseContext.SaveChangesAsync();
             return newReview;
         }
-        public Review UpdateOne(Review updatedReview)
+        public async Task<Review> UpdateOne(Review updatedReview)
         {
-            var updatedCollection = _reviews.Select(review =>
-            {
-                if (review.Id == updatedReview.Id)
-                {
-                    return updatedReview;
-                }
-                return review;
-            });
-
-            _reviews = updatedCollection;
+            _reviews.Update(updatedReview);
+            await _databaseContext.SaveChangesAsync();
             return updatedReview;
+        }
+
+        public async Task<Review> DeleteOne(Review deleteReview)
+        {
+            _reviews.Remove(deleteReview);
+            await _databaseContext.SaveChangesAsync();
+            return deleteReview;
         }
 
     }
