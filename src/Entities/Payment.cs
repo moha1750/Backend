@@ -15,8 +15,6 @@ namespace BackendTeamwork.Entities
         public string? Method { get; set; }
         public DateTime Date { get; set; }
         public Guid UserId { get; set; }
-
-
     }
 
 }
