@@ -13,6 +13,6 @@ namespace BackendTeamwork.Abstractions
 
         public Task<Product?> UpdateOne(Guid productId, Product updatedProduct);
 
-        public void DeleteOne(Guid productId);
+        public Task<Product?> DeleteOne(Guid productId);
     }
 }

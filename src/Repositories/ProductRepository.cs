@@ -4,6 +4,7 @@ using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BackendTeamwork.Repositories
 {
@@ -27,7 +28,7 @@ namespace BackendTeamwork.Repositories
 
         public async Task<Product?> FindOne(Guid productId)
         {
-            return await _products.FirstOrDefaultAsync(product => product.Id == productId);
+            return await _products.AsNoTracking().FirstOrDefaultAsync(product => product.Id == productId);
         }
 
         public async Task<Product> CreateOne(Product newProduct)
@@ -44,14 +45,11 @@ namespace BackendTeamwork.Repositories
             return updatedProduct;
         }
 
-        public async void DeleteOne(Guid productId)
+        public async Task<Product> DeleteOne(Product targetProduct)
         {
-            Product? targetProduct = _products.FirstOrDefault(product => product.Id == productId);
-            if (targetProduct is not null)
-            {
-                _products.Remove(targetProduct);
-                await _databaseContext.SaveChangesAsync();
-            }
+            _products.Remove(targetProduct);
+            await _databaseContext.SaveChangesAsync();
+            return targetProduct;
         }
 
     }

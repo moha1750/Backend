@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using BackendTeamwork.Abstractions;
-using BackendTeamwork.Controllers;
 using BackendTeamwork.Entities;
-using BackendTeamwork.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -31,9 +24,9 @@ namespace BackendTeamwork.Controllers
         [HttpGet(":productId")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Product?> FindOne([FromRoute] Guid productId)
+        public async Task<ActionResult<Product>> FindOne(Guid productId)
         {
-            var targetProduct = _productService.FindOne(productId);
+            Product? targetProduct = await _productService.FindOne(productId);
             if (targetProduct is not null)
             {
                 return Ok(targetProduct);
@@ -56,24 +49,29 @@ namespace BackendTeamwork.Controllers
 
         [HttpPut(":productId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public ActionResult<Product?> UpdateOne([FromRoute] Guid productId, [FromBody] Product updatedProduct)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Product?>> UpdateOne([FromQuery] Guid productId, [FromBody] Product updatedProduct)
         {
-            var targetProduct = _productService.UpdateOne(productId, updatedProduct);
+            Product? targetProduct = await _productService.UpdateOne(productId, updatedProduct);
             if (targetProduct is not null)
             {
                 return Ok(updatedProduct);
             }
-            return NoContent();
+            return NotFound();
         }
 
 
         [HttpDelete(":productId")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public ActionResult DeleteOne([FromRoute] Guid productId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Product>> DeleteOne(Guid productId)
         {
-            _productService.DeleteOne(productId);
-            return NoContent();
+            Product? deletedProduct = await _productService.DeleteOne(productId);
+            if (deletedProduct is not null)
+            {
+                return Ok(deletedProduct);
+            }
+            return NotFound();
         }
 
     }
