@@ -251,6 +251,25 @@ namespace Backend.Migrations
 
                     b.ToTable("Users");
                 });
+
+            modelBuilder.Entity("BackendTeamwork.Entities.Wishlist", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("userid")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Wishlists");
+                });
 #pragma warning restore 612, 618
         }
     }

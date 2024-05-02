@@ -16,6 +16,8 @@ namespace BackendTeamwork.Databases
         public DbSet<OrderStock> OrderStock { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Stock> Stocks { get; set; }
+        public DbSet<Wishlist> Wishlists { get; set; }
+
 
         public DbSet<Category> Categories { get; set; }
 
