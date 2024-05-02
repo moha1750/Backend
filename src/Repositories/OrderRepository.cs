@@ -1,6 +1,7 @@
 using BackendTeamwork.Entities;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Repositories
 {
@@ -8,10 +9,13 @@ namespace BackendTeamwork.Repositories
     {
 
         private IEnumerable<Order> _orders;
+        private DatabaseContext _databaseContext;
 
-        public OrderRepository(IEnumerable<Order> orders)
+        public OrderRepository(DatabaseContext databaseContext)
         {
-            _orders = new DatabaseContext().Orders;
+            _orders = databaseContext.Orders;
+            _databaseContext = databaseContext;
+
         }
 
         public IEnumerable<Order> FindMany(Guid userId)

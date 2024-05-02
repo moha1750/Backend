@@ -12,10 +12,13 @@ namespace BackendTeamwork.Repositories
     {
 
         private IEnumerable<Category> _categories;
+        private DatabaseContext _databaseContext;
 
-        public CategoryRepository()
+        public CategoryRepository(DatabaseContext databaseContext)
         {
-            _categories = new DatabaseContext().Categories;
+            _categories = databaseContext.Categories;
+            _databaseContext = databaseContext;
+
         }
 
 

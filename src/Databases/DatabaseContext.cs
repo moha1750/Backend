@@ -19,10 +19,14 @@ namespace BackendTeamwork.Databases
 
         public DbSet<Category> Categories { get; set; }
 
-        public DbSet<Stock> Stocks { get; set; }
 
+        private IConfiguration _config;
+        public DatabaseContext(IConfiguration config)
+        {
+            _config = config;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-       => optionsBuilder.UseNpgsql(@"");
+       => optionsBuilder.UseNpgsql(_config["DB"]);
     }
 }
