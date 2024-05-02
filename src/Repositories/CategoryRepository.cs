@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
 
-        private IEnumerable<Category> _categories;
+        private DbSet<Category> _categories;
         private DatabaseContext _databaseContext;
 
         public CategoryRepository(DatabaseContext databaseContext)
@@ -22,39 +23,35 @@ namespace BackendTeamwork.Repositories
         }
 
 
-        public Category? FindOne(Guid id)
+        public IEnumerable<Category> FindMany()
         {
-            return _categories.FirstOrDefault(category => category.Id == id);
+            return _categories;
         }
 
-        public Category? CreateOne(Category newCategory)
+        public async Task<Category?> FindOne(Guid id)
         {
-            Category? checkCategory = _categories.FirstOrDefault(category => category.Id == newCategory.Id);
-            if (checkCategory is null)
-            {
-                _categories = _categories.Append(newCategory);
-                return newCategory;
-            }
-            return null;
+            return await _categories.AsNoTracking().FirstOrDefaultAsync(category => category.Id == id);
         }
 
-        public Category UpdateOne(Category updateCategory)
+        public async Task<Category> CreateOne(Category newCategory)
         {
-            var updatedCollection = _categories.Select(category =>
-            {
-                if (category.Id == updateCategory.Id)
-                {
-                    return updateCategory;
-                }
-                return null;
-            });
-            _categories = updatedCollection!;
+            await _categories.AddAsync(newCategory);
+            await _databaseContext.SaveChangesAsync();
+            return newCategory;
+        }
+
+        public async Task<Category> UpdateOne(Category updateCategory)
+        {
+            _categories.Update(updateCategory);
+            await _databaseContext.SaveChangesAsync();
             return updateCategory;
         }
 
-        public void DeleteOne(Guid categoryId)
+        public async Task<Category> DeleteOne(Category deletedCategory)
         {
-            _categories = _categories.Where(category => category.Id != categoryId);
+            _categories.Remove(deletedCategory);
+            await _databaseContext.SaveChangesAsync();
+            return deletedCategory;
         }
 
     }

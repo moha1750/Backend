@@ -16,25 +16,37 @@ namespace BackendTeamwork.Services
             _categoryRepository = categoryRepository;
         }
 
-        public Category? CreateOne(Category newCategory)
+        public IEnumerable<Category> FindMany()
         {
-            return _categoryRepository.CreateOne(newCategory);
+            return _categoryRepository.FindMany();
+        }
+        public async Task<Category?> FindOne(Guid categoryId)
+        {
+            return await _categoryRepository.FindOne(categoryId);
+        }
+        public async Task<Category> CreateOne(Category newCategory)
+        {
+            return await _categoryRepository.CreateOne(newCategory);
         }
 
-        public void DeleteOne(Guid id)
-        {
-            _categoryRepository.DeleteOne(id);
-        }
 
-        public Category? UpdateOne(Guid id, Category updateCategory)
+        public async Task<Category?> UpdateOne(Guid categoryId, Category updateCategory)
         {
-            Category? targetCategory = _categoryRepository.FindOne(id);
+            Category? targetCategory = await _categoryRepository.FindOne(categoryId);
 
             if (targetCategory is not null)
             {
-                targetCategory.Name = updateCategory.Name;
-                targetCategory.Description = updateCategory.Description;
-                return _categoryRepository.UpdateOne(targetCategory);
+                return await _categoryRepository.UpdateOne(updateCategory);
+            }
+            return null;
+        }
+
+        public async Task<Category?> DeleteOne(Guid categoryId)
+        {
+            Category? targetCategory = await _categoryRepository.FindOne(categoryId);
+            if (targetCategory is not null)
+            {
+                return await _categoryRepository.DeleteOne(targetCategory);
             }
             return null;
         }
