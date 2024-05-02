@@ -16,31 +16,36 @@ namespace BackendTeamwork.Services
         {
             return _UserRepository.FindMany();
         }
-        public User? FindOne(Guid id)
+        public async Task<User?> FindOne(Guid id)
         {
-            User? user = _UserRepository.FindOne(id);
-            return user;
+            return await _UserRepository.FindOne(id);
         }
 
-        public User CreateOne(User newUser)
+        public async Task<User> CreateOne(User newUser)
         {
-            return _UserRepository.CreateOne(newUser);
+            return await _UserRepository.CreateOne(newUser);
         }
 
-        public User UpdateOne(User updatedUser)
+        public async Task<User?> UpdateOne(Guid userId, User updatedUser)
         {
-            return _UserRepository.UpdateOne(updatedUser);
+            User? targetUser = await _UserRepository.FindOne(userId);
+            if (targetUser is null)
+            {
+                return null;
+            }
+            return await _UserRepository.UpdateOne(updatedUser);
         }
 
-        public bool DeleteOne(Guid id)
+        public async Task<User?> DeleteOne(Guid userId)
         {
-            return _UserRepository.DeleteOne(id);
+            User? deletedUser = await _UserRepository.FindOne(userId);
+            if (deletedUser is null)
+            {
+                return null;
+            }
+            return await _UserRepository.DeleteOne(deletedUser);
         }
 
-        public bool DeleteMany(IEnumerable<Guid> ids)
-        {
-            return _UserRepository.DeleteMany(ids);
-        }
 
     }
 }

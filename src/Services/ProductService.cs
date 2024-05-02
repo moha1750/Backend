@@ -1,6 +1,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Repositories;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BackendTeamwork.Services
 {
@@ -27,7 +28,6 @@ namespace BackendTeamwork.Services
 
         public async Task<Product> CreateOne(Product newProduct)
         {
-
             return await _productRepository.CreateOne(newProduct);
         }
 
@@ -41,9 +41,14 @@ namespace BackendTeamwork.Services
             return await _productRepository.UpdateOne(updatedProduct);
         }
 
-        public void DeleteOne(Guid productId)
+        public async Task<Product?> DeleteOne(Guid productId)
         {
-            _productRepository.DeleteOne(productId);
+            Product? targetProduct = await _productRepository.FindOne(productId);
+            if (targetProduct is not null)
+            {
+                return await _productRepository.DeleteOne(targetProduct);
+            }
+            return null;
         }
     }
 }

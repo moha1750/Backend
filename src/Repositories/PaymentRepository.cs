@@ -18,8 +18,7 @@ namespace BackendTeamwork.Repositories
         }
         public async Task<Payment?> FindOne(Guid paymentId)
         {
-
-            return await _payments.FirstOrDefaultAsync(payment => payment.Id == paymentId);
+            return await _payments.AsNoTracking().FirstOrDefaultAsync(payment => payment.Id == paymentId);
         }
         public async Task<Payment> CreateOne(Payment newPayment)
         {

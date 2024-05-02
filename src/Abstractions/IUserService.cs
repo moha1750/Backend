@@ -5,12 +5,11 @@ namespace BackendTeamwork.Abstractions
     public interface IUserService
     {
         public IEnumerable<User> FindMany();
-        public User? FindOne(Guid id);
+        public Task<User?> FindOne(Guid id);
 
-        public User CreateOne(User newUser);
-        public User UpdateOne(User UpdatedUser);
-        public bool DeleteOne(Guid id);
-        public bool DeleteMany(IEnumerable<Guid> ids);
+        public Task<User> CreateOne(User newUser);
+        public Task<User?> UpdateOne(Guid userId, User UpdatedUser);
+        public Task<User?> DeleteOne(Guid userId);
 
     }
 }

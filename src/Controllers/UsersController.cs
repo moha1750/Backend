@@ -21,53 +21,45 @@ namespace BackendTeamwork.Controllers
             return _UserService.FindMany();
         }
 
-        [HttpGet(":{id}")]
+        [HttpGet(":{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public ActionResult<User> FindOne(string id)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<User>> FindOne(Guid userId)
         {
-            User? user = _UserService.FindOne(new Guid(id));
+            User? user = await _UserService.FindOne(userId);
             if (user is not null)
             {
-                return user;
-            }
-            return NoContent();
-        }
-
-        [HttpPost]
-        public ActionResult<User> CreateOne([FromBody] User newUser)
-        {
-            return _UserService.CreateOne(newUser);
-        }
-
-        [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public User UpdateOne([FromBody] User updatedUser)
-        {
-            return _UserService.UpdateOne(updatedUser);
-        }
-
-        [HttpDelete(":{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult DeleteOne(Guid id)
-        {
-            bool response = _UserService.DeleteOne(id);
-            if (response)
-            {
-                return NoContent();
+                return Ok(user);
             }
             return NotFound();
         }
 
-        [HttpDelete()]
+        [HttpPost]
+        public async Task<ActionResult<User>> CreateOne([FromBody] User newUser)
+        {
+            return await _UserService.CreateOne(newUser);
+        }
+
+        [HttpPut(":{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<User>> UpdateOne(Guid userId, [FromBody] User updatedUser)
+        {
+            User? user = await _UserService.UpdateOne(userId, updatedUser);
+            if (user is not null)
+            {
+                return Ok(user);
+            }
+            return NotFound();
+        }
+
+        [HttpDelete(":{userId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult DeleteMany([FromBody] IEnumerable<Guid> ids)
+        public async Task<ActionResult<User>> DeleteOne(Guid userId)
         {
-            bool response = _UserService.DeleteMany(ids);
-            if (response)
+            User? deletedUser = await _UserService.DeleteOne(userId);
+            if (deletedUser is not null)
             {
                 return NoContent();
             }
