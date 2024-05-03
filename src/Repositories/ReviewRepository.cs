@@ -12,7 +12,7 @@ namespace BackendTeamwork.Repositories
         private DatabaseContext _databaseContext;
         public ReviewRepository(DatabaseContext databaseContext)
         {
-            _reviews = databaseContext.Reviews;
+            _reviews = databaseContext.Review;
             _databaseContext = databaseContext;
         }
 

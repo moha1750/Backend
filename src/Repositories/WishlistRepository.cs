@@ -6,50 +6,51 @@ using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace BackendTeamwork.Repositories
 {
-    public class WishlistRepository:IWishlistRepository
+    public class WishlistRepository : IWishlistRepository
     {
-        
-        private DbSet<Wishlist> _wishlist;
+
+        private DbSet<Wishlist> _wishlists;
         private DatabaseContext _databaseContext;
 
         public WishlistRepository(DatabaseContext databaseContext)
         {
-            _wishlist = databaseContext.Wishlists;
+            _wishlists = databaseContext.Wishlist;
             _databaseContext = databaseContext;
 
         }
 
         public IEnumerable<Wishlist> FindMany()
         {
-            return _wishlist;
+            return _wishlists;
         }
 
 
         public async Task<Wishlist?> FindOne(Guid wishlistId)
         {
-            return await _wishlist.AsNoTracking().FirstOrDefaultAsync(wishlist => wishlist.Id == wishlistId);
+            return await _wishlists.AsNoTracking().FirstOrDefaultAsync(wishlist => wishlist.Id == wishlistId);
         }
 
         public async Task<Wishlist> CreateOne(Wishlist newWishlist)
         {
-            await _wishlist.AddAsync(newWishlist);
+            await _wishlists.AddAsync(newWishlist);
             await _databaseContext.SaveChangesAsync();
             return newWishlist;
         }
 
         public async Task<Wishlist> UpdateOne(Wishlist updatedWishlist)
         {
-            _wishlist.Update(updatedWishlist);
+            _wishlists.Update(updatedWishlist);
             await _databaseContext.SaveChangesAsync();
             return updatedWishlist;
         }
 
         public async Task<Wishlist> DeleteOne(Wishlist targetWishlist)
         {
-            _wishlist.Remove(targetWishlist);
+            _wishlists.Remove(targetWishlist);
             await _databaseContext.SaveChangesAsync();
             return targetWishlist;
         }

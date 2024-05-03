@@ -13,7 +13,7 @@ namespace BackendTeamwork.Repositories
         public PaymentRepository(DatabaseContext databaseContext)
         {
 
-            _payments = databaseContext.Payments;
+            _payments = databaseContext.Payment;
             _databaseContext = databaseContext;
         }
         public async Task<Payment?> FindOne(Guid paymentId)

@@ -17,7 +17,7 @@ namespace BackendTeamwork.Repositories
 
         public CategoryRepository(DatabaseContext databaseContext)
         {
-            _categories = databaseContext.Categories;
+            _categories = databaseContext.Category;
             _databaseContext = databaseContext;
 
         }

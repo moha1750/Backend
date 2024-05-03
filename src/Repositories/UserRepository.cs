@@ -12,7 +12,7 @@ namespace BackendTeamwork.Repositories
 
         public UserRepository(DatabaseContext databaseContext)
         {
-            _users = databaseContext.Users;
+            _users = databaseContext.User;
             _databaseContext = databaseContext;
         }
 
