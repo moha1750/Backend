@@ -9,11 +9,12 @@ namespace BackendTeamwork.Abstractions
     public interface ICategoryService
     {
 
-        public Category? CreateOne(Category newCategory);
+        public IEnumerable<Category> FindMany();
+        public Task<Category?> FindOne(Guid id);
+        public Task<Category> CreateOne(Category newCategory);
 
-        public Category? UpdateOne(Guid id, Category updateCategory);
+        public Task<Category?> UpdateOne(Guid categoryId, Category updateCategory);
 
-        public void DeleteOne(Guid id);
-
+        public Task<Category?> DeleteOne(Guid categoryId);
     }
 }

@@ -16,9 +16,9 @@ namespace BackendTeamwork.Services
         {
             return _orderStockRepository.FindMany(orderId);
         }
-        public OrderStock CreateOne(OrderStock newOrderStock)
+        public async Task<OrderStock> CreateOne(OrderStock newOrderStock)
         {
-            return _orderStockRepository.CreateOne(newOrderStock);
+            return await _orderStockRepository.CreateOne(newOrderStock);
         }
 
     }

@@ -19,15 +19,14 @@ namespace BackendTeamwork.Services
             return _orderRepository.FindMany(userId);
         }
 
-        public Order? FindOne(Guid id)
+        public Order? FindOne(Guid OrderId)
         {
-            return _orderRepository.FindOne(id);
+            return _orderRepository.FindOne(OrderId);
         }
 
         public Order CreateOne(Order newOrder)
         {
             return _orderRepository.CreateOne(newOrder);
         }
-
     }
 }

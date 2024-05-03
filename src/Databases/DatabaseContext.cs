@@ -32,3 +32,4 @@ namespace BackendTeamwork.Databases
        => optionsBuilder.UseNpgsql(_config["DB"]);
     }
 }
+// Host=aws-0-eu-central-1.pooler.supabase.com;Username=postgres.xjkkxefgmmzwkgxpypui;Password=L326tuCH3RwWAUPJ;Database=postgres

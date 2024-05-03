@@ -7,5 +7,6 @@ namespace BackendTeamwork.Entities
         public string Zip { get; set; }
         public string AddressLine { get; set; }
         public Guid UserId { get; set; }
+
     }
 }
