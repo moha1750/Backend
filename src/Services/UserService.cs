@@ -1,5 +1,7 @@
 using System.Text;
+using AutoMapper;
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Utils;
 
@@ -9,20 +11,22 @@ namespace BackendTeamwork.Services
     {
         private IUserRepository _UserRepository;
         private IConfiguration _config;
+        private IMapper _mapper;
 
-        public UserService(IUserRepository UserRepository, IConfiguration config)
+        public UserService(IUserRepository UserRepository, IConfiguration config, IMapper mapper)
         {
             _UserRepository = UserRepository;
             _config = config;
+            _mapper = mapper;
         }
 
-        public IEnumerable<User> FindMany()
+        public IEnumerable<UserReadDto> FindMany()
         {
-            return _UserRepository.FindMany();
+            return _UserRepository.FindMany().Select(_mapper.Map<UserReadDto>);
         }
-        public async Task<User?> FindOne(Guid id)
+        public async Task<UserReadDto?> FindOne(Guid userId)
         {
-            return await _UserRepository.FindOne(id);
+            return _mapper.Map<UserReadDto>(await _UserRepository.FindOne(userId));
         }
 
         public async Task<User> CreateOne(User newUser)

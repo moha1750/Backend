@@ -1,4 +1,5 @@
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ namespace BackendTeamwork.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IEnumerable<User> FindMany()
+        public IEnumerable<UserReadDto> FindMany()
         {
             return _UserService.FindMany();
         }
@@ -24,9 +25,9 @@ namespace BackendTeamwork.Controllers
         [HttpGet(":{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<User>> FindOne(Guid userId)
+        public async Task<ActionResult<UserReadDto>> FindOne(Guid userId)
         {
-            User? user = await _UserService.FindOne(userId);
+            UserReadDto? user = await _UserService.FindOne(userId);
             if (user is not null)
             {
                 return Ok(user);

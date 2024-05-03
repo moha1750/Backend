@@ -21,9 +21,9 @@ namespace BackendTeamwork.Repositories
         {
             return _users;
         }
-        public async Task<User?> FindOne(Guid id)
+        public async Task<User?> FindOne(Guid UserId)
         {
-            return await _users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == id);
+            return await _users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == UserId);
         }
 
         public async Task<User> CreateOne(User newUser)
