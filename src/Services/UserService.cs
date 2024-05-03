@@ -1,15 +1,19 @@
+using System.Text;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Entities;
+using BackendTeamwork.Utils;
 
 namespace BackendTeamwork.Services
 {
     public class UserService : IUserService
     {
         private IUserRepository _UserRepository;
+        private IConfiguration _config;
 
-        public UserService(IUserRepository UserRepository)
+        public UserService(IUserRepository UserRepository, IConfiguration config)
         {
             _UserRepository = UserRepository;
+            _config = config;
         }
 
         public IEnumerable<User> FindMany()
@@ -23,6 +27,9 @@ namespace BackendTeamwork.Services
 
         public async Task<User> CreateOne(User newUser)
         {
+            byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
+            PasswordUtils.HashPassword(newUser.Password, out string hashedPassword, pepper);
+            newUser.Password = hashedPassword;
             return await _UserRepository.CreateOne(newUser);
         }
 
@@ -33,6 +40,9 @@ namespace BackendTeamwork.Services
             {
                 return null;
             }
+            byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
+            PasswordUtils.HashPassword(updatedUser.Password, out string hashedPassword, pepper);
+            updatedUser.Password = hashedPassword;
             return await _UserRepository.UpdateOne(updatedUser);
         }
 
