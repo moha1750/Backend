@@ -17,7 +17,7 @@ namespace BackendTeamwork.Repositories
 
         public StockRepository(DatabaseContext databaseContext)
         {
-            _stocks = databaseContext.Stocks;
+            _stocks = databaseContext.Stock;
             _databaseContext = databaseContext;
 
         }

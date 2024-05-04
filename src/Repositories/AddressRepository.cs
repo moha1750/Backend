@@ -13,7 +13,7 @@ namespace BackendTeamwork.Repositories
 
         public AddressRepository(DatabaseContext databaseContext)
         {
-            _addresses = databaseContext.Addresses;
+            _addresses = databaseContext.Address;
             _databaseContext = databaseContext;
 
         }

@@ -4,25 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BackendTeamwork.Entities
 {
-    public class Stock
+    public class StockCreateDto
     {
-        [Key]
-        public Guid Id { get; set; }
-
-        [Required]
         public int Quantity { get; set; }
-
-        [Required, StringLength(30)]
         public string Size { get; set; }
-
-        [Required, StringLength(30)]
         public string Color { get; set; }
-
-        [Required, ForeignKey("Product")]
         public Guid ProductId { get; set; }
-
-        public IEnumerable<OrderStock> OrderStocks { get; set; }
-        public Product Product { get; set; }
 
     }
 }

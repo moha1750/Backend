@@ -13,7 +13,7 @@ namespace BackendTeamwork.Repositories
 
         public OrderRepository(DatabaseContext databaseContext)
         {
-            _orders = databaseContext.Orders;
+            _orders = databaseContext.Order;
             _databaseContext = databaseContext;
 
         }

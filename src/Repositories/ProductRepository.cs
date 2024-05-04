@@ -15,7 +15,7 @@ namespace BackendTeamwork.Repositories
 
         public ProductRepository(DatabaseContext databaseContext)
         {
-            _products = databaseContext.Products;
+            _products = databaseContext.Product;
             _databaseContext = databaseContext;
 
         }

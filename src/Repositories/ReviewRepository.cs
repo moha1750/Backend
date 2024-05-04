@@ -10,12 +10,10 @@ namespace BackendTeamwork.Repositories
     {
         private DbSet<Review> _reviews;
         private DatabaseContext _databaseContext;
-
         public ReviewRepository(DatabaseContext databaseContext)
         {
-            _reviews = databaseContext.Reviews;
+            _reviews = databaseContext.Review;
             _databaseContext = databaseContext;
-
         }
 
         public IEnumerable<Review> FindMany()
@@ -31,6 +29,7 @@ namespace BackendTeamwork.Repositories
             await _reviews.AddAsync(newReview);
             await _databaseContext.SaveChangesAsync();
             return newReview;
+
         }
         public async Task<Review> UpdateOne(Review updatedReview)
         {

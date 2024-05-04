@@ -4,20 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BackendTeamwork.Entities
 {
-    public class Category
+    public class CategoryCreateDto
     {
-        [Key]
-        public Guid Id { get; set; }
-
-        [Required, StringLength(30)]
         public string Name { get; set; }
-
-        [Required]
         public string Description { get; set; }
-
-
-        public IEnumerable<Product> Products { get; set; }
-
 
     }
 
