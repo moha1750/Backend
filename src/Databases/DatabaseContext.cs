@@ -26,6 +26,15 @@ namespace BackendTeamwork.Databases
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
        => optionsBuilder.UseNpgsql(_config["DB"]).UseSnakeCaseNamingConvention();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasPostgresExtension("pgcrypto");
+
+            modelBuilder.Entity<User>()
+                        .Property(u => u.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+        }
     }
 }
 // Host=aws-0-eu-central-1.pooler.supabase.com;Username=postgres.xjkkxefgmmzwkgxpypui;Password=L326tuCH3RwWAUPJ;Database=postgres

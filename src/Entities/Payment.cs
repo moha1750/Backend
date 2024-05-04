@@ -1,4 +1,5 @@
-using System.ComponentModel.DataAnnotations;
+#pragma warning disable CS8618
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BackendTeamwork.Entities
 {
@@ -6,12 +7,16 @@ namespace BackendTeamwork.Entities
     {
 
         public Guid Id { get; set; }
-        [Required]
         public int Amount { get; set; }
         public string? Method { get; set; }
         public DateTime Date { get; set; }
+
+        [ForeignKey("User")]
         public Guid UserId { get; set; }
-        public IEnumerable<Order> Orders { get; set; }
+
+
+        public User User { get; set; }
+        public Order Order { get; set; }
 
     }
 }

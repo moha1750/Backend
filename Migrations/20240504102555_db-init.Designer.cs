@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240503154901_db-init")]
+    [Migration("20240504102555_db-init")]
     partial class dbinit
     {
         /// <inheritdoc />
@@ -23,6 +23,7 @@ namespace Backend.Migrations
                 .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "pgcrypto");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("BackendTeamwork.Entities.Address", b =>
@@ -53,6 +54,10 @@ namespace Backend.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_address");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_address_user_id");
 
                     b.ToTable("address", (string)null);
                 });
@@ -96,7 +101,6 @@ namespace Backend.Migrations
                         .HasColumnName("payment_id");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("status");
 
@@ -108,6 +112,7 @@ namespace Backend.Migrations
                         .HasName("pk_order");
 
                     b.HasIndex("PaymentId")
+                        .IsUnique()
                         .HasDatabaseName("ix_order_payment_id");
 
                     b.HasIndex("UserId")
@@ -199,7 +204,6 @@ namespace Backend.Migrations
                         .HasColumnName("image");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
@@ -290,17 +294,11 @@ namespace Backend.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("address_id");
-
-                    b.Property<Guid>("AddressId1")
-                        .HasColumnType("uuid")
-                        .HasColumnName("address_id1");
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("email");
 
@@ -310,10 +308,12 @@ namespace Backend.Migrations
                         .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("last_name");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("password");
 
@@ -322,18 +322,12 @@ namespace Backend.Migrations
                         .HasColumnName("phone");
 
                     b.Property<string>("Role")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("role");
 
-                    b.Property<Guid>("Wishlist")
-                        .HasColumnType("uuid")
-                        .HasColumnName("wishlist");
-
                     b.HasKey("Id")
                         .HasName("pk_user");
-
-                    b.HasIndex("AddressId1")
-                        .HasDatabaseName("ix_user_address_id1");
 
                     b.ToTable("user", (string)null);
                 });
@@ -350,32 +344,69 @@ namespace Backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<string>("userid")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("userid");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id")
                         .HasName("pk_wishlist");
 
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_wishlist_user_id");
+
                     b.ToTable("wishlist", (string)null);
+                });
+
+            modelBuilder.Entity("ProductWishlist", b =>
+                {
+                    b.Property<Guid>("ProductsId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("products_id");
+
+                    b.Property<Guid>("WishlistsId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("wishlists_id");
+
+                    b.HasKey("ProductsId", "WishlistsId")
+                        .HasName("pk_product_wishlist");
+
+                    b.HasIndex("WishlistsId")
+                        .HasDatabaseName("ix_product_wishlist_wishlists_id");
+
+                    b.ToTable("product_wishlist", (string)null);
+                });
+
+            modelBuilder.Entity("BackendTeamwork.Entities.Address", b =>
+                {
+                    b.HasOne("BackendTeamwork.Entities.User", "User")
+                        .WithOne("Address")
+                        .HasForeignKey("BackendTeamwork.Entities.Address", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_address_user_user_id");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.Order", b =>
                 {
-                    b.HasOne("BackendTeamwork.Entities.Payment", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("PaymentId")
+                    b.HasOne("BackendTeamwork.Entities.Payment", "Payment")
+                        .WithOne("Order")
+                        .HasForeignKey("BackendTeamwork.Entities.Order", "PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_order_payment_payment_id");
 
-                    b.HasOne("BackendTeamwork.Entities.User", null)
+                    b.HasOne("BackendTeamwork.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_order_user_user_id");
+
+                    b.Navigation("Payment");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.OrderStock", b =>
@@ -387,7 +418,7 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_order_stock_order_order_id");
 
-                    b.HasOne("BackendTeamwork.Entities.Stock", null)
+                    b.HasOne("BackendTeamwork.Entities.Stock", "Stock")
                         .WithMany("OrderStocks")
                         .HasForeignKey("StockId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -395,65 +426,94 @@ namespace Backend.Migrations
                         .HasConstraintName("fk_order_stock_stock_stock_id");
 
                     b.Navigation("Order");
+
+                    b.Navigation("Stock");
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.Payment", b =>
                 {
-                    b.HasOne("BackendTeamwork.Entities.User", null)
+                    b.HasOne("BackendTeamwork.Entities.User", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_payment_user_user_id");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.Product", b =>
                 {
-                    b.HasOne("BackendTeamwork.Entities.Category", null)
+                    b.HasOne("BackendTeamwork.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_product_category_category_id");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.Review", b =>
                 {
-                    b.HasOne("BackendTeamwork.Entities.Product", null)
+                    b.HasOne("BackendTeamwork.Entities.Product", "Product")
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_review_product_product_id");
 
-                    b.HasOne("BackendTeamwork.Entities.User", null)
+                    b.HasOne("BackendTeamwork.Entities.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_review_user_user_id");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.Stock", b =>
                 {
-                    b.HasOne("BackendTeamwork.Entities.Product", null)
+                    b.HasOne("BackendTeamwork.Entities.Product", "Product")
                         .WithMany("Stocks")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_stock_product_product_id");
+
+                    b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("BackendTeamwork.Entities.User", b =>
+            modelBuilder.Entity("BackendTeamwork.Entities.Wishlist", b =>
                 {
-                    b.HasOne("BackendTeamwork.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId1")
+                    b.HasOne("BackendTeamwork.Entities.User", "User")
+                        .WithMany("Wishlists")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_user_address_address_id1");
+                        .HasConstraintName("fk_wishlist_user_user_id");
 
-                    b.Navigation("Address");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ProductWishlist", b =>
+                {
+                    b.HasOne("BackendTeamwork.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_product_wishlist_product_products_id");
+
+                    b.HasOne("BackendTeamwork.Entities.Wishlist", null)
+                        .WithMany()
+                        .HasForeignKey("WishlistsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_product_wishlist_wishlist_wishlists_id");
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.Category", b =>
@@ -468,7 +528,8 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("BackendTeamwork.Entities.Payment", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Order")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.Product", b =>
@@ -485,11 +546,16 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("BackendTeamwork.Entities.User", b =>
                 {
+                    b.Navigation("Address")
+                        .IsRequired();
+
                     b.Navigation("Orders");
 
                     b.Navigation("Payments");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("Wishlists");
                 });
 #pragma warning restore 612, 618
         }

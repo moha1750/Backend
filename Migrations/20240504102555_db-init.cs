@@ -11,20 +11,8 @@ namespace Backend.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "address",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    city = table.Column<string>(type: "text", nullable: false),
-                    zip = table.Column<string>(type: "text", nullable: false),
-                    address_line = table.Column<string>(type: "text", nullable: false),
-                    user_id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_address", x => x.id);
-                });
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:pgcrypto", ",,");
 
             migrationBuilder.CreateTable(
                 name: "category",
@@ -40,42 +28,20 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "wishlist",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    userid = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_wishlist", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "user",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     first_name = table.Column<string>(type: "text", nullable: false),
-                    last_name = table.Column<string>(type: "text", nullable: true),
-                    email = table.Column<string>(type: "text", nullable: true),
-                    password = table.Column<string>(type: "text", nullable: true),
+                    last_name = table.Column<string>(type: "text", nullable: false),
+                    email = table.Column<string>(type: "text", nullable: false),
+                    password = table.Column<string>(type: "text", nullable: false),
                     phone = table.Column<string>(type: "text", nullable: true),
-                    role = table.Column<string>(type: "text", nullable: true),
-                    address_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    address_id1 = table.Column<Guid>(type: "uuid", nullable: false),
-                    wishlist = table.Column<Guid>(type: "uuid", nullable: false)
+                    role = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_user", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_user_address_address_id1",
-                        column: x => x.address_id1,
-                        principalTable: "address",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,7 +49,7 @@ namespace Backend.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: true),
                     price = table.Column<int>(type: "integer", nullable: false),
                     image = table.Column<string>(type: "text", nullable: true),
                     description = table.Column<string>(type: "text", nullable: true),
@@ -96,6 +62,27 @@ namespace Backend.Migrations
                         name: "fk_product_category_category_id",
                         column: x => x.category_id,
                         principalTable: "category",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "address",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    city = table.Column<string>(type: "text", nullable: false),
+                    zip = table.Column<string>(type: "text", nullable: false),
+                    address_line = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_address", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_address_user_user_id",
+                        column: x => x.user_id,
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -115,6 +102,25 @@ namespace Backend.Migrations
                     table.PrimaryKey("pk_payment", x => x.id);
                     table.ForeignKey(
                         name: "fk_payment_user_user_id",
+                        column: x => x.user_id,
+                        principalTable: "user",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "wishlist",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_wishlist", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_wishlist_user_user_id",
                         column: x => x.user_id,
                         principalTable: "user",
                         principalColumn: "id",
@@ -174,7 +180,7 @@ namespace Backend.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    status = table.Column<string>(type: "text", nullable: false),
+                    status = table.Column<string>(type: "text", nullable: true),
                     date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     payment_id = table.Column<Guid>(type: "uuid", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false)
@@ -197,12 +203,36 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "product_wishlist",
+                columns: table => new
+                {
+                    products_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    wishlists_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_product_wishlist", x => new { x.products_id, x.wishlists_id });
+                    table.ForeignKey(
+                        name: "fk_product_wishlist_product_products_id",
+                        column: x => x.products_id,
+                        principalTable: "product",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_product_wishlist_wishlist_wishlists_id",
+                        column: x => x.wishlists_id,
+                        principalTable: "wishlist",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "order_stock",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    order_id = table.Column<Guid>(type: "uuid", nullable: false),
                     quantity = table.Column<int>(type: "integer", nullable: false),
+                    order_id = table.Column<Guid>(type: "uuid", nullable: false),
                     stock_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -223,9 +253,16 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "ix_address_user_id",
+                table: "address",
+                column: "user_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_order_payment_id",
                 table: "order",
-                column: "payment_id");
+                column: "payment_id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_order_user_id",
@@ -253,6 +290,11 @@ namespace Backend.Migrations
                 column: "category_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_product_wishlist_wishlists_id",
+                table: "product_wishlist",
+                column: "wishlists_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_review_product_id",
                 table: "review",
                 column: "product_id");
@@ -268,28 +310,34 @@ namespace Backend.Migrations
                 column: "product_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_user_address_id1",
-                table: "user",
-                column: "address_id1");
+                name: "ix_wishlist_user_id",
+                table: "wishlist",
+                column: "user_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "address");
+
+            migrationBuilder.DropTable(
                 name: "order_stock");
 
             migrationBuilder.DropTable(
-                name: "review");
+                name: "product_wishlist");
 
             migrationBuilder.DropTable(
-                name: "wishlist");
+                name: "review");
 
             migrationBuilder.DropTable(
                 name: "order");
 
             migrationBuilder.DropTable(
                 name: "stock");
+
+            migrationBuilder.DropTable(
+                name: "wishlist");
 
             migrationBuilder.DropTable(
                 name: "payment");
@@ -302,9 +350,6 @@ namespace Backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "category");
-
-            migrationBuilder.DropTable(
-                name: "address");
         }
     }
 }
