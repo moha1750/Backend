@@ -18,8 +18,8 @@ namespace Backend.Migrations
                 name: "category",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     description = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -32,12 +32,12 @@ namespace Backend.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    first_name = table.Column<string>(type: "text", nullable: false),
-                    last_name = table.Column<string>(type: "text", nullable: false),
-                    email = table.Column<string>(type: "text", nullable: false),
-                    password = table.Column<string>(type: "text", nullable: false),
-                    phone = table.Column<string>(type: "text", nullable: true),
-                    role = table.Column<string>(type: "text", nullable: false)
+                    first_name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    last_name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    password = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    phone = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
+                    role = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,11 +48,11 @@ namespace Backend.Migrations
                 name: "product",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: true),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     price = table.Column<int>(type: "integer", nullable: false),
-                    image = table.Column<string>(type: "text", nullable: true),
-                    description = table.Column<string>(type: "text", nullable: true),
+                    image = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     category_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -70,10 +70,10 @@ namespace Backend.Migrations
                 name: "address",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    city = table.Column<string>(type: "text", nullable: false),
-                    zip = table.Column<string>(type: "text", nullable: false),
-                    address_line = table.Column<string>(type: "text", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    city = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    zip = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    address_line = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -91,10 +91,10 @@ namespace Backend.Migrations
                 name: "payment",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     amount = table.Column<int>(type: "integer", nullable: false),
-                    method = table.Column<string>(type: "text", nullable: true),
-                    date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    method = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE"),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -112,8 +112,8 @@ namespace Backend.Migrations
                 name: "wishlist",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -131,9 +131,9 @@ namespace Backend.Migrations
                 name: "review",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     rating = table.Column<int>(type: "integer", nullable: false),
-                    comment = table.Column<string>(type: "text", nullable: true),
+                    comment = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
                     product_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -158,10 +158,10 @@ namespace Backend.Migrations
                 name: "stock",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     quantity = table.Column<int>(type: "integer", nullable: false),
-                    size = table.Column<string>(type: "text", nullable: false),
-                    color = table.Column<string>(type: "text", nullable: false),
+                    size = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    color = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     product_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -179,9 +179,9 @@ namespace Backend.Migrations
                 name: "order",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    status = table.Column<string>(type: "text", nullable: true),
-                    date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    status = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE"),
                     payment_id = table.Column<Guid>(type: "uuid", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -230,7 +230,7 @@ namespace Backend.Migrations
                 name: "order_stock",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     quantity = table.Column<int>(type: "integer", nullable: false),
                     order_id = table.Column<Guid>(type: "uuid", nullable: false),
                     stock_id = table.Column<Guid>(type: "uuid", nullable: false)
@@ -290,6 +290,12 @@ namespace Backend.Migrations
                 column: "category_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_product_name",
+                table: "product",
+                column: "name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_product_wishlist_wishlists_id",
                 table: "product_wishlist",
                 column: "wishlists_id");
@@ -308,6 +314,12 @@ namespace Backend.Migrations
                 name: "ix_stock_product_id",
                 table: "stock",
                 column: "product_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_email",
+                table: "user",
+                column: "email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_wishlist_user_id",

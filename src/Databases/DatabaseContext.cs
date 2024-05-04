@@ -31,10 +31,69 @@ namespace BackendTeamwork.Databases
         {
             modelBuilder.HasPostgresExtension("pgcrypto");
 
+            modelBuilder.Entity<OrderStock>()
+                        .Property(orderStock => orderStock.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+
             modelBuilder.Entity<User>()
-                        .Property(u => u.Id)
+                        .Property(user => user.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+            modelBuilder.Entity<Address>()
+                        .Property(address => address.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+            modelBuilder.Entity<Category>()
+                        .Property(category => category.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+            modelBuilder.Entity<Order>()
+                        .Property(order => order.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+            modelBuilder.Entity<Order>()
+                        .Property(order => order.Date)
+                        .HasDefaultValueSql("CURRENT_DATE");
+
+            // modelBuilder.Entity<Order>()
+            //             .Property(order => order.Status)
+            //             .HasDefaultValueSql("Pending");
+
+            modelBuilder.Entity<Payment>()
+                        .Property(payment => payment.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+            modelBuilder.Entity<Payment>()
+                        .Property(payment => payment.Date)
+                        .HasDefaultValueSql("CURRENT_DATE");
+
+            modelBuilder.Entity<Product>()
+                        .Property(product => product.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+            modelBuilder.Entity<Product>()
+                        .HasIndex(product => product.Name)
+                        .IsUnique();
+
+            modelBuilder.Entity<Review>()
+                        .Property(review => review.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+            modelBuilder.Entity<Stock>()
+                        .Property(stock => stock.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+            modelBuilder.Entity<User>()
+                        .Property(user => user.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+            modelBuilder.Entity<User>()
+                        .HasIndex(user => user.Email)
+                        .IsUnique();
+
+            modelBuilder.Entity<Wishlist>()
+                        .Property(wishlist => wishlist.Id)
                         .HasDefaultValueSql("gen_random_uuid()");
         }
     }
 }
-// Host=aws-0-eu-central-1.pooler.supabase.com;Username=postgres.xjkkxefgmmzwkgxpypui;Password=L326tuCH3RwWAUPJ;Database=postgres

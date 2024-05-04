@@ -1,22 +1,30 @@
 #pragma warning disable CS8618
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Entities
 {
+    [Index(nameof(Name), IsUnique = true)]
     public class Product
     {
+        [Key]
         public Guid Id { get; set; }
 
-        public string? Name { get; set; }
+        [Required, StringLength(100)]
+        public string Name { get; set; }
 
+        [Required]
         public int Price { get; set; }
 
-        public string? Image { get; set; }
+        [Required, StringLength(200)]
+        public string Image { get; set; }
 
-        public string? Description { get; set; }
+        [Required, StringLength(500)]
+        public string Description { get; set; }
 
-        [ForeignKey("Category")]
+        [Required, ForeignKey("Category")]
         public Guid CategoryId { get; set; }
 
         public Category Category { get; set; }

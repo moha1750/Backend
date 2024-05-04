@@ -1,19 +1,32 @@
 #pragma warning disable CS8618
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Entities
 {
+    [Index(nameof(Email), IsUnique = true)]
     public class User
     {
+        [Key]
         public Guid Id { get; set; }
 
+        [Required, StringLength(30)]
         public string FirstName { get; set; }
+
+        [Required, StringLength(30)]
         public string LastName { get; set; }
-        [EmailAddress]
+
+        [EmailAddress, StringLength(100)]
         public string Email { get; set; }
+
+        [Required, StringLength(100)]
         public string Password { get; set; }
+
+        [StringLength(15)]
         public string? Phone { get; set; }
+
+        [Required, StringLength(30)]
         public string Role { get; set; }
 
         // [ForeignKey("Address")]

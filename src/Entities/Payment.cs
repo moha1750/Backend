@@ -1,4 +1,5 @@
 #pragma warning disable CS8618
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BackendTeamwork.Entities
@@ -6,12 +7,19 @@ namespace BackendTeamwork.Entities
     public class Payment
     {
 
+        [Key]
         public Guid Id { get; set; }
+
+        [Required]
         public int Amount { get; set; }
-        public string? Method { get; set; }
+
+        [Required, StringLength(30)]
+        public string Method { get; set; }
+
+        [Required]
         public DateTime Date { get; set; }
 
-        [ForeignKey("User")]
+        [Required, ForeignKey("User")]
         public Guid UserId { get; set; }
 
 
