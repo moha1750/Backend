@@ -29,35 +29,36 @@ namespace BackendTeamwork.Services
             return _mapper.Map<UserReadDto>(await _UserRepository.FindOne(userId));
         }
 
-        public async Task<User> CreateOne(User newUser)
+        public async Task<UserReadDto> CreateOne(UserCreateDto newUser)
         {
             byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
             PasswordUtils.HashPassword(newUser.Password, out string hashedPassword, pepper);
             newUser.Password = hashedPassword;
-            return await _UserRepository.CreateOne(newUser);
+            return _mapper.Map<UserReadDto>(await _UserRepository.CreateOne(_mapper.Map<User>(newUser)));
         }
 
-        public async Task<User?> UpdateOne(Guid userId, User updatedUser)
+        public async Task<UserReadDto?> UpdateOne(Guid userId, UserUpdateDto updatedUser)
         {
             User? targetUser = await _UserRepository.FindOne(userId);
             if (targetUser is null)
             {
                 return null;
             }
-            byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
-            PasswordUtils.HashPassword(updatedUser.Password, out string hashedPassword, pepper);
-            updatedUser.Password = hashedPassword;
-            return await _UserRepository.UpdateOne(updatedUser);
+            targetUser.FirstName = updatedUser.FirstName;
+            targetUser.LastName = updatedUser.LastName;
+            targetUser.Phone = updatedUser.Phone;
+            targetUser.Role = updatedUser.Role;
+            return _mapper.Map<UserReadDto>(await _UserRepository.UpdateOne(targetUser));
         }
 
-        public async Task<User?> DeleteOne(Guid userId)
+        public async Task<UserReadDto?> DeleteOne(Guid userId)
         {
             User? deletedUser = await _UserRepository.FindOne(userId);
             if (deletedUser is null)
             {
                 return null;
             }
-            return await _UserRepository.DeleteOne(deletedUser);
+            return _mapper.Map<UserReadDto>(await _UserRepository.DeleteOne(deletedUser));
         }
 
 

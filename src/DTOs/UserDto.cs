@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace BackendTeamwork.Entities
+namespace BackendTeamwork.DTOs
 {
     public class UserCreateDto
     {
@@ -13,7 +13,23 @@ namespace BackendTeamwork.Entities
         public string Password { get; set; }
         public string? Phone { get; set; }
         public string Role { get; set; }
-        public Guid? AddressId { get; set; }
-        public Guid? WishlistId { get; set; }
+    }
+
+    public class UserReadDto
+    {
+        public Guid Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Role { get; set; }
+    }
+
+    public class UserUpdateDto
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string? Phone { get; set; }
+        public string Role { get; set; }
     }
 }

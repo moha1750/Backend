@@ -36,7 +36,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateOne([FromBody] User newUser)
+        public async Task<ActionResult<UserReadDto>> CreateOne([FromBody] UserCreateDto newUser)
         {
             return await _UserService.CreateOne(newUser);
         }
@@ -44,9 +44,9 @@ namespace BackendTeamwork.Controllers
         [HttpPut(":{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<User>> UpdateOne(Guid userId, [FromBody] User updatedUser)
+        public async Task<ActionResult<UserReadDto>> UpdateOne(Guid userId, [FromBody] UserUpdateDto updatedUser)
         {
-            User? user = await _UserService.UpdateOne(userId, updatedUser);
+            UserReadDto? user = await _UserService.UpdateOne(userId, updatedUser);
             if (user is not null)
             {
                 return Ok(user);
@@ -57,9 +57,9 @@ namespace BackendTeamwork.Controllers
         [HttpDelete(":{userId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<User>> DeleteOne(Guid userId)
+        public async Task<ActionResult<UserReadDto>> DeleteOne(Guid userId)
         {
-            User? deletedUser = await _UserService.DeleteOne(userId);
+            UserReadDto? deletedUser = await _UserService.DeleteOne(userId);
             if (deletedUser is not null)
             {
                 return NoContent();

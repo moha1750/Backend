@@ -8,9 +8,9 @@ namespace BackendTeamwork.Abstractions
         public IEnumerable<UserReadDto> FindMany();
         public Task<UserReadDto?> FindOne(Guid userId);
 
-        public Task<User> CreateOne(User newUser);
-        public Task<User?> UpdateOne(Guid userId, User UpdatedUser);
-        public Task<User?> DeleteOne(Guid userId);
+        public Task<UserReadDto> CreateOne(UserCreateDto newUser);
+        public Task<UserReadDto?> UpdateOne(Guid userId, UserUpdateDto UpdatedUser);
+        public Task<UserReadDto?> DeleteOne(Guid userId);
 
     }
 }

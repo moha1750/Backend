@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
@@ -32,6 +28,18 @@ namespace BackendTeamwork.Repositories
         public async Task<Wishlist?> FindOne(Guid wishlistId)
         {
             return await _wishlists.AsNoTracking().FirstOrDefaultAsync(wishlist => wishlist.Id == wishlistId);
+        }
+
+        public async Task<Wishlist> AddOneProduct(Wishlist wishlist, Product product)
+        {
+            if (wishlist.Products == null)
+            {
+                wishlist.Products = new List<Product>();
+            }
+            ((List<Product>)wishlist.Products).Add(product);
+            _databaseContext.Update(wishlist);
+            await _databaseContext.SaveChangesAsync();
+            return wishlist;
         }
 
         public async Task<Wishlist> CreateOne(Wishlist newWishlist)

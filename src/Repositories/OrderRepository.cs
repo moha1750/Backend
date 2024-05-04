@@ -8,7 +8,7 @@ namespace BackendTeamwork.Repositories
     public class OrderRepository : IOrderRepository
     {
 
-        private IEnumerable<Order> _orders;
+        private DbSet<Order> _orders;
         private DatabaseContext _databaseContext;
 
         public OrderRepository(DatabaseContext databaseContext)
@@ -23,14 +23,15 @@ namespace BackendTeamwork.Repositories
             return _orders.Where(order => order.UserId == userId);
         }
 
-        public Order? FindOne(Guid id)
+        public async Task<Order?> FindOne(Guid id)
         {
-            return _orders.FirstOrDefault(order => order.Id == id);
+            return await _orders.AsNoTracking().FirstOrDefaultAsync(order => order.Id == id);
         }
 
-        public Order CreateOne(Order newOrder)
+        public async Task<Order> CreateOne(Order newOrder)
         {
-            _orders = _orders.Append(newOrder);
+            await _orders.AddAsync(newOrder);
+            await _databaseContext.SaveChangesAsync();
             return newOrder;
         }
     }

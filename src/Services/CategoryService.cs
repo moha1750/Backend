@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 
 namespace BackendTeamwork.Services
@@ -10,43 +8,47 @@ namespace BackendTeamwork.Services
     public class CategoryService : ICategoryService
     {
         private ICategoryRepository _categoryRepository;
+        private IMapper _mapper;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
-        public IEnumerable<Category> FindMany()
+        public IEnumerable<CategoryReadDto> FindMany()
         {
-            return _categoryRepository.FindMany();
+            return _categoryRepository.FindMany().Select(_mapper.Map<CategoryReadDto>);
         }
-        public async Task<Category?> FindOne(Guid categoryId)
+        public async Task<CategoryReadDto?> FindOne(Guid categoryId)
         {
-            return await _categoryRepository.FindOne(categoryId);
+            return _mapper.Map<CategoryReadDto>(await _categoryRepository.FindOne(categoryId));
         }
-        public async Task<Category> CreateOne(Category newCategory)
+        public async Task<CategoryReadDto> CreateOne(CategoryCreateDto newCategory)
         {
-            return await _categoryRepository.CreateOne(newCategory);
+            return _mapper.Map<CategoryReadDto>(await _categoryRepository.CreateOne(_mapper.Map<Category>(newCategory)));
         }
 
 
-        public async Task<Category?> UpdateOne(Guid categoryId, Category updateCategory)
+        public async Task<CategoryReadDto?> UpdateOne(Guid categoryId, CategoryUpdateDto updateCategory)
         {
             Category? targetCategory = await _categoryRepository.FindOne(categoryId);
 
-            if (targetCategory is not null)
+            if (targetCategory is null)
             {
-                return await _categoryRepository.UpdateOne(updateCategory);
+                return null;
             }
-            return null;
+            Category category = _mapper.Map<Category>(updateCategory);
+            category.Id = categoryId;
+            return _mapper.Map<CategoryReadDto>(await _categoryRepository.UpdateOne(category));
         }
 
-        public async Task<Category?> DeleteOne(Guid categoryId)
+        public async Task<CategoryReadDto?> DeleteOne(Guid categoryId)
         {
             Category? targetCategory = await _categoryRepository.FindOne(categoryId);
             if (targetCategory is not null)
             {
-                return await _categoryRepository.DeleteOne(targetCategory);
+                return _mapper.Map<CategoryReadDto>(await _categoryRepository.DeleteOne(targetCategory));
             }
             return null;
         }

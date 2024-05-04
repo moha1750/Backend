@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +16,7 @@ namespace BackendTeamwork.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Category>> FindMany()
+        public ActionResult<IEnumerable<CategoryReadDto>> FindMany()
         {
             return Ok(_categoryService.FindMany());
         }
@@ -27,9 +24,9 @@ namespace BackendTeamwork.Controllers
         [HttpGet(":{categoryId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Category>> FindOne(Guid categoryId)
+        public async Task<ActionResult<CategoryReadDto>> FindOne(Guid categoryId)
         {
-            Category? category = await _categoryService.FindOne(categoryId);
+            CategoryReadDto? category = await _categoryService.FindOne(categoryId);
             if (category is not null)
             {
                 return Ok(category);
@@ -39,7 +36,7 @@ namespace BackendTeamwork.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Category>> CreateOne(Category newCategory)
+        public async Task<ActionResult<CategoryReadDto>> CreateOne(CategoryCreateDto newCategory)
         {
             return Ok(await _categoryService.CreateOne(newCategory));
         }
@@ -47,9 +44,9 @@ namespace BackendTeamwork.Controllers
         [HttpPut(":{categoryId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Category?>> UpdateOne(Guid categoryId, Category updateCategory)
+        public async Task<ActionResult<CategoryReadDto?>> UpdateOne(Guid categoryId, CategoryUpdateDto updateCategory)
         {
-            Category? targetCategory = await _categoryService.UpdateOne(categoryId, updateCategory);
+            CategoryReadDto? targetCategory = await _categoryService.UpdateOne(categoryId, updateCategory);
             if (targetCategory is not null)
             {
                 return Ok(targetCategory);
@@ -60,9 +57,9 @@ namespace BackendTeamwork.Controllers
         [HttpDelete(":{categoryId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Category>> DeleteOne(Guid categoryId)
+        public async Task<ActionResult<CategoryReadDto>> DeleteOne(Guid categoryId)
         {
-            Category? deletedCategory = await _categoryService.DeleteOne(categoryId);
+            CategoryReadDto? deletedCategory = await _categoryService.DeleteOne(categoryId);
             if (deletedCategory is not null)
             {
                 return Ok(deletedCategory);

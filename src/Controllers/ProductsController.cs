@@ -1,4 +1,5 @@
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ namespace BackendTeamwork.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Product>> FindMany()
+        public ActionResult<IEnumerable<ProductReadDto>> FindMany()
         {
             return Ok(_productService.FindMany());
         }
@@ -24,9 +25,9 @@ namespace BackendTeamwork.Controllers
         [HttpGet(":productId")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Product>> FindOne(Guid productId)
+        public async Task<ActionResult<ProductReadDto>> FindOne(Guid productId)
         {
-            Product? targetProduct = await _productService.FindOne(productId);
+            ProductReadDto? targetProduct = await _productService.FindOne(productId);
             if (targetProduct is not null)
             {
                 return Ok(targetProduct);
@@ -35,24 +36,19 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Product> CreateOne([FromBody] Product newProduct)
+        public async Task<ActionResult<ProductReadDto>> CreateOne([FromBody] ProductCreateDto newProduct)
         {
-            if (newProduct is not null)
-            {
-                _productService.CreateOne(newProduct);
-                return CreatedAtAction(nameof(CreateOne), newProduct);
-            }
-            return BadRequest();
+            return Ok(await _productService.CreateOne(newProduct));
         }
 
         [HttpPut(":productId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Product?>> UpdateOne([FromQuery] Guid productId, [FromBody] Product updatedProduct)
+        public async Task<ActionResult<ProductReadDto?>> UpdateOne([FromQuery] Guid productId, [FromBody] ProductUpdateDto updatedProduct)
         {
-            Product? targetProduct = await _productService.UpdateOne(productId, updatedProduct);
+            ProductReadDto? targetProduct = await _productService.UpdateOne(productId, updatedProduct);
             if (targetProduct is not null)
             {
                 return Ok(updatedProduct);
@@ -64,9 +60,9 @@ namespace BackendTeamwork.Controllers
         [HttpDelete(":productId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Product>> DeleteOne(Guid productId)
+        public async Task<ActionResult<ProductReadDto>> DeleteOne(Guid productId)
         {
-            Product? deletedProduct = await _productService.DeleteOne(productId);
+            ProductReadDto? deletedProduct = await _productService.DeleteOne(productId);
             if (deletedProduct is not null)
             {
                 return Ok(deletedProduct);

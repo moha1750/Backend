@@ -1,4 +1,6 @@
+using AutoMapper;
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Repositories;
 
@@ -8,25 +10,27 @@ namespace BackendTeamwork.Services
     {
 
         private IOrderRepository _orderRepository;
+        private IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRepository)
+        public OrderService(IOrderRepository orderRepository, IMapper mapper)
         {
             _orderRepository = orderRepository;
+            _mapper = mapper;
         }
 
-        public IEnumerable<Order> FindMany(Guid userId)
+        public IEnumerable<OrderReadDto> FindMany(Guid userId)
         {
-            return _orderRepository.FindMany(userId);
+            return _orderRepository.FindMany(userId).Select(_mapper.Map<OrderReadDto>);
         }
 
-        public Order? FindOne(Guid OrderId)
+        public async Task<OrderReadDto?> FindOne(Guid orderId)
         {
-            return _orderRepository.FindOne(OrderId);
+            return _mapper.Map<OrderReadDto>(await _orderRepository.FindOne(orderId));
         }
 
-        public Order CreateOne(Order newOrder)
+        public async Task<OrderReadDto> CreateOne(OrderCreateDto newOrder)
         {
-            return _orderRepository.CreateOne(newOrder);
+            return _mapper.Map<OrderReadDto>(await _orderRepository.CreateOne(_mapper.Map<Order>(newOrder)));
         }
     }
 }

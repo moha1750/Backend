@@ -1,4 +1,5 @@
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,22 +15,25 @@ namespace BackendTeamwork.Controllers
             _orderService = orderService;
         }
 
-        [HttpGet]
-        public IEnumerable<Order> FindMany([FromQuery] Guid userId)
+        [HttpGet("user/:{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<OrderReadDto>> FindMany([FromQuery] Guid userId)
         {
-            return _orderService.FindMany(userId);
+            return Ok(_orderService.FindMany(userId));
         }
 
-        [HttpGet(":{id}")]
-        public Order? FindOne(Guid id)
+        [HttpGet(":{orderId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<OrderReadDto?>> FindOne(Guid orderId)
         {
-            return _orderService.FindOne(id);
+            return Ok(await _orderService.FindOne(orderId));
         }
 
         [HttpPost]
-        public Order CreateOne([FromBody] Order newOrder)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<OrderReadDto>> CreateOne([FromBody] OrderCreateDto newOrder)
         {
-            return _orderService.CreateOne(newOrder);
+            return Ok(await _orderService.CreateOne(newOrder));
         }
 
     }

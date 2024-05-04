@@ -1,4 +1,5 @@
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +16,9 @@ namespace BackendTeamwork.Controllers
     [HttpGet(":{paymentId}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<Payment>> FindOne(Guid paymentId)
+    public async Task<ActionResult<PaymentReadDto>> FindOne(Guid paymentId)
     {
-      Payment? payment = await _paymentService.FindOne(paymentId);
+      PaymentReadDto? payment = await _paymentService.FindOne(paymentId);
       if (payment is not null)
       {
         return Ok(payment);
@@ -27,7 +28,7 @@ namespace BackendTeamwork.Controllers
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<Payment>> CreateOne([FromBody] Payment newPayment)
+    public async Task<ActionResult<PaymentReadDto>> CreateOne([FromBody] PaymentCreateDto newPayment)
     {
       return Ok(await _paymentService.CreateOne(newPayment));
     }

@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 
 namespace BackendTeamwork.Abstractions
@@ -9,12 +6,12 @@ namespace BackendTeamwork.Abstractions
     public interface ICategoryService
     {
 
-        public IEnumerable<Category> FindMany();
-        public Task<Category?> FindOne(Guid id);
-        public Task<Category> CreateOne(Category newCategory);
+        public IEnumerable<CategoryReadDto> FindMany();
+        public Task<CategoryReadDto?> FindOne(Guid id);
+        public Task<CategoryReadDto> CreateOne(CategoryCreateDto newCategory);
 
-        public Task<Category?> UpdateOne(Guid categoryId, Category updateCategory);
+        public Task<CategoryReadDto?> UpdateOne(Guid categoryId, CategoryUpdateDto updateCategory);
 
-        public Task<Category?> DeleteOne(Guid categoryId);
+        public Task<CategoryReadDto?> DeleteOne(Guid categoryId);
     }
 }

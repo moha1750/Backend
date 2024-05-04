@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices;
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,14 +17,14 @@ namespace BackendTeamwork.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Stock>> FindMany()
+        public ActionResult<IEnumerable<StockReadDto>> FindMany()
         {
             return Ok(_stockService.FindMany());
         }
 
         [HttpGet(":{productId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Stock>> FindMany(Guid productId)
+        public ActionResult<IEnumerable<StockReadDto>> FindMany(Guid productId)
         {
             return Ok(_stockService.FindMany(productId));
         }
@@ -45,7 +45,7 @@ namespace BackendTeamwork.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Stock>> CreateOne([FromBody] Stock newStock)
+        public async Task<ActionResult<StockReadDto>> CreateOne([FromBody] StockCreateDto newStock)
         {
             if (newStock is not null)
             {
@@ -59,9 +59,9 @@ namespace BackendTeamwork.Controllers
         [HttpPut(":{stockId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<Stock>> UpdateOne(Guid stockId, [FromBody] Stock updatedStock)
+        public async Task<ActionResult<StockReadDto>> UpdateOne(Guid stockId, [FromBody] StockUpdateDto updatedStock)
         {
-            Stock? targetStock = await _stockService.UpdateOne(stockId, updatedStock);
+            StockReadDto? targetStock = await _stockService.UpdateOne(stockId, updatedStock);
             if (targetStock is not null)
             {
                 return Ok(updatedStock);

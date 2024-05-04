@@ -1,18 +1,19 @@
 
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 
 namespace BackendTeamwork.Abstractions
 {
     public interface IProductService
     {
-        public IEnumerable<Product> FindMany();
+        public IEnumerable<ProductReadDto> FindMany();
 
-        public Task<Product?> FindOne(Guid productId);
+        public Task<ProductReadDto?> FindOne(Guid productId);
 
-        public Task<Product> CreateOne(Product newProduct);
+        public Task<ProductReadDto> CreateOne(ProductCreateDto newProduct);
 
-        public Task<Product?> UpdateOne(Guid productId, Product updatedProduct);
+        public Task<ProductReadDto?> UpdateOne(Guid productId, ProductUpdateDto updatedProduct);
 
-        public Task<Product?> DeleteOne(Guid productId);
+        public Task<ProductReadDto?> DeleteOne(Guid productId);
     }
 }

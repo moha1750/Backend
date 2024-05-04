@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 
 namespace BackendTeamwork.Abstractions
@@ -9,13 +10,13 @@ namespace BackendTeamwork.Abstractions
     public interface IStockService
     {
 
-        public IEnumerable<Stock> FindMany();
-        public IEnumerable<Stock> FindMany(Guid productId);
-        public Task<Stock?> FindOne(Guid stockId);
+        public IEnumerable<StockReadDto> FindMany();
+        public IEnumerable<StockReadDto> FindMany(Guid productId);
+        public Task<StockReadDto?> FindOne(Guid stockId);
 
-        public Task<Stock> CreateOne(Stock newStock);
+        public Task<StockReadDto> CreateOne(StockCreateDto newStock);
 
-        public Task<Stock?> UpdateOne(Guid stockId, Stock updatedStock);
+        public Task<StockReadDto?> UpdateOne(Guid stockId, StockUpdateDto updatedStock);
 
         public Task<Stock?> DeleteOne(Guid stockId);
     }

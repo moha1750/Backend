@@ -1,6 +1,5 @@
 using BackendTeamwork.Abstractions;
-using BackendTeamwork.Entities;
-using BackendTeamwork.Services;
+using BackendTeamwork.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -10,24 +9,37 @@ namespace BackendTeamwork.Controllers
 
         private IWishlistService _wishlistService;
 
-        public WishlistController(IWishlistService wishlisttService)
+        public WishlistController(IWishlistService wishlistService)
         {
-            _wishlistService = wishlisttService;
+            _wishlistService = wishlistService;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Wishlist>> FindMany()
+        public ActionResult<IEnumerable<WishlistReadDto>> FindMany()
         {
             return Ok(_wishlistService.FindMany());
         }
 
-        [HttpGet(":wishlistId")]
+        [HttpGet(":{wishlistId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Wishlist>> FindOne(Guid productId)
+        public async Task<ActionResult<WishlistReadDto>> FindOne(Guid wishlistId)
         {
-            Wishlist? targetWishlist = await _wishlistService.FindOne(productId);
+            WishlistReadDto? targetWishlist = await _wishlistService.FindOne(wishlistId);
+            if (targetWishlist is not null)
+            {
+                return Ok(targetWishlist);
+            }
+            return NotFound();
+        }
+
+        [HttpPut(":{wishlistId}/:{productId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<WishlistReadDto>> AddOneProduct(Guid wishlistId, Guid productId)
+        {
+            WishlistReadDto? targetWishlist = await _wishlistService.AddOneProduct(wishlistId, productId);
             if (targetWishlist is not null)
             {
                 return Ok(targetWishlist);
@@ -38,7 +50,7 @@ namespace BackendTeamwork.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Wishlist> CreateOne([FromBody] Wishlist newWishlist)
+        public ActionResult<WishlistReadDto> CreateOne([FromBody] WishlistCreateDto newWishlist)
         {
             if (newWishlist is not null)
             {
@@ -51,9 +63,9 @@ namespace BackendTeamwork.Controllers
         [HttpPut(":WishlistId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Wishlist?>> UpdateOne([FromQuery] Guid WishlistId, [FromBody] Wishlist updatedWishlist)
+        public async Task<ActionResult<WishlistReadDto?>> UpdateOne([FromQuery] Guid WishlistId, [FromBody] WishlistUpdateDto updatedWishlist)
         {
-            Wishlist? targetWishlist = await _wishlistService.UpdateOne(WishlistId, updatedWishlist);
+            WishlistReadDto? targetWishlist = await _wishlistService.UpdateOne(WishlistId, updatedWishlist);
             if (targetWishlist is not null)
             {
                 return Ok(updatedWishlist);
@@ -65,9 +77,9 @@ namespace BackendTeamwork.Controllers
         [HttpDelete(":wishlistId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Wishlist>> DeleteOne(Guid wishlistId)
+        public async Task<ActionResult<WishlistReadDto>> DeleteOne(Guid wishlistId)
         {
-            Wishlist? deletedWishlist = await _wishlistService.DeleteOne(wishlistId);
+            WishlistReadDto? deletedWishlist = await _wishlistService.DeleteOne(wishlistId);
             if (deletedWishlist is not null)
             {
                 return Ok(deletedWishlist);

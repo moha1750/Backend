@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Intrinsics.Arm;
-using System.Threading.Tasks;
+using AutoMapper;
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Repositories;
 
@@ -13,41 +10,45 @@ namespace BackendTeamwork.Services
     {
 
         private IStockRepository _stockRepository;
+        private IMapper _mapper;
 
-        public StockService(IStockRepository stockRepository)
+        public StockService(IStockRepository stockRepository, IMapper mapper)
         {
             _stockRepository = stockRepository;
+            _mapper = mapper;
         }
 
-        public IEnumerable<Stock> FindMany()
+        public IEnumerable<StockReadDto> FindMany()
         {
-            return _stockRepository.FindMany();
+            return _stockRepository.FindMany().Select(_mapper.Map<StockReadDto>);
         }
 
-        public IEnumerable<Stock> FindMany(Guid productId)
+        public IEnumerable<StockReadDto> FindMany(Guid productId)
         {
-            return _stockRepository.FindMany(productId);
+            return _stockRepository.FindMany(productId).Select(_mapper.Map<StockReadDto>);
         }
 
-        public async Task<Stock?> FindOne(Guid stockId)
+        public async Task<StockReadDto?> FindOne(Guid stockId)
         {
-            return await _stockRepository.FindOne(stockId);
+            return _mapper.Map<StockReadDto>(await _stockRepository.FindOne(stockId));
         }
 
-        public async Task<Stock> CreateOne(Stock newStock)
+        public async Task<StockReadDto> CreateOne(StockCreateDto newStock)
 
         {
-            return await _stockRepository.CreateOne(newStock);
+            return _mapper.Map<StockReadDto>(await _stockRepository.CreateOne(_mapper.Map<Stock>(newStock)));
         }
 
-        public async Task<Stock?> UpdateOne(Guid stockId, Stock updatedStock)
+        public async Task<StockReadDto?> UpdateOne(Guid stockId, StockUpdateDto updatedStock)
         {
             Stock? targetStock = await _stockRepository.FindOne(stockId);
             if (targetStock is null)
             {
                 return null;
             }
-            return await _stockRepository.UpdateOne(updatedStock);
+            Stock stock = _mapper.Map<Stock>(updatedStock);
+            stock.Id = stockId;
+            return _mapper.Map<StockReadDto>(await _stockRepository.UpdateOne(stock));
         }
 
         public async Task<Stock?> DeleteOne(Guid stockId)

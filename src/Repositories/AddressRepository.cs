@@ -20,7 +20,7 @@ namespace BackendTeamwork.Repositories
 
         public async Task<Address?> FindOne(Guid AddressId)
         {
-            return await _addresses.FirstOrDefaultAsync(address => address.Id == AddressId);
+            return await _addresses.AsNoTracking().FirstOrDefaultAsync(address => address.Id == AddressId);
         }
 
         public async Task<Address> CreateOne(Address newAddress)
@@ -30,7 +30,7 @@ namespace BackendTeamwork.Repositories
             return newAddress;
         }
 
-        public async Task<Address> UpdateOne(Guid addressId, Address updatedAddress)
+        public async Task<Address> UpdateOne(Address updatedAddress)
         {
             _addresses.Update(updatedAddress);
             await _databaseContext.SaveChangesAsync();

@@ -7,7 +7,7 @@ namespace BackendTeamwork.Abstractions
 
         public Task<Address?> FindOne(Guid addressId);
         public Task<Address> CreateOne(Address newAddress);
-        public Task<Address> UpdateOne(Guid addressId, Address updatedAddress);
+        public Task<Address> UpdateOne(Address updatedAddress);
 
     }
 }

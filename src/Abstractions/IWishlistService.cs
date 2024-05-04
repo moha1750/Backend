@@ -1,21 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BackendTeamwork.Entities;
+using BackendTeamwork.DTOs;
 
 namespace BackendTeamwork.Abstractions
 {
     public interface IWishlistService
     {
-                public IEnumerable<Wishlist> FindMany();
+        public IEnumerable<WishlistReadDto> FindMany();
 
-        public Task<Wishlist?> FindOne(Guid wishlistId);
+        public Task<WishlistReadDto?> FindOne(Guid wishlistId);
 
-        public Task<Wishlist> CreateOne(Wishlist newProduct);
+        public Task<WishlistReadDto?> AddOneProduct(Guid wishlistId, Guid productId);
 
-        public Task<Wishlist?> UpdateOne(Guid wishlistId, Wishlist updatedWishlist);
+        public Task<WishlistReadDto> CreateOne(WishlistCreateDto newProduct);
 
-        public Task<Wishlist?> DeleteOne(Guid wishlistId);
+        public Task<WishlistReadDto?> UpdateOne(Guid wishlistId, WishlistUpdateDto updatedWishlist);
+
+        public Task<WishlistReadDto?> DeleteOne(Guid wishlistId);
     }
 }

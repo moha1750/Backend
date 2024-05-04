@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +27,7 @@ namespace BackendTeamwork.Controllers
         [HttpGet(":reviewId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Review?>> FindOne(Guid reviewId)
+        public async Task<ActionResult<ReviewReadDto?>> FindOne(Guid reviewId)
         {
             return Ok(await _reviewService.FindOne(reviewId));
         }
@@ -39,9 +36,9 @@ namespace BackendTeamwork.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Review>> CreateOne([FromBody] Review newReview)
+        public async Task<ActionResult<ReviewReadDto>> CreateOne([FromBody] ReviewCreateDto newReview)
         {
-            Review? review = await _reviewService.CreateOne(newReview);
+            ReviewReadDto? review = await _reviewService.CreateOne(newReview);
             if (review is not null)
             {
                 return Ok(review);
@@ -53,9 +50,9 @@ namespace BackendTeamwork.Controllers
         [HttpPut(":reviewId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Review?>> UpdateOne(Guid reviewId, [FromBody] Review updatedReview)
+        public async Task<ActionResult<ReviewReadDto?>> UpdateOne(Guid reviewId, [FromBody] ReviewUpdateDto updatedReview)
         {
-            Review? review = await _reviewService.UpdateOne(reviewId, updatedReview);
+            ReviewReadDto? review = await _reviewService.UpdateOne(reviewId, updatedReview);
             if (review is not null)
             {
                 return Ok(review);

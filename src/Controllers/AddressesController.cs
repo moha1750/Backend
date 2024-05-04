@@ -1,4 +1,5 @@
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +16,9 @@ namespace BackendTeamwork.Controllers
         [HttpGet(":{addressId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Address>> FindOne(Guid addressId)
+        public async Task<ActionResult<AddressReadDto>> FindOne(Guid addressId)
         {
-            Address? address = await _AddressService.FindOne(addressId);
+            AddressReadDto? address = await _AddressService.FindOne(addressId);
             if (address is not null)
             {
                 return Ok(address);
@@ -27,17 +28,17 @@ namespace BackendTeamwork.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Address> CreateOne([FromBody] Address newAddress)
+        public async Task<ActionResult<AddressReadDto>> CreateOne([FromBody] AddressCreateDto newAddress)
         {
-            return Ok(_AddressService.CreateOne(newAddress));
+            return Ok(await _AddressService.CreateOne(newAddress));
         }
 
         [HttpPut(":{addressId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Address>> UpdateOne(Guid addressId, Address updatedAddress)
+        public async Task<ActionResult<AddressReadDto>> UpdateOne(Guid addressId, AddressUpdateDto updatedAddress)
         {
-            Address? updated = await _AddressService.UpdateOne(addressId, updatedAddress);
+            AddressReadDto? updated = await _AddressService.UpdateOne(addressId, updatedAddress);
             if (updated is not null)
             {
                 return Ok(updated);
