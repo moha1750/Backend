@@ -16,9 +16,9 @@ namespace BackendTeamwork.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<CategoryReadDto> FindMany()
+        public IEnumerable<CategoryReadDto> FindMany(int limit, int offset)
         {
-            return _categoryRepository.FindMany().Select(_mapper.Map<CategoryReadDto>);
+            return _categoryRepository.FindMany(limit, offset).Select(_mapper.Map<CategoryReadDto>);
         }
         public async Task<CategoryReadDto?> FindOne(Guid categoryId)
         {
