@@ -14,20 +14,7 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IWishlistRepository
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
-        IEnumerable<WishlistItem> FindMany();
-        WishlistItem FindOne(Guid id);
-        WishlistItem CreateOne(WishlistItem newItem);
-        WishlistItem UpdateOne(WishlistItem updatedItem);
-        bool DeleteOne(Guid id);
-    }
-}
-=======
-        public IEnumerable<Wishlist> FindMany();
-=======
         public IEnumerable<Wishlist> FindMany(int limit, int offset);
->>>>>>> 6f23f28f76076683bcd66ffaf1b41c64d3118912
         public Task<Wishlist?> FindOne(Guid wishlistId);
 
         public Task<Wishlist> AddOneProduct(Wishlist wishlist, Product product);
