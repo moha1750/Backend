@@ -17,9 +17,9 @@ namespace BackendTeamwork.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IEnumerable<UserReadDto> FindMany()
+        public IEnumerable<UserReadDto> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
-            return _UserService.FindMany();
+            return _UserService.FindMany(limit, offset);
         }
 
         [HttpGet(":{userId}")]
@@ -28,6 +28,19 @@ namespace BackendTeamwork.Controllers
         public async Task<ActionResult<UserReadDto>> FindOne(Guid userId)
         {
             UserReadDto? user = await _UserService.FindOne(userId);
+            if (user is not null)
+            {
+                return Ok(user);
+            }
+            return NotFound();
+        }
+
+        [HttpGet("email/:{email}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<UserReadDto>> FindOneByEmail(string email)
+        {
+            UserReadDto? user = await _UserService.FindOneByEmail(email);
             if (user is not null)
             {
                 return Ok(user);

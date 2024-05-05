@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240504115806_db-init")]
+    [Migration("20240505104240_db-init")]
     partial class dbinit
     {
         /// <inheritdoc />
@@ -358,10 +358,8 @@ namespace Backend.Migrations
                         .HasColumnType("character varying(15)")
                         .HasColumnName("phone");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)")
+                    b.Property<int>("Role")
+                        .HasColumnType("integer")
                         .HasColumnName("role");
 
                     b.HasKey("Id")

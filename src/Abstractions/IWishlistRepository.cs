@@ -8,7 +8,7 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IWishlistRepository
     {
-        public IEnumerable<Wishlist> FindMany();
+        public IEnumerable<Wishlist> FindMany(int limit, int offset);
         public Task<Wishlist?> FindOne(Guid wishlistId);
 
         public Task<Wishlist> AddOneProduct(Wishlist wishlist, Product product);

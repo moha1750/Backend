@@ -19,9 +19,13 @@ namespace BackendTeamwork.Repositories
 
         }
 
-        public IEnumerable<Wishlist> FindMany()
+        public IEnumerable<Wishlist> FindMany(int limit, int offset)
         {
-            return _wishlists;
+            if (limit == 0 && offset == 0)
+            {
+                return _wishlists;
+            }
+            return _wishlists.Skip(offset).Take(limit);
         }
 
 
