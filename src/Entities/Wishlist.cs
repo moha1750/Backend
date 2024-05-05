@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;
 
 namespace BackendTeamwork.Entities
@@ -30,6 +31,27 @@ namespace BackendTeamwork.Entities
 
         
         }
+=======
+#pragma warning disable CS8618
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BackendTeamwork.Entities
+{
+    public class Wishlist
+    {
+        [Key]
+        public Guid Id { get; set; }
+
+        [Required, StringLength(30)]
+        public string Name { get; set; }
+
+        [Required, ForeignKey("User")]
+        public Guid UserId { get; set; }
+
+        public User User { get; set; }
+        public IEnumerable<Product> Products { get; set; }
+>>>>>>> da7de1e4169592927dc0362fcd7f741974b62bbe
 
     }
 }

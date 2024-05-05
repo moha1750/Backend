@@ -3,16 +3,21 @@ using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BackendTeamwork.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private IEnumerable<Product> _products;
+        private DbSet<Product> _products;
+        private DatabaseContext _databaseContext;
 
-        public ProductRepository()
+        public ProductRepository(DatabaseContext databaseContext)
         {
-            _products = new DatabaseContext().products;
+            _products = databaseContext.Product;
+            _databaseContext = databaseContext;
+
         }
 
         public IEnumerable<Product> FindMany()
@@ -20,42 +25,32 @@ namespace BackendTeamwork.Repositories
             return _products;
         }
 
-        public Product? FindOne(Guid id)
+
+        public async Task<Product?> FindOne(Guid productId)
         {
-            return _products.FirstOrDefault(product => product.Id == id);
+            return await _products.AsNoTracking().FirstOrDefaultAsync(product => product.Id == productId);
         }
 
-        public Product CreateOne(Product newProduct)
+        public async Task<Product> CreateOne(Product newProduct)
         {
-            // @TODO: check if product exists first 
-
-            _products = _products.Append(newProduct);
-
-            _products.ToList().ForEach(product => Console.WriteLine(product.Name));
+            await _products.AddAsync(newProduct);
+            await _databaseContext.SaveChangesAsync();
             return newProduct;
         }
 
-        public Product UpdateOne(Product updatedProduct)
+        public async Task<Product> UpdateOne(Product updatedProduct)
         {
-            var updatedCollection = _products.Select(product =>
-            {
-                if (product.Id == updatedProduct.Id)
-                {
-                    return updatedProduct;
-                }
-                return product;
-            });
-
-            _products = updatedCollection;
+            _products.Update(updatedProduct);
+            await _databaseContext.SaveChangesAsync();
             return updatedProduct;
         }
 
-        public bool DeleteOne(IEnumerable<Product> updatedCollection)
+        public async Task<Product> DeleteOne(Product targetProduct)
         {
-            _products = updatedCollection;
-            return true;
+            _products.Remove(targetProduct);
+            await _databaseContext.SaveChangesAsync();
+            return targetProduct;
         }
-
 
     }
 }

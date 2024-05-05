@@ -1,16 +1,16 @@
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 
 namespace BackendTeamwork.Abstractions
 {
     public interface IUserService
     {
-        public IEnumerable<User> FindMany();
-        public User? FindOne(Guid id);
+        public IEnumerable<UserReadDto> FindMany();
+        public Task<UserReadDto?> FindOne(Guid userId);
 
-        public User CreateOne(User newUser);
-        public User UpdateOne(User UpdatedUser);
-        public bool DeleteOne(Guid id);
-        public bool DeleteMany(IEnumerable<Guid> ids);
+        public Task<UserReadDto> CreateOne(UserCreateDto newUser);
+        public Task<UserReadDto?> UpdateOne(Guid userId, UserUpdateDto UpdatedUser);
+        public Task<UserReadDto?> DeleteOne(Guid userId);
 
     }
 }

@@ -1,27 +1,30 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+#pragma warning disable CS8618
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BackendTeamwork.Entities
 {
     public class Payment
     {
 
+        [Key]
         public Guid Id { get; set; }
+
+        [Required]
         public int Amount { get; set; }
+
+        [Required, StringLength(30)]
         public string Method { get; set; }
+
+        [Required]
         public DateTime Date { get; set; }
+
+        [Required, ForeignKey("User")]
         public Guid UserId { get; set; }
 
-        public Payment(Guid id, int amount, string method, DateTime date, Guid userId)
-        {
-            Id = id;
-            Amount = amount;
-            Method = method;
-            Date = date;
-            UserId = userId;
-        }
-    }
 
+        public User User { get; set; }
+        public Order Order { get; set; }
+
+    }
 }

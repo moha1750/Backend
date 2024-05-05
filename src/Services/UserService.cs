@@ -1,46 +1,66 @@
+using System.Text;
+using AutoMapper;
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using BackendTeamwork.Utils;
 
 namespace BackendTeamwork.Services
 {
     public class UserService : IUserService
     {
         private IUserRepository _UserRepository;
+        private IConfiguration _config;
+        private IMapper _mapper;
 
-        public UserService(IUserRepository UserRepository)
+        public UserService(IUserRepository UserRepository, IConfiguration config, IMapper mapper)
         {
             _UserRepository = UserRepository;
+            _config = config;
+            _mapper = mapper;
         }
 
-        public IEnumerable<User> FindMany()
+        public IEnumerable<UserReadDto> FindMany()
         {
-            return _UserRepository.FindMany();
+            return _UserRepository.FindMany().Select(_mapper.Map<UserReadDto>);
         }
-        public User? FindOne(Guid id)
+        public async Task<UserReadDto?> FindOne(Guid userId)
         {
-            User? user = _UserRepository.FindOne(id);
-            return user;
-        }
-
-        public User CreateOne(User newUser)
-        {
-            return _UserRepository.CreateOne(newUser);
+            return _mapper.Map<UserReadDto>(await _UserRepository.FindOne(userId));
         }
 
-        public User UpdateOne(User updatedUser)
+        public async Task<UserReadDto> CreateOne(UserCreateDto newUser)
         {
-            return _UserRepository.UpdateOne(updatedUser);
+            byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
+            PasswordUtils.HashPassword(newUser.Password, out string hashedPassword, pepper);
+            newUser.Password = hashedPassword;
+            return _mapper.Map<UserReadDto>(await _UserRepository.CreateOne(_mapper.Map<User>(newUser)));
         }
 
-        public bool DeleteOne(Guid id)
+        public async Task<UserReadDto?> UpdateOne(Guid userId, UserUpdateDto updatedUser)
         {
-            return _UserRepository.DeleteOne(id);
+            User? targetUser = await _UserRepository.FindOne(userId);
+            if (targetUser is null)
+            {
+                return null;
+            }
+            targetUser.FirstName = updatedUser.FirstName;
+            targetUser.LastName = updatedUser.LastName;
+            targetUser.Phone = updatedUser.Phone;
+            targetUser.Role = updatedUser.Role;
+            return _mapper.Map<UserReadDto>(await _UserRepository.UpdateOne(targetUser));
         }
 
-        public bool DeleteMany(IEnumerable<Guid> ids)
+        public async Task<UserReadDto?> DeleteOne(Guid userId)
         {
-            return _UserRepository.DeleteMany(ids);
+            User? deletedUser = await _UserRepository.FindOne(userId);
+            if (deletedUser is null)
+            {
+                return null;
+            }
+            return _mapper.Map<UserReadDto>(await _UserRepository.DeleteOne(deletedUser));
         }
+
 
     }
 }

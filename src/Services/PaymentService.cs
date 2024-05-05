@@ -1,4 +1,6 @@
+using AutoMapper;
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 
 namespace BackendTeamwork.Controllers
@@ -6,23 +8,20 @@ namespace BackendTeamwork.Controllers
     public class PaymentService : IPaymentService
     {
         private IPaymentRepository _paymentRepository;
+        private IMapper _mapper;
 
-        public PaymentService(IPaymentRepository PaymentRepository)
+        public PaymentService(IPaymentRepository PaymentRepository, IMapper mapper)
         {
             _paymentRepository = PaymentRepository;
+            _mapper = mapper;
         }
-
-        public Payment? FindOne(Guid id)
+        public async Task<PaymentReadDto?> FindOne(Guid paymentId)
         {
-            return _paymentRepository.FindOne(id);
+            return _mapper.Map<PaymentReadDto>(await _paymentRepository.FindOne(paymentId));
         }
-        public Payment CreateOne(Payment newPayment)
+        public async Task<PaymentReadDto> CreateOne(PaymentCreateDto newPayment)
         {
-            return _paymentRepository.CreateOne(newPayment);
+            return _mapper.Map<PaymentReadDto>(await _paymentRepository.CreateOne(_mapper.Map<Payment>(newPayment)));
         }
-
-
     }
-
-
 }

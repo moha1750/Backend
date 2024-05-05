@@ -1,78 +1,50 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private IEnumerable<User> _users;
+        private DbSet<User> _users;
+        private DatabaseContext _databaseContext;
 
-        public UserRepository()
+        public UserRepository(DatabaseContext databaseContext)
         {
-            _users = new DatabaseContext().Users;
+            _users = databaseContext.User;
+            _databaseContext = databaseContext;
         }
+
 
         public IEnumerable<User> FindMany()
         {
             return _users;
         }
-        public User? FindOne(Guid id)
+        public async Task<User?> FindOne(Guid UserId)
         {
-            return _users.FirstOrDefault(user => user.Id == id);
+            return await _users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == UserId);
         }
 
-        public User CreateOne(User newUser)
+        public async Task<User> CreateOne(User newUser)
         {
-            _users = _users.Append(newUser);
-
-            _users.ToList().ForEach(user =>
-            {
-                Console.WriteLine($"{user.Email}");
-            });
-
+            await _users.AddAsync(newUser);
+            await _databaseContext.SaveChangesAsync();
             return newUser;
         }
 
-        public User UpdateOne(User updatedUser)
+        public async Task<User> UpdateOne(User updatedUser)
         {
-            User? oldData = this.FindOne(updatedUser.Id);
-            oldData = updatedUser;
-            return oldData;
+            _users.Update(updatedUser);
+            await _databaseContext.SaveChangesAsync();
+            return updatedUser;
         }
 
-        public bool DeleteOne(Guid id)
+        public async Task<User> DeleteOne(User deletedUser)
         {
-            if (this.FindOne(id) is not null)
-            {
-                _users = _users.Where(user => user.Id != id);
-                return true;
-            }
-            return false;
+            _users.Remove(deletedUser);
+            await _databaseContext.SaveChangesAsync();
+            return deletedUser;
         }
-
-        public bool DeleteMany(IEnumerable<Guid> ids)
-        {
-            foreach (Guid id in ids)
-            {
-                if (_users.FirstOrDefault(user => user.Id == id) is null)
-                {
-                    return false;
-                }
-            }
-
-            foreach (Guid id in ids)
-            {
-                _users = _users.Where(user => user.Id != id);
-            }
-
-            _users.ToList().ForEach(user =>
-            {
-                Console.WriteLine($"{user.Id}");
-            });
-
-            return true;
-        }
-
     }
 }
