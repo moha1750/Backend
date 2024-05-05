@@ -15,15 +15,13 @@ namespace BackendTeamwork.Controllers
             _reviewService = reviewService;
         }
 
-        // findMany
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Review>> FindMany()
+        public ActionResult<IEnumerable<Review>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
-            return Ok(_reviewService.FindMany());
+            return Ok(_reviewService.FindMany(limit, offset));
         }
 
-        // findOne
         [HttpGet(":reviewId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -32,7 +30,6 @@ namespace BackendTeamwork.Controllers
             return Ok(await _reviewService.FindOne(reviewId));
         }
 
-        // createOne
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -46,7 +43,6 @@ namespace BackendTeamwork.Controllers
             return NotFound();
         }
 
-        // updateOne
         [HttpPut(":reviewId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -59,7 +55,6 @@ namespace BackendTeamwork.Controllers
             }
             return NotFound();
         }
-
 
     }
 }

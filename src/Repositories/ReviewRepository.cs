@@ -16,9 +16,13 @@ namespace BackendTeamwork.Repositories
             _databaseContext = databaseContext;
         }
 
-        public IEnumerable<Review> FindMany()
+        public IEnumerable<Review> FindMany(int limit, int offset)
         {
-            return _reviews;
+            if (limit == 0 && offset == 0)
+            {
+                return _reviews;
+            }
+            return _reviews.Skip(offset).Take(limit);
         }
         public async Task<Review?> FindOne(Guid reviewId)
         {

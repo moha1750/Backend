@@ -4,7 +4,7 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IUserRepository
     {
-        public IEnumerable<User> FindMany();
+        public IEnumerable<User> FindMany(int limit, int offset);
         public Task<User?> FindOne(Guid id);
 
         public Task<User> CreateOne(User newUser);

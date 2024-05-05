@@ -5,7 +5,7 @@ namespace BackendTeamwork.Abstractions
 {
         public interface IReviewService
         {
-                public IEnumerable<ReviewReadDto> FindMany();
+                public IEnumerable<ReviewReadDto> FindMany(int limit, int offset);
 
                 public Task<ReviewReadDto?> FindOne(Guid id);
 

@@ -20,9 +20,9 @@ namespace BackendTeamwork.Services
         }
 
 
-        public IEnumerable<ProductReadDto> FindMany()
+        public IEnumerable<ProductReadDto> FindMany(int limit, int offset)
         {
-            return _productRepository.FindMany().Select(_mapper.Map<ProductReadDto>);
+            return _productRepository.FindMany(limit, offset).Select(_mapper.Map<ProductReadDto>);
         }
 
         public async Task<ProductReadDto?> FindOne(Guid productId)
