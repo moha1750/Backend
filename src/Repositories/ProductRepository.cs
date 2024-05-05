@@ -20,9 +20,13 @@ namespace BackendTeamwork.Repositories
 
         }
 
-        public IEnumerable<Product> FindMany()
+        public IEnumerable<Product> FindMany(int limit, int offset)
         {
-            return _products;
+            if (limit == 0 && offset == 0)
+            {
+                return _products;
+            }
+            return _products.Skip(offset).Take(limit);
         }
 
 

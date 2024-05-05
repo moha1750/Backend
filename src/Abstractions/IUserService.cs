@@ -5,7 +5,7 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IUserService
     {
-        public IEnumerable<UserReadDto> FindMany();
+        public IEnumerable<UserReadDto> FindMany(int limit, int offset);
         public Task<UserReadDto?> FindOne(Guid userId);
 
         public Task<UserReadDto> CreateOne(UserCreateDto newUser);

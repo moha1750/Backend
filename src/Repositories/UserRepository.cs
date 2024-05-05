@@ -17,9 +17,13 @@ namespace BackendTeamwork.Repositories
         }
 
 
-        public IEnumerable<User> FindMany()
+        public IEnumerable<User> FindMany(int limit, int offset)
         {
-            return _users;
+            if (limit == 0 && offset == 0)
+            {
+                return _users;
+            }
+            return _users.Skip(offset).Take(limit);
         }
         public async Task<User?> FindOne(Guid UserId)
         {

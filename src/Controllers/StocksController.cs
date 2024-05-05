@@ -17,9 +17,9 @@ namespace BackendTeamwork.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<StockReadDto>> FindMany()
+        public ActionResult<IEnumerable<StockReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
-            return Ok(_stockService.FindMany());
+            return Ok(_stockService.FindMany(limit, offset));
         }
 
         [HttpGet(":{productId}")]

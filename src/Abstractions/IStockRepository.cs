@@ -9,7 +9,7 @@ namespace BackendTeamwork.Abstractions
     public interface IStockRepository
     {
 
-        public IEnumerable<Stock> FindMany();
+        public IEnumerable<Stock> FindMany(int limit, int offset);
 
         public IEnumerable<Stock> FindMany(Guid productId);
 

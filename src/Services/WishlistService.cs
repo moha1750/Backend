@@ -20,9 +20,9 @@ namespace BackendTeamwork.Services
         }
 
 
-        public IEnumerable<WishlistReadDto> FindMany()
+        public IEnumerable<WishlistReadDto> FindMany(int limit, int offset)
         {
-            return _wishlistRepository.FindMany().Select(_mapper.Map<WishlistReadDto>);
+            return _wishlistRepository.FindMany(limit, offset).Select(_mapper.Map<WishlistReadDto>);
         }
 
         public async Task<WishlistReadDto?> FindOne(Guid wishlistId)

@@ -17,9 +17,9 @@ namespace BackendTeamwork.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IEnumerable<UserReadDto> FindMany()
+        public IEnumerable<UserReadDto> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
-            return _UserService.FindMany();
+            return _UserService.FindMany(limit, offset);
         }
 
         [HttpGet(":{userId}")]

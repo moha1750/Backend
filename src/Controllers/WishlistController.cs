@@ -16,9 +16,9 @@ namespace BackendTeamwork.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<WishlistReadDto>> FindMany()
+        public ActionResult<IEnumerable<WishlistReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
-            return Ok(_wishlistService.FindMany());
+            return Ok(_wishlistService.FindMany(limit, offset));
         }
 
         [HttpGet(":{wishlistId}")]
