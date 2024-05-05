@@ -20,6 +20,7 @@ namespace BackendTeamwork.Mappers
             CreateMap<StockCreateDto, Stock>();
             CreateMap<UserCreateDto, User>();
             CreateMap<WishlistCreateDto, Wishlist>();
+            CreateMap<ShippingCreateDto, Shipping>();
 
             CreateMap<AddressUpdateDto, Address>();
             CreateMap<CategoryUpdateDto, Category>();
@@ -31,6 +32,7 @@ namespace BackendTeamwork.Mappers
             CreateMap<StockUpdateDto, Stock>();
             CreateMap<UserUpdateDto, User>();
             CreateMap<WishlistUpdateDto, Wishlist>();
+            CreateMap<ShippingUpdateDto, Shipping>();
 
             CreateMap<Address, AddressReadDto>();
             CreateMap<Category, CategoryReadDto>();
@@ -42,6 +44,7 @@ namespace BackendTeamwork.Mappers
             CreateMap<Stock, StockReadDto>();
             CreateMap<User, UserReadDto>();
             CreateMap<Wishlist, WishlistReadDto>();
+            CreateMap<Shipping, ShippingReadDto>();
 
         }
     }
