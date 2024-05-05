@@ -18,9 +18,9 @@ namespace BackendTeamwork.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<StockReadDto> FindMany()
+        public IEnumerable<StockReadDto> FindMany(int limit, int offset)
         {
-            return _stockRepository.FindMany().Select(_mapper.Map<StockReadDto>);
+            return _stockRepository.FindMany(limit, offset).Select(_mapper.Map<StockReadDto>);
         }
 
         public IEnumerable<StockReadDto> FindMany(Guid productId)

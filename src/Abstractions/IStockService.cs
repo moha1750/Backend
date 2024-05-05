@@ -10,7 +10,7 @@ namespace BackendTeamwork.Abstractions
     public interface IStockService
     {
 
-        public IEnumerable<StockReadDto> FindMany();
+        public IEnumerable<StockReadDto> FindMany(int limit, int offset);
         public IEnumerable<StockReadDto> FindMany(Guid productId);
         public Task<StockReadDto?> FindOne(Guid stockId);
 

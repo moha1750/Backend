@@ -4,7 +4,7 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IWishlistService
     {
-        public IEnumerable<WishlistReadDto> FindMany();
+        public IEnumerable<WishlistReadDto> FindMany(int limit, int offset);
 
         public Task<WishlistReadDto?> FindOne(Guid wishlistId);
 

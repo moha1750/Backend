@@ -22,9 +22,13 @@ namespace BackendTeamwork.Repositories
 
         }
 
-        public IEnumerable<Stock> FindMany()
+        public IEnumerable<Stock> FindMany(int limit, int offset)
         {
-            return _stocks;
+            if (limit == 0 && offset == 0)
+            {
+                return _stocks;
+            }
+            return _stocks.Skip(offset).Take(limit);
         }
 
         public IEnumerable<Stock> FindMany(Guid productId)

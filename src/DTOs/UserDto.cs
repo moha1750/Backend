@@ -1,6 +1,7 @@
 #pragma warning disable CS8618
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BackendTeamwork.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.DTOs
@@ -12,7 +13,7 @@ namespace BackendTeamwork.DTOs
         public string Email { get; set; }
         public string Password { get; set; }
         public string? Phone { get; set; }
-        public string Role { get; set; }
+        public Role Role { get; set; }
     }
 
     public class UserReadDto
@@ -22,7 +23,7 @@ namespace BackendTeamwork.DTOs
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string Role { get; set; }
+        public Role Role { get; set; }
     }
 
     public class UserUpdateDto
@@ -30,6 +31,6 @@ namespace BackendTeamwork.DTOs
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string? Phone { get; set; }
-        public string Role { get; set; }
+        public Role Role { get; set; }
     }
 }

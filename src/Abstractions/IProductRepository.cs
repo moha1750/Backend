@@ -5,7 +5,7 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IProductRepository
     {
-        public IEnumerable<Product> FindMany();
+        public IEnumerable<Product> FindMany(int limit, int offset);
         public Task<Product?> FindOne(Guid productId);
 
         public Task<Product> CreateOne(Product newProduct);
