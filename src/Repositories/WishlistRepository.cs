@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-using BackendTeamwork.Entities;
-using System;
-using System.Collections.Generic;
-
-namespace BackendTeamwork.Abstractions
-{
-    public interface IWishlistItemService
-    {
-        IEnumerable<WishlistItem> FindAllItems();
-        WishlistItem FindItemById(Guid id);
-        WishlistItem AddNewItem(WishlistItem newItem);
-        WishlistItem UpdateItem(Guid id, WishlistItem updatedItem);
-        bool DeleteItem(Guid id);
-    }
-}
-=======
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
@@ -81,4 +64,3 @@ namespace BackendTeamwork.Repositories
         }
     }
 }
->>>>>>> da7de1e4169592927dc0362fcd7f741974b62bbe

@@ -52,5 +52,15 @@ namespace BackendTeamwork.Repositories
             return targetProduct;
         }
 
+              public IEnumerable<Product> Search(string searchTerm)
+        {
+            // Perform case-insensitive search in Name and Description fields
+            return _products.Where(p =>
+                p.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                p.Description.ToLower().Contains(searchTerm.ToLower())
+            );
+
+    }
+
     }
 }

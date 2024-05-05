@@ -67,5 +67,17 @@ namespace BackendTeamwork.Controllers
             return NotFound();
         }
 
+ private readonly IUserService _userService; // Corrected naming convention
+
+        
+
+       [HttpGet("search")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<UserReadDto>> Search(string searchTerm)
+        {
+            return Ok(_userService.Search(searchTerm));
+        }
+
+
     }
 }

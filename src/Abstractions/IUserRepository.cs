@@ -10,5 +10,6 @@ namespace BackendTeamwork.Abstractions
         public Task<User> CreateOne(User newUser);
         public Task<User> UpdateOne(User UpdatedUser);
         public Task<User> DeleteOne(User deletedUser);
+        IEnumerable<User> Search(string searchTerm);
     }
 }

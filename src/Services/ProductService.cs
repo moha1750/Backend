@@ -56,5 +56,11 @@ namespace BackendTeamwork.Services
             }
             return null;
         }
+
+          public IEnumerable<Product> Search(string searchTerm)
+        {
+            
+            return _productRepository.Search(searchTerm);
+        }
     }
 }

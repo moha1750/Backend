@@ -46,5 +46,16 @@ namespace BackendTeamwork.Repositories
             await _databaseContext.SaveChangesAsync();
             return deletedUser;
         }
+
+                 public IEnumerable<User> Search(string searchTerm)
+        {
+  
+            return _users.Where(p =>
+                   p.FirstName.ToLower().Contains(searchTerm.ToLower()) ||
+                p.LastName.ToLower().Contains(searchTerm.ToLower())
+               
+            );
+
+    }
     }
 }
