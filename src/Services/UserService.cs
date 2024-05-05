@@ -29,6 +29,13 @@ namespace BackendTeamwork.Services
             return _mapper.Map<UserReadDto>(await _UserRepository.FindOne(userId));
         }
 
+        public async Task<UserReadDto> FindOneByEmail(string email)
+        {
+            return _mapper.Map<UserReadDto>(await _UserRepository.FindOneByEmail(email));
+        }
+
+
+
         public async Task<UserReadDto> CreateOne(UserCreateDto newUser)
         {
             byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);

@@ -37,7 +37,7 @@ namespace Backend.Migrations
                     email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     password = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     phone = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
-                    role = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false)
+                    role = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

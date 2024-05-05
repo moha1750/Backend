@@ -35,6 +35,19 @@ namespace BackendTeamwork.Controllers
             return NotFound();
         }
 
+        [HttpGet("email/:{email}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<UserReadDto>> FindOneByEmail(string email)
+        {
+            UserReadDto? user = await _UserService.FindOneByEmail(email);
+            if (user is not null)
+            {
+                return Ok(user);
+            }
+            return NotFound();
+        }
+
         [HttpPost]
         public async Task<ActionResult<UserReadDto>> CreateOne([FromBody] UserCreateDto newUser)
         {

@@ -30,6 +30,11 @@ namespace BackendTeamwork.Repositories
             return await _users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == UserId);
         }
 
+        public async Task<User?> FindOneByEmail(string email)
+        {
+            return await _users.AsNoTracking().FirstOrDefaultAsync(user => user.Email.ToLower() == email.ToLower());
+        }
+
         public async Task<User> CreateOne(User newUser)
         {
             await _users.AddAsync(newUser);
