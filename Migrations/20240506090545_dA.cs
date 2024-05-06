@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class dbinit : Migration
+    public partial class dA : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -252,6 +252,34 @@ namespace Backend.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "shipping",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    tracking_no = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    delivery_method = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    address_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    order_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_shipping", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_shipping_address_address_id",
+                        column: x => x.address_id,
+                        principalTable: "address",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_shipping_order_order_id",
+                        column: x => x.order_id,
+                        principalTable: "order",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "ix_address_user_id",
                 table: "address",
@@ -311,6 +339,18 @@ namespace Backend.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_shipping_address_id",
+                table: "shipping",
+                column: "address_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_shipping_order_id",
+                table: "shipping",
+                column: "order_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_stock_product_id",
                 table: "stock",
                 column: "product_id");
@@ -331,9 +371,6 @@ namespace Backend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "address");
-
-            migrationBuilder.DropTable(
                 name: "order_stock");
 
             migrationBuilder.DropTable(
@@ -343,7 +380,7 @@ namespace Backend.Migrations
                 name: "review");
 
             migrationBuilder.DropTable(
-                name: "order");
+                name: "shipping");
 
             migrationBuilder.DropTable(
                 name: "stock");
@@ -352,16 +389,22 @@ namespace Backend.Migrations
                 name: "wishlist");
 
             migrationBuilder.DropTable(
-                name: "payment");
+                name: "address");
+
+            migrationBuilder.DropTable(
+                name: "order");
 
             migrationBuilder.DropTable(
                 name: "product");
 
             migrationBuilder.DropTable(
-                name: "user");
+                name: "payment");
 
             migrationBuilder.DropTable(
                 name: "category");
+
+            migrationBuilder.DropTable(
+                name: "user");
         }
     }
 }

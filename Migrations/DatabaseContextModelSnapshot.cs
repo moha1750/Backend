@@ -281,6 +281,52 @@ namespace Backend.Migrations
                     b.ToTable("review", (string)null);
                 });
 
+            modelBuilder.Entity("BackendTeamwork.Entities.Shipping", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("address_id");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date");
+
+                    b.Property<string>("DeliveryMethod")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("delivery_method");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("order_id");
+
+                    b.Property<string>("TrackingNo")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("tracking_no");
+
+                    b.HasKey("Id")
+                        .HasName("pk_shipping");
+
+                    b.HasIndex("AddressId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_shipping_address_id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_shipping_order_id");
+
+                    b.ToTable("shipping", (string)null);
+                });
+
             modelBuilder.Entity("BackendTeamwork.Entities.Stock", b =>
                 {
                     b.Property<Guid>("Id")
@@ -514,6 +560,27 @@ namespace Backend.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BackendTeamwork.Entities.Shipping", b =>
+                {
+                    b.HasOne("BackendTeamwork.Entities.Address", "Address")
+                        .WithOne("Shipping")
+                        .HasForeignKey("BackendTeamwork.Entities.Shipping", "AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_shipping_address_address_id");
+
+                    b.HasOne("BackendTeamwork.Entities.Order", "Order")
+                        .WithOne("Shipping")
+                        .HasForeignKey("BackendTeamwork.Entities.Shipping", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_shipping_order_order_id");
+
+                    b.Navigation("Address");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("BackendTeamwork.Entities.Stock", b =>
                 {
                     b.HasOne("BackendTeamwork.Entities.Product", "Product")
@@ -555,6 +622,12 @@ namespace Backend.Migrations
                         .HasConstraintName("fk_product_wishlist_wishlist_wishlists_id");
                 });
 
+            modelBuilder.Entity("BackendTeamwork.Entities.Address", b =>
+                {
+                    b.Navigation("Shipping")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BackendTeamwork.Entities.Category", b =>
                 {
                     b.Navigation("Products");
@@ -563,6 +636,9 @@ namespace Backend.Migrations
             modelBuilder.Entity("BackendTeamwork.Entities.Order", b =>
                 {
                     b.Navigation("OrderStocks");
+
+                    b.Navigation("Shipping")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.Payment", b =>

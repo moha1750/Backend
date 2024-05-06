@@ -24,6 +24,8 @@ namespace BackendTeamwork.Entities
 
 
         public Payment Payment { get; set; }
+        public Shipping Shipping { get; set; }
+
         public User User { get; set; }
         public IEnumerable<OrderStock> OrderStocks { get; set; }
 
