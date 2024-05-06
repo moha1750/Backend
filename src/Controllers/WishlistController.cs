@@ -1,5 +1,6 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -22,6 +23,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet(":{wishlistId}")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<WishlistReadDto>> FindOne(Guid wishlistId)
@@ -35,6 +37,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPut(":{wishlistId}/:{productId}")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WishlistReadDto>> AddOneProduct(Guid wishlistId, Guid productId)
@@ -48,6 +51,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<WishlistReadDto> CreateOne([FromBody] WishlistCreateDto newWishlist)
@@ -61,6 +65,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPut(":WishlistId")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WishlistReadDto?>> UpdateOne([FromQuery] Guid WishlistId, [FromBody] WishlistUpdateDto updatedWishlist)
@@ -75,6 +80,7 @@ namespace BackendTeamwork.Controllers
 
 
         [HttpDelete(":wishlistId")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WishlistReadDto>> DeleteOne(Guid wishlistId)

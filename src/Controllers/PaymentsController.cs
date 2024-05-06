@@ -1,6 +1,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -14,6 +15,7 @@ namespace BackendTeamwork.Controllers
     }
 
     [HttpGet(":{paymentId}")]
+    [Authorize(Roles = "Admin, Customer")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PaymentReadDto>> FindOne(Guid paymentId)
@@ -27,6 +29,7 @@ namespace BackendTeamwork.Controllers
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PaymentReadDto>> CreateOne([FromBody] PaymentCreateDto newPayment)
     {

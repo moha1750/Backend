@@ -1,6 +1,8 @@
+using System.Reflection;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -15,6 +17,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IEnumerable<UserReadDto> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
@@ -23,6 +26,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet(":{userId}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> FindOne(Guid userId)
@@ -36,6 +40,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet("email/:{email}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> FindOneByEmail(string email)
@@ -48,13 +53,30 @@ namespace BackendTeamwork.Controllers
             return NotFound();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<UserReadDto>> CreateOne([FromBody] UserCreateDto newUser)
+        [HttpPost("signUp")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<UserReadDto>> SignUp([FromBody] UserCreateDto newUser)
         {
-            return await _UserService.CreateOne(newUser);
+            UserReadDto? user = await _UserService.SignUp(newUser);
+
+            if (user is null) return BadRequest();
+
+            return Ok(user);
+        }
+
+        [HttpPost("signIn")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<UserReadDto>> SignIn([FromBody] UserSignInDto userSignIn)
+        {
+            string? token = await _UserService.SignIn(userSignIn);
+            if (token is null) return BadRequest();
+            return Ok(token);
         }
 
         [HttpPut(":{userId}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> UpdateOne(Guid userId, [FromBody] UserUpdateDto updatedUser)
@@ -68,6 +90,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpDelete(":{userId}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> DeleteOne(Guid userId)

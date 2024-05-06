@@ -35,7 +35,7 @@ namespace BackendTeamwork.Repositories
             return await _users.AsNoTracking().FirstOrDefaultAsync(user => user.Email.ToLower() == email.ToLower());
         }
 
-        public async Task<User> CreateOne(User newUser)
+        public async Task<User> SignUp(User newUser)
         {
             await _users.AddAsync(newUser);
             await _databaseContext.SaveChangesAsync();

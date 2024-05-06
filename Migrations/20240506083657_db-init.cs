@@ -1,4 +1,5 @@
 ﻿using System;
+using BackendTeamwork.Enums;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -12,6 +13,7 @@ namespace Backend.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:Enum:role", "customer,admin")
                 .Annotation("Npgsql:PostgresExtension:pgcrypto", ",,");
 
             migrationBuilder.CreateTable(
@@ -37,7 +39,7 @@ namespace Backend.Migrations
                     email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     password = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     phone = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
-                    role = table.Column<int>(type: "integer", nullable: false)
+                    role = table.Column<Role>(type: "role", nullable: false)
                 },
                 constraints: table =>
                 {
