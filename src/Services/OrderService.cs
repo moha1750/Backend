@@ -2,7 +2,6 @@ using AutoMapper;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
-using BackendTeamwork.Enums;
 using BackendTeamwork.Repositories;
 
 namespace BackendTeamwork.Services
@@ -19,9 +18,9 @@ namespace BackendTeamwork.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<OrderReadDto> FindMany(Guid userId, SortBy sortBy)
+        public IEnumerable<OrderReadDto> FindMany(Guid userId)
         {
-            return _orderRepository.FindMany(userId, sortBy).Select(_mapper.Map<OrderReadDto>);
+            return _orderRepository.FindMany(userId).Select(_mapper.Map<OrderReadDto>);
         }
 
         public async Task<OrderReadDto?> FindOne(Guid orderId)
