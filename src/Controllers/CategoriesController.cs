@@ -16,9 +16,9 @@ namespace BackendTeamwork.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<CategoryReadDto>> FindMany()
+        public ActionResult<IEnumerable<CategoryReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
-            return Ok(_categoryService.FindMany());
+            return Ok(_categoryService.FindMany(limit, offset));
         }
 
         [HttpGet(":{categoryId}")]
