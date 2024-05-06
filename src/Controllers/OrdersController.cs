@@ -18,7 +18,7 @@ namespace BackendTeamwork.Controllers
 
         [HttpGet("user/:{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<OrderReadDto>> FindMany([FromQuery] Guid userId, [FromQuery] SortBy sortBy)
+        public ActionResult<IEnumerable<OrderReadDto>> FindMany(Guid userId, [FromQuery(Name = "sort")] SortBy sortBy)
         {
             return Ok(_orderService.FindMany(userId, sortBy));
         }

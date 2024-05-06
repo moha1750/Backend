@@ -23,11 +23,11 @@ namespace BackendTeamwork.Repositories
         {
             if (sortBy == SortBy.Ascending)
             {
-                return _orders.Where(order => order.UserId == userId);
+                return _orders.Where(order => order.UserId == userId).OrderBy(order => order.Date);
             }
             else
             {
-                return _orders.OrderByDescending((Order) => Order.UserId == userId);
+                return _orders.Where(order => order.UserId == userId).OrderByDescending(order => order.Date);
             }
             // return _orders.Where(order => order.UserId == userId);
         }
