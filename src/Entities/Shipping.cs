@@ -12,9 +12,6 @@ namespace BackendTeamwork.Entities
         public Guid Id { get; set; }
 
         [Required, StringLength(30)]
-        public string Status { get; set; }
-
-        [Required, StringLength(30)]
         public string TrackingNo { get; set; }
 
         [Required, StringLength(30)]
@@ -27,12 +24,12 @@ namespace BackendTeamwork.Entities
         public Guid AddressId { get; set; }
 
 
-        [Required, ForeignKey("User")]
-        public Guid UserId { get; set; }
+        [Required, ForeignKey("Order")]
+        public Guid OrderId { get; set; }
 
 
         public Address Address { get; set; }
-        public User User { get; set; }
+        public Order Order { get; set; }
 
 
     }

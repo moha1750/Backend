@@ -257,11 +257,11 @@ namespace Backend.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    status = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    tracking_no = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    delivery_method = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     address_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    order_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    user_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    order_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -276,12 +276,6 @@ namespace Backend.Migrations
                         name: "fk_shipping_order_order_id",
                         column: x => x.order_id,
                         principalTable: "order",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_shipping_user_user_id",
-                        column: x => x.user_id,
-                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -347,17 +341,14 @@ namespace Backend.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_shipping_address_id",
                 table: "shipping",
-                column: "address_id");
+                column: "address_id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_shipping_order_id",
                 table: "shipping",
-                column: "order_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_shipping_user_id",
-                table: "shipping",
-                column: "user_id");
+                column: "order_id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_stock_product_id",

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240506075448_dA")]
+    [Migration("20240506090545_dA")]
     partial class dA
     {
         /// <inheritdoc />
@@ -300,31 +300,32 @@ namespace Backend.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date");
 
+                    b.Property<string>("DeliveryMethod")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("delivery_method");
+
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid")
                         .HasColumnName("order_id");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("TrackingNo")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
-                        .HasColumnName("status");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
+                        .HasColumnName("tracking_no");
 
                     b.HasKey("Id")
                         .HasName("pk_shipping");
 
                     b.HasIndex("AddressId")
+                        .IsUnique()
                         .HasDatabaseName("ix_shipping_address_id");
 
                     b.HasIndex("OrderId")
+                        .IsUnique()
                         .HasDatabaseName("ix_shipping_order_id");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_shipping_user_id");
 
                     b.ToTable("shipping", (string)null);
                 });
@@ -565,31 +566,22 @@ namespace Backend.Migrations
             modelBuilder.Entity("BackendTeamwork.Entities.Shipping", b =>
                 {
                     b.HasOne("BackendTeamwork.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
+                        .WithOne("Shipping")
+                        .HasForeignKey("BackendTeamwork.Entities.Shipping", "AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_shipping_address_address_id");
 
                     b.HasOne("BackendTeamwork.Entities.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
+                        .WithOne("Shipping")
+                        .HasForeignKey("BackendTeamwork.Entities.Shipping", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_shipping_order_order_id");
 
-                    b.HasOne("BackendTeamwork.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_shipping_user_user_id");
-
                     b.Navigation("Address");
 
                     b.Navigation("Order");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.Stock", b =>
@@ -633,6 +625,12 @@ namespace Backend.Migrations
                         .HasConstraintName("fk_product_wishlist_wishlist_wishlists_id");
                 });
 
+            modelBuilder.Entity("BackendTeamwork.Entities.Address", b =>
+                {
+                    b.Navigation("Shipping")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BackendTeamwork.Entities.Category", b =>
                 {
                     b.Navigation("Products");
@@ -641,6 +639,9 @@ namespace Backend.Migrations
             modelBuilder.Entity("BackendTeamwork.Entities.Order", b =>
                 {
                     b.Navigation("OrderStocks");
+
+                    b.Navigation("Shipping")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BackendTeamwork.Entities.Payment", b =>
