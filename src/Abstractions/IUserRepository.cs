@@ -5,7 +5,7 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IUserRepository
     {
-        public IEnumerable<User> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending);
+        public IEnumerable<User> FindMany(int limit, int offset, SortBy sortBy);
         public Task<User?> FindOne(Guid id);
 
         public Task<User> SignUp(User newUser);

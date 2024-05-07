@@ -21,7 +21,7 @@ namespace BackendTeamwork.Services
         }
 
 
-        public IEnumerable<ProductReadDto> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending)
+        public IEnumerable<ProductReadDto> FindMany(int limit, int offset, SortBy sortBy)
         {
             return _productRepository.FindMany(limit, offset, sortBy).Select(_mapper.Map<ProductReadDto>);
         }
