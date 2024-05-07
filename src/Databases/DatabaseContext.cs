@@ -96,6 +96,9 @@ namespace BackendTeamwork.Databases
                         .HasDefaultValueSql("gen_random_uuid()");
 
             modelBuilder.Entity<Shipping>()
+                        .Property(shipping => shipping.Date)
+                        .HasDefaultValueSql("CURRENT_DATE");
+            modelBuilder.Entity<Shipping>()
                         .Property(shipping => shipping.Id)
                         .HasDefaultValueSql("gen_random_uuid()");
         }
