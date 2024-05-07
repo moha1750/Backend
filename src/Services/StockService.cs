@@ -60,5 +60,11 @@ namespace BackendTeamwork.Services
             }
             return null;
         }
+
+        public async Task<Stock> ReduceOne(OrderStockReduceDto orderStock)
+        {
+            return await _stockRepository.ReduceOne(orderStock);
+        }
+
     }
 }

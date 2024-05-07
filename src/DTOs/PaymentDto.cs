@@ -9,6 +9,8 @@ namespace BackendTeamwork.DTOs
         public int Amount { get; set; }
         public string Method { get; set; }
         public Guid UserId { get; set; }
+
+        public IEnumerable<OrderStockReduceDto> Items { get; set; }
     }
 
     public class PaymentReadDto

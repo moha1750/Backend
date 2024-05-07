@@ -11,6 +11,12 @@ namespace BackendTeamwork.DTOs
         public Guid StockId { get; set; }
     }
 
+    public class OrderStockReduceDto
+    {
+        public int Quantity { get; set; }
+        public Guid StockId { get; set; }
+    }
+
     public class OrderStockReadDto
     {
         public int Quantity { get; set; }

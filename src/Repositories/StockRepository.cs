@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -66,6 +67,17 @@ namespace BackendTeamwork.Repositories
             _stocks.Remove(deleteStock);
             await _databaseContext.SaveChangesAsync();
             return deleteStock;
+        }
+
+        public async Task<Stock> ReduceOne(OrderStockReduceDto orderStock)
+        {
+            Stock stock = _stocks.AsNoTracking().First(stock => stock.Id == orderStock.StockId);
+
+            stock.Quantity -= orderStock.Quantity;
+
+            _stocks.Update(stock);
+            await _databaseContext.SaveChangesAsync();
+            return stock;
         }
     }
 }

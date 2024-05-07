@@ -53,6 +53,9 @@ builder.Services.AddScoped<IWishlistService, WishlistService>();
 builder.Services.AddScoped<IShippingRepository, ShippingRepository>();
 builder.Services.AddScoped<IShippingService, ShippingService>();
 
+builder.Services.AddScoped<IOrderStockRepository, OrderStockRepository>();
+builder.Services.AddScoped<IOrderStockService, OrderStockService>();
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
