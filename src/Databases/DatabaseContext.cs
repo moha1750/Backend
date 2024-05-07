@@ -18,7 +18,7 @@ namespace BackendTeamwork.Databases
         public DbSet<Stock> Stock { get; set; }
         public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<Category> Category { get; set; }
-
+        public DbSet<Shipping>? Shipping { get; internal set; }
 
         private IConfiguration _config;
         public DatabaseContext(IConfiguration config)
@@ -102,6 +102,13 @@ namespace BackendTeamwork.Databases
 
             modelBuilder.Entity<Wishlist>()
                         .Property(wishlist => wishlist.Id)
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+            modelBuilder.Entity<Shipping>()
+                        .Property(shipping => shipping.Date)
+                        .HasDefaultValueSql("CURRENT_DATE");
+            modelBuilder.Entity<Shipping>()
+                        .Property(shipping => shipping.Id)
                         .HasDefaultValueSql("gen_random_uuid()");
         }
     }

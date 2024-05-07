@@ -5,4 +5,5 @@ namespace BackendTeamwork.Enums
         Customer,
         Admin
     }
+
 }
