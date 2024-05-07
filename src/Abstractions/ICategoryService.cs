@@ -6,7 +6,7 @@ namespace BackendTeamwork.Abstractions
     public interface ICategoryService
     {
 
-        public IEnumerable<CategoryReadDto> FindMany();
+        public IEnumerable<CategoryReadDto> FindMany(int limit, int offset);
         public Task<CategoryReadDto?> FindOne(Guid id);
         public Task<CategoryReadDto> CreateOne(CategoryCreateDto newCategory);
 
