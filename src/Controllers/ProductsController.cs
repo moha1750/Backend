@@ -1,6 +1,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using BackendTeamwork.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -17,9 +18,9 @@ namespace BackendTeamwork.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<ProductReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
+        public ActionResult<IEnumerable<ProductReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset, [FromQuery(Name = "sort")] SortBy sortBy)
         {
-            return Ok(_productService.FindMany(limit, offset));
+            return Ok(_productService.FindMany(limit, offset, sortBy));
         }
 
         [HttpGet(":productId")]

@@ -1,3 +1,4 @@
+#pragma warning disable CS8618
 
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;

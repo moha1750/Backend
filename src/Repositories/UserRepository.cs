@@ -1,6 +1,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
+using BackendTeamwork.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackendTeamwork.Repositories
@@ -17,13 +18,23 @@ namespace BackendTeamwork.Repositories
         }
 
 
-        public IEnumerable<User> FindMany(int limit, int offset)
+        public IEnumerable<User> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending)
         {
+            IEnumerable<User> sortedUsers;
+            if (sortBy == SortBy.Ascending)
+            {
+                sortedUsers = _users.OrderBy(_users => _users.FirstName);
+            }
+            else
+            {
+                sortedUsers = _users.OrderByDescending(_users => _users.FirstName);
+            }
+            // sorting by Name
             if (limit == 0 && offset == 0)
             {
-                return _users;
+                return sortedUsers;
             }
-            return _users.Skip(offset).Take(limit);
+            return sortedUsers.Skip(offset).Take(limit);
         }
         public async Task<User?> FindOne(Guid UserId)
         {

@@ -1,6 +1,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using BackendTeamwork.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -17,9 +18,9 @@ namespace BackendTeamwork.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IEnumerable<UserReadDto> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
+        public IEnumerable<UserReadDto> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset, [FromQuery(Name = "sort")] SortBy sortBy)
         {
-            return _UserService.FindMany(limit, offset);
+            return _UserService.FindMany(limit, offset, sortBy);
         }
 
         [HttpGet(":{userId}")]

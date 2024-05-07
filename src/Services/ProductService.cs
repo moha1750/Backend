@@ -2,6 +2,7 @@ using AutoMapper;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using BackendTeamwork.Enums;
 using BackendTeamwork.Repositories;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -20,9 +21,9 @@ namespace BackendTeamwork.Services
         }
 
 
-        public IEnumerable<ProductReadDto> FindMany(int limit, int offset)
+        public IEnumerable<ProductReadDto> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending)
         {
-            return _productRepository.FindMany(limit, offset).Select(_mapper.Map<ProductReadDto>);
+            return _productRepository.FindMany(limit, offset, sortBy).Select(_mapper.Map<ProductReadDto>);
         }
 
         public async Task<ProductReadDto?> FindOne(Guid productId)
