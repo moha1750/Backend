@@ -56,5 +56,13 @@ namespace BackendTeamwork.Repositories
             return targetProduct;
         }
 
+        public IEnumerable<Product> Search(string searchTerm)
+        {
+            return _products.Where(product =>
+                product.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                product.Description.ToLower().Contains(searchTerm.ToLower())
+            );
+        }
+
     }
 }
