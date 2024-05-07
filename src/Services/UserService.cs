@@ -5,6 +5,7 @@ using AutoMapper;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using BackendTeamwork.Enums;
 using BackendTeamwork.Utils;
 using Microsoft.IdentityModel.Tokens;
 
@@ -23,9 +24,9 @@ namespace BackendTeamwork.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<UserReadDto> FindMany(int limit, int offset)
+        public IEnumerable<UserReadDto> FindMany(int limit, int offset, SortBy sortBy)
         {
-            return _UserRepository.FindMany(limit, offset).Select(_mapper.Map<UserReadDto>);
+            return _UserRepository.FindMany(limit, offset, sortBy).Select(_mapper.Map<UserReadDto>);
         }
         public async Task<UserReadDto?> FindOne(Guid userId)
         {

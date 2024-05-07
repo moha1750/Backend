@@ -2,6 +2,7 @@ using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using Microsoft.AspNetCore.Authorization;
+using BackendTeamwork.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -19,9 +20,9 @@ namespace BackendTeamwork.Controllers
         [HttpGet("user/:{userId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<OrderReadDto>> FindMany([FromQuery] Guid userId)
+        public ActionResult<IEnumerable<OrderReadDto>> FindMany(Guid userId, [FromQuery(Name = "sort")] SortBy sortBy)
         {
-            return Ok(_orderService.FindMany(userId));
+            return Ok(_orderService.FindMany(userId, sortBy));
         }
 
         [HttpGet(":{orderId}")]

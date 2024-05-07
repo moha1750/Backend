@@ -2,6 +2,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Entities;
+using BackendTeamwork.Enums;
 using BackendTeamwork.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -20,13 +21,22 @@ namespace BackendTeamwork.Repositories
 
         }
 
-        public IEnumerable<Product> FindMany(int limit, int offset)
+        public IEnumerable<Product> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending)
         {
+            IEnumerable<Product> sortedProducts;
+            if (sortBy == SortBy.Ascending)
+            {
+                sortedProducts = _products.OrderBy(_products => _products.Name);
+            }
+            else
+            {
+                sortedProducts = _products.OrderByDescending(_products => _products.Name);
+            }
             if (limit == 0 && offset == 0)
             {
-                return _products;
+                return sortedProducts;
             }
-            return _products.Skip(offset).Take(limit);
+            return sortedProducts.Skip(offset).Take(limit);
         }
 
 

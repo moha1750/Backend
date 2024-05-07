@@ -1,11 +1,12 @@
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using BackendTeamwork.Enums;
 
 namespace BackendTeamwork.Abstractions
 {
     public interface IUserService
     {
-        public IEnumerable<UserReadDto> FindMany(int limit, int offset);
+        public IEnumerable<UserReadDto> FindMany(int limit, int offset, SortBy sortBy);
         public Task<UserReadDto?> FindOne(Guid userId);
         public Task<UserReadDto> FindOneByEmail(string email);
 

@@ -2,6 +2,7 @@ using BackendTeamwork.Entities;
 using BackendTeamwork.Databases;
 using BackendTeamwork.Abstractions;
 using Microsoft.EntityFrameworkCore;
+using BackendTeamwork.Enums;
 
 namespace BackendTeamwork.Repositories
 {
@@ -18,10 +19,17 @@ namespace BackendTeamwork.Repositories
 
         }
 
-        public IEnumerable<Order> FindMany(Guid userId)
+        public IEnumerable<Order> FindMany(Guid userId, SortBy sortBy = SortBy.Ascending)
         {
-
-            return _orders.Where(order => order.UserId == userId);
+            if (sortBy == SortBy.Ascending)
+            {
+                return _orders.Where(order => order.UserId == userId).OrderBy(order => order.Date);
+            }
+            else
+            {
+                return _orders.Where(order => order.UserId == userId).OrderByDescending(order => order.Date);
+            }
+            // return _orders.Where(order => order.UserId == userId);
         }
 
         public async Task<Order?> FindOne(Guid id)

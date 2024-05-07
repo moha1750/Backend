@@ -18,7 +18,7 @@ namespace BackendTeamwork.Databases
         public DbSet<Stock> Stock { get; set; }
         public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<Category> Category { get; set; }
-        public DbSet<Shipping>? Shipping { get; internal set; }
+        public DbSet<Shipping> Shipping { get; set; }
 
         private IConfiguration _config;
         public DatabaseContext(IConfiguration config)
