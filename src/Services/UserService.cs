@@ -68,10 +68,9 @@ namespace BackendTeamwork.Services
             return _mapper.Map<UserReadDto>(await _UserRepository.DeleteOne(deletedUser));
         }
 
-           public IEnumerable<User> Search(string searchTerm)
+        public IEnumerable<UserReadDto> Search(string searchTerm)
         {
-            
-            return _UserRepository.Search(searchTerm);
+            return _UserRepository.Search(searchTerm).Select(_mapper.Map<UserReadDto>);
         }
 
 

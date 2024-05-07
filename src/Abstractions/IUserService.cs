@@ -12,7 +12,7 @@ namespace BackendTeamwork.Abstractions
         public Task<UserReadDto> CreateOne(UserCreateDto newUser);
         public Task<UserReadDto?> UpdateOne(Guid userId, UserUpdateDto UpdatedUser);
         public Task<UserReadDto?> DeleteOne(Guid userId);
-        IEnumerable<User> Search(string searchTerm);
+        public IEnumerable<UserReadDto> Search(string searchTerm);
 
     }
 }

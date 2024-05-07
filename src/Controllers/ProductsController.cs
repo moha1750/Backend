@@ -7,9 +7,7 @@ namespace BackendTeamwork.Controllers
 {
     public class ProductsController : BaseController
     {
-
         private IProductService _productService;
-
         public ProductsController(IProductService productService)
         {
             _productService = productService;
@@ -70,9 +68,9 @@ namespace BackendTeamwork.Controllers
             return NotFound();
         }
 
-            [HttpGet("search")]
+        [HttpGet("search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Product>> Search(string searchTerm)
+        public ActionResult<IEnumerable<ProductReadDto>> Search(string searchTerm)
         {
             return Ok(_productService.Search(searchTerm));
         }
