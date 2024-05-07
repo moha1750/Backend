@@ -1,6 +1,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -14,6 +15,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<ProductReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
@@ -21,6 +23,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet(":productId")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ProductReadDto>> FindOne(Guid productId)
@@ -34,6 +37,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ProductReadDto>> CreateOne([FromBody] ProductCreateDto newProduct)
@@ -42,6 +46,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPut(":productId")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductReadDto?>> UpdateOne([FromQuery] Guid productId, [FromBody] ProductUpdateDto updatedProduct)
@@ -56,6 +61,7 @@ namespace BackendTeamwork.Controllers
 
 
         [HttpDelete(":productId")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductReadDto>> DeleteOne(Guid productId)

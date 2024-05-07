@@ -1,6 +1,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -16,6 +17,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet("user/:{userId}")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<OrderReadDto>> FindMany([FromQuery] Guid userId)
         {
@@ -23,6 +25,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet(":{orderId}")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<OrderReadDto?>> FindOne(Guid orderId)
         {
@@ -30,6 +33,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<OrderReadDto>> CreateOne([FromBody] OrderCreateDto newOrder)
         {

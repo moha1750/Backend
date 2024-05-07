@@ -1,6 +1,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -15,6 +16,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<CategoryReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
@@ -22,6 +24,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet(":{categoryId}")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CategoryReadDto>> FindOne(Guid categoryId)
@@ -35,6 +38,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<CategoryReadDto>> CreateOne(CategoryCreateDto newCategory)
         {
@@ -42,6 +46,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPut(":{categoryId}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CategoryReadDto?>> UpdateOne(Guid categoryId, CategoryUpdateDto updateCategory)
@@ -55,6 +60,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpDelete(":{categoryId}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CategoryReadDto>> DeleteOne(Guid categoryId)

@@ -1,6 +1,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -16,6 +17,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<Review>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
@@ -23,6 +25,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet(":reviewId")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ReviewReadDto?>> FindOne(Guid reviewId)
@@ -31,6 +34,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ReviewReadDto>> CreateOne([FromBody] ReviewCreateDto newReview)
@@ -44,6 +48,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPut(":reviewId")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ReviewReadDto?>> UpdateOne(Guid reviewId, [FromBody] ReviewUpdateDto updatedReview)
