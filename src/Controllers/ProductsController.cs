@@ -76,5 +76,12 @@ namespace BackendTeamwork.Controllers
             return NotFound();
         }
 
+            [HttpGet("search")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<Product>> Search(string searchTerm)
+        {
+            return Ok(_productService.Search(searchTerm));
+        }
+
     }
 }
