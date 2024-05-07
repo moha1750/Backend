@@ -18,9 +18,9 @@ namespace BackendTeamwork.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<ShippingReadDto> FindMany(int limit, int offset)
+        public async Task<ShippingReadDto?> FindOneByOrderId(Guid orderId)
         {
-            return _shippingRepository.FindMany(limit, offset).Select(_mapper.Map<ShippingReadDto>);
+            return _mapper.Map<ShippingReadDto>(await _shippingRepository.FindOneByOrderId(orderId));
         }
 
         public async Task<ShippingReadDto?> FindOne(Guid shippingId)
@@ -28,18 +28,19 @@ namespace BackendTeamwork.Services
             return _mapper.Map<ShippingReadDto>(await _shippingRepository.FindOne(shippingId));
         }
 
-        public async Task<ShippingReadDto> CreateOne(ShippingCreateDto newShipping)
+        public async Task<ShippingReadDto?> CreateOne(ShippingCreateDto newShipping)
         {
+            Shipping? shipping = await _shippingRepository.FindOneByOrderId(newShipping.OrderId);
+            if (shipping is not null) return null;
+
             return _mapper.Map<ShippingReadDto>(await _shippingRepository.CreateOne(_mapper.Map<Shipping>(newShipping)));
         }
 
         public async Task<ShippingReadDto?> UpdateOne(Guid shippingId, ShippingUpdateDto updatedShipping)
         {
             Shipping? oldShipping = await _shippingRepository.FindOne(shippingId);
-            if (oldShipping is null)
-            {
-                return null;
-            }
+            if (oldShipping is null) return null;
+
             Shipping shipping = _mapper.Map<Shipping>(updatedShipping);
             shipping.Id = shippingId;
             return _mapper.Map<ShippingReadDto>(await _shippingRepository.UpdateOne(shipping));
@@ -48,11 +49,8 @@ namespace BackendTeamwork.Services
         public async Task<ShippingReadDto?> DeleteOne(Guid shippingId)
         {
             Shipping? targetShipping = await _shippingRepository.FindOne(shippingId);
-            if (targetShipping is not null)
-            {
-                return _mapper.Map<ShippingReadDto>(await _shippingRepository.DeleteOne(targetShipping));
-            }
-            return null;
+            if (targetShipping is null) return null;
+            return _mapper.Map<ShippingReadDto>(await _shippingRepository.DeleteOne(targetShipping));
         }
     }
 }

@@ -1,6 +1,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -16,17 +17,60 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet(":{shippingId}")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<ShippingReadDto?>> FindOne(Guid orderId)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ShippingReadDto?>> FindOne(Guid shippingId)
         {
-            return Ok(await _shippingService.FindOne(orderId));
+            ShippingReadDto? shipping = await _shippingService.FindOne(shippingId);
+            if (shipping is null) return BadRequest();
+
+            return Ok(shipping);
+        }
+
+        [HttpGet("order/:{orderId}")]
+        [Authorize(Roles = "Admin, Customer")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ShippingReadDto?>> FindOneByOrderId(Guid orderId)
+        {
+            ShippingReadDto? shipping = await _shippingService.FindOneByOrderId(orderId);
+            if (shipping is null) return BadRequest();
+
+            return Ok(shipping);
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ShippingReadDto>> CreateOne([FromBody] ShippingCreateDto newShipping)
         {
-            return Ok(await _shippingService.CreateOne(newShipping));
+            ShippingReadDto? shipping = await _shippingService.CreateOne(newShipping);
+            if (shipping is null) return BadRequest();
+
+            return Ok(shipping);
+        }
+
+        [HttpPut(":{shippingId}")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ShippingReadDto?>> UpdateOne(Guid shippingId, [FromBody] ShippingUpdateDto updatedShipping)
+        {
+            ShippingReadDto? shipping = await _shippingService.UpdateOne(shippingId, updatedShipping);
+            if (shipping is null) return NotFound();
+            return Ok(shipping);
+        }
+
+        [HttpDelete(":{shippingId}")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ShippingReadDto?>> DeleteOne(Guid shippingId)
+        {
+            ShippingReadDto? targetShipping = await _shippingService.DeleteOne(shippingId);
+            if (targetShipping is null) return BadRequest();
+            return NoContent();
         }
 
     }

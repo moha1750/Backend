@@ -43,7 +43,7 @@ namespace BackendTeamwork.Services
         public async Task<UserReadDto?> SignUp(UserCreateDto newUser)
         {
             User? user = await _UserRepository.FindOneByEmail(newUser.Email);
-            if (user is null) return null;
+            if (user is not null) return null;
             byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
             PasswordUtils.HashPassword(newUser.Password, out string hashedPassword, pepper);
             newUser.Password = hashedPassword;
