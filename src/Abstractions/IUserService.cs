@@ -10,9 +10,12 @@ namespace BackendTeamwork.Abstractions
         public Task<UserReadDto?> FindOne(Guid userId);
         public Task<UserReadDto> FindOneByEmail(string email);
 
-        public Task<UserReadDto> CreateOne(UserCreateDto newUser);
+        public Task<UserReadDto?> SignUp(UserCreateDto newUser);
+
+        public Task<string?> SignIn(UserSignInDto userSignIn);
         public Task<UserReadDto?> UpdateOne(Guid userId, UserUpdateDto UpdatedUser);
         public Task<UserReadDto?> DeleteOne(Guid userId);
+        public IEnumerable<UserReadDto> Search(string searchTerm);
 
     }
 }

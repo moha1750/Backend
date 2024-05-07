@@ -1,6 +1,7 @@
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendTeamwork.Controllers
@@ -16,6 +17,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<StockReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
@@ -23,6 +25,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet(":{productId}")]
+        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<StockReadDto>> FindMany(Guid productId)
         {
@@ -43,6 +46,7 @@ namespace BackendTeamwork.Controllers
         // }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<StockReadDto>> CreateOne([FromBody] StockCreateDto newStock)
@@ -57,6 +61,7 @@ namespace BackendTeamwork.Controllers
 
 
         [HttpPut(":{stockId}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<StockReadDto>> UpdateOne(Guid stockId, [FromBody] StockUpdateDto updatedStock)
@@ -70,6 +75,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpDelete(":{stockId}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteOne(Guid stockId)

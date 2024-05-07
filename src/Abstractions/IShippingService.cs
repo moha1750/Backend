@@ -9,7 +9,7 @@ namespace BackendTeamwork.Abstractions
 
         public Task<ShippingReadDto?> FindOne(Guid shippingId);
 
-        public Task<ShippingReadDto> CreateOne(ShippingCreateDto newProduct);
+        public Task<ShippingReadDto> CreateOne(ShippingCreateDto newShipping);
 
         public Task<ShippingReadDto?> UpdateOne(Guid ShippingId, ShippingUpdateDto updatedShipping);
 

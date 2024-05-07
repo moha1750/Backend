@@ -1,5 +1,7 @@
 using BackendTeamwork.Entities;
+using BackendTeamwork.Enums;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace BackendTeamwork.Databases
 {
@@ -25,10 +27,17 @@ namespace BackendTeamwork.Databases
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-       => optionsBuilder.UseNpgsql(_config["DB"]).UseSnakeCaseNamingConvention();
+        {
+            var dataSourceBuilder = new NpgsqlDataSourceBuilder(_config["DB"]);
+            dataSourceBuilder.MapEnum<Role>();
+            var dataSource = dataSourceBuilder.Build();
+            optionsBuilder.UseNpgsql(dataSource).UseSnakeCaseNamingConvention();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasPostgresEnum<Role>();
+
             modelBuilder.HasPostgresExtension("pgcrypto");
 
             modelBuilder.Entity<OrderStock>()
@@ -95,6 +104,9 @@ namespace BackendTeamwork.Databases
                         .Property(wishlist => wishlist.Id)
                         .HasDefaultValueSql("gen_random_uuid()");
 
+            modelBuilder.Entity<Shipping>()
+                        .Property(shipping => shipping.Date)
+                        .HasDefaultValueSql("CURRENT_DATE");
             modelBuilder.Entity<Shipping>()
                         .Property(shipping => shipping.Id)
                         .HasDefaultValueSql("gen_random_uuid()");

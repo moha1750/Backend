@@ -22,8 +22,7 @@ namespace BackendTeamwork.DTOs
         [Required, ForeignKey("Order")]
         public Guid OrderId { get; set; }
 
-        [Required, ForeignKey("User")]
-        public Guid UserId { get; set; }
+
     }
 
     public class ShippingReadDto
@@ -44,8 +43,7 @@ namespace BackendTeamwork.DTOs
         [Required, ForeignKey("Order")]
         public Guid OrderId { get; set; }
 
-        [Required, ForeignKey("User")]
-        public Guid UserId { get; set; }
+
     }
 
     public class ShippingUpdateDto
@@ -65,7 +63,6 @@ namespace BackendTeamwork.DTOs
         [Required, ForeignKey("Order")]
         public Guid OrderId { get; set; }
 
-        [Required, ForeignKey("User")]
-        public Guid UserId { get; set; }
+
     }
 }

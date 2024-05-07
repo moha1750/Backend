@@ -8,9 +8,10 @@ namespace BackendTeamwork.Abstractions
         public IEnumerable<User> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending);
         public Task<User?> FindOne(Guid id);
 
-        public Task<User> CreateOne(User newUser);
+        public Task<User> SignUp(User newUser);
         public Task<User?> FindOneByEmail(string email);
         public Task<User> UpdateOne(User UpdatedUser);
         public Task<User> DeleteOne(User deletedUser);
+        public IEnumerable<User> Search(string searchTerm);
     }
 }

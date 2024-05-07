@@ -46,7 +46,7 @@ namespace BackendTeamwork.Repositories
             return await _users.AsNoTracking().FirstOrDefaultAsync(user => user.Email.ToLower() == email.ToLower());
         }
 
-        public async Task<User> CreateOne(User newUser)
+        public async Task<User> SignUp(User newUser)
         {
             await _users.AddAsync(newUser);
             await _databaseContext.SaveChangesAsync();
@@ -65,6 +65,14 @@ namespace BackendTeamwork.Repositories
             _users.Remove(deletedUser);
             await _databaseContext.SaveChangesAsync();
             return deletedUser;
+        }
+
+        public IEnumerable<User> Search(string searchTerm)
+        {
+            return _users.Where(user =>
+                user.FirstName.ToLower().Contains(searchTerm.ToLower()) ||
+                user.LastName.ToLower().Contains(searchTerm.ToLower())
+            );
         }
     }
 }

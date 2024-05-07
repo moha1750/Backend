@@ -15,18 +15,11 @@ namespace BackendTeamwork.Controllers
             _shippingService = shippingService;
         }
 
-        [HttpGet("user/:{userId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<ShippingReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
-        {
-            return Ok(_shippingService.FindMany(limit, offset));
-        }
-
         [HttpGet(":{shippingId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<ShippingReadDto?>> FindOne(Guid shippingId)
+        public async Task<ActionResult<ShippingReadDto?>> FindOne(Guid orderId)
         {
-            return Ok(await _shippingService.FindOne(shippingId));
+            return Ok(await _shippingService.FindOne(orderId));
         }
 
         [HttpPost]
