@@ -58,7 +58,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserReadDto>> SignUp([FromBody] UserCreateDto newUser)
         {
-            UserReadDto? user = await _UserService.SignUp(newUser);
+            UserReadDto? user = await _userService.SignUp(newUser);
 
             if (user is null) return BadRequest();
 
@@ -70,7 +70,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserReadDto>> SignIn([FromBody] UserSignInDto userSignIn)
         {
-            string? token = await _UserService.SignIn(userSignIn);
+            string? token = await _userService.SignIn(userSignIn);
             if (token is null) return BadRequest();
             return Ok(token);
         }
