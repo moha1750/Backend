@@ -16,6 +16,6 @@ namespace BackendTeamwork.Abstractions
 
         public Task<ProductReadDto?> DeleteOne(Guid productId);
 
-        IEnumerable<Product> Search(string searchTerm);
+        public IEnumerable<ProductReadDto> Search(string searchTerm);
     }
 }

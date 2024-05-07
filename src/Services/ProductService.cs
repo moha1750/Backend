@@ -57,10 +57,9 @@ namespace BackendTeamwork.Services
             return null;
         }
 
-          public IEnumerable<Product> Search(string searchTerm)
+        public IEnumerable<ProductReadDto> Search(string searchTerm)
         {
-            
-            return _productRepository.Search(searchTerm);
+            return _productRepository.Search(searchTerm).Select(_mapper.Map<ProductReadDto>);
         }
     }
 }

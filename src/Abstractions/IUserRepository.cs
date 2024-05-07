@@ -11,6 +11,6 @@ namespace BackendTeamwork.Abstractions
         public Task<User?> FindOneByEmail(string email);
         public Task<User> UpdateOne(User UpdatedUser);
         public Task<User> DeleteOne(User deletedUser);
-        IEnumerable<User> Search(string searchTerm);
+        public IEnumerable<User> Search(string searchTerm);
     }
 }

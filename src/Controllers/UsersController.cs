@@ -9,11 +9,11 @@ namespace BackendTeamwork.Controllers
 {
     public class UsersController : BaseController
     {
-        private IUserService _UserService;
+        private IUserService _userService;
 
         public UsersController(IUserService UserService)
         {
-            _UserService = UserService;
+            _userService = UserService;
         }
 
         [HttpGet]
@@ -22,7 +22,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IEnumerable<UserReadDto> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
-            return _UserService.FindMany(limit, offset);
+            return _userService.FindMany(limit, offset);
         }
 
         [HttpGet(":{userId}")]
@@ -31,7 +31,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> FindOne(Guid userId)
         {
-            UserReadDto? user = await _UserService.FindOne(userId);
+            UserReadDto? user = await _userService.FindOne(userId);
             if (user is not null)
             {
                 return Ok(user);
@@ -45,7 +45,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> FindOneByEmail(string email)
         {
-            UserReadDto? user = await _UserService.FindOneByEmail(email);
+            UserReadDto? user = await _userService.FindOneByEmail(email);
             if (user is not null)
             {
                 return Ok(user);
@@ -81,7 +81,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> UpdateOne(Guid userId, [FromBody] UserUpdateDto updatedUser)
         {
-            UserReadDto? user = await _UserService.UpdateOne(userId, updatedUser);
+            UserReadDto? user = await _userService.UpdateOne(userId, updatedUser);
             if (user is not null)
             {
                 return Ok(user);
@@ -95,7 +95,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> DeleteOne(Guid userId)
         {
-            UserReadDto? deletedUser = await _UserService.DeleteOne(userId);
+            UserReadDto? deletedUser = await _userService.DeleteOne(userId);
             if (deletedUser is not null)
             {
                 return NoContent();
@@ -103,11 +103,7 @@ namespace BackendTeamwork.Controllers
             return NotFound();
         }
 
- private readonly IUserService _userService; // Corrected naming convention
-
-        
-
-       [HttpGet("search")]
+        [HttpGet("search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<UserReadDto>> Search(string searchTerm)
         {
