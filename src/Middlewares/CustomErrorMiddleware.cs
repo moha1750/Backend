@@ -28,7 +28,7 @@ namespace BackendTeamwork.Middlewares
             {
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "text/plain";
-                await context.Response.WriteAsync(e.Message);
+                await context.Response.WriteAsync(e.InnerException.Message);
                 Console.WriteLine("Database Exception");
 
                 // Logging

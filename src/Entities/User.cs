@@ -12,7 +12,7 @@ namespace BackendTeamwork.Entities
         [Key]
         public Guid Id { get; set; }
 
-        [Required, StringLength(30)]
+        [Required(AllowEmptyStrings = false), StringLength(30)]
         public string FirstName { get; set; }
 
         [Required, StringLength(30)]

@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Numerics;
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -38,9 +39,10 @@ namespace BackendTeamwork.Services
 
         public async Task<UserReadDto> FindOneByEmail(string email)
         {
-            return _mapper.Map<UserReadDto>(await _UserRepository.FindOneByEmail(email));
+            User? user = await _UserRepository.FindOneByEmail(email);
+            if (user is null) throw CustomErrorException.NotFound("User not found");
+            return _mapper.Map<UserReadDto>(user);
         }
-
 
 
         public async Task<UserReadDto?> SignUp(UserCreateDto newUser)
@@ -67,7 +69,7 @@ namespace BackendTeamwork.Services
             byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
             bool isCorrectPass = PasswordUtils.VerifyPassword(userSignIn.Password, user.Password, pepper);
 
-            if (!isCorrectPass) throw CustomErrorException.InvalidData("No match found");
+            if (!isCorrectPass) throw CustomErrorException.InvalidData("Invalid data");
 
             IEnumerable<Claim> claims = [
                 new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
@@ -95,10 +97,10 @@ namespace BackendTeamwork.Services
             User? targetUser = await _UserRepository.FindOne(userId);
             if (targetUser is null) throw CustomErrorException.NotFound("No user found");
 
+            if (updatedUser.FirstName.Length < 1 || updatedUser.LastName.Length < 1) throw CustomErrorException.InvalidData("Invalid input");
             targetUser.FirstName = updatedUser.FirstName;
             targetUser.LastName = updatedUser.LastName;
             targetUser.Phone = updatedUser.Phone;
-            targetUser.Role = updatedUser.Role;
             return _mapper.Map<UserReadDto>(await _UserRepository.UpdateOne(targetUser));
         }
 
@@ -113,11 +115,8 @@ namespace BackendTeamwork.Services
         public IEnumerable<UserReadDto> Search(string searchTerm)
         {
             var user = _UserRepository.Search(searchTerm).Select(_mapper.Map<UserReadDto>);
-            if (user is null) throw CustomErrorException.NotFound("User not found");
             return user;
         }
-
-
 
     }
 }
