@@ -1,10 +1,10 @@
 using AutoMapper;
 using BackendTeamwork.Abstractions;
+using BackendTeamwork.Databases;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Enums;
-using BackendTeamwork.Repositories;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+
 
 namespace BackendTeamwork.Services
 {
@@ -12,12 +12,16 @@ namespace BackendTeamwork.Services
     {
 
         private IProductRepository _productRepository;
+        private DatabaseContext _databaseContext;
+        private IStockService _stockService;
         private IMapper _mapper;
 
-        public ProductService(IProductRepository productRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository, IMapper mapper, DatabaseContext databaseContext, IStockService stockService)
         {
             _productRepository = productRepository;
+            _databaseContext = databaseContext;
             _mapper = mapper;
+            _stockService = stockService;
         }
 
 
@@ -33,7 +37,29 @@ namespace BackendTeamwork.Services
 
         public async Task<ProductReadDto> CreateOne(ProductCreateDto newProduct)
         {
-            return _mapper.Map<ProductReadDto>(await _productRepository.CreateOne(_mapper.Map<Product>(newProduct)));
+            using (var transaction = _databaseContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    Product product = await _productRepository.CreateOne(_mapper.Map<Product>(newProduct));
+
+                    IEnumerable<StockCreateDto> stocks = newProduct.Stocks.Select(_mapper.Map<StockCreateDto>);
+
+                    foreach (StockCreateDto stock in stocks)
+                    {
+                        stock.ProductId = product.Id;
+                        await _stockService.CreateOne(stock);
+                    }
+
+                    transaction.Commit();
+                    return _mapper.Map<ProductReadDto>(product);
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw new Exception("Something went wrong");
+                }
+            }
         }
 
         public async Task<ProductReadDto?> UpdateOne(Guid productId, ProductUpdateDto updatedProduct)

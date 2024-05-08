@@ -13,6 +13,14 @@ namespace BackendTeamwork.DTOs
         public Guid ProductId { get; set; }
 
     }
+    public class StockCreateDtoWithoutId
+    {
+        public int Price { get; set; }
+        public int Quantity { get; set; }
+        public string Size { get; set; }
+        public string Color { get; set; }
+
+    }
 
     public class StockReadDto
     {
