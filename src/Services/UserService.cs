@@ -1,12 +1,15 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using AutoMapper;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Enums;
+using BackendTeamwork.Exceptions;
 using BackendTeamwork.Utils;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BackendTeamwork.Services
@@ -42,23 +45,29 @@ namespace BackendTeamwork.Services
 
         public async Task<UserReadDto?> SignUp(UserCreateDto newUser)
         {
+
             User? user = await _UserRepository.FindOneByEmail(newUser.Email);
-            if (user is not null) return null;
+            if (user is not null) throw CustomErrorException.InvalidData("User already exists");
+
+            Regex regex = new Regex(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
+            if (!regex.IsMatch(newUser.Email)) throw CustomErrorException.InvalidData("Invalid email format");
+
             byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
             PasswordUtils.HashPassword(newUser.Password, out string hashedPassword, pepper);
             newUser.Password = hashedPassword;
+
             return _mapper.Map<UserReadDto>(await _UserRepository.SignUp(_mapper.Map<User>(newUser)));
         }
 
         public async Task<string?> SignIn(UserSignInDto userSignIn)
         {
             User? user = await _UserRepository.FindOneByEmail(userSignIn.Email);
-            if (user is null) return null;
+            if (user is null) throw CustomErrorException.NotFound("User does not exist");
 
             byte[] pepper = Encoding.UTF8.GetBytes(_config["Jwt:Pepper"]!);
             bool isCorrectPass = PasswordUtils.VerifyPassword(userSignIn.Password, user.Password, pepper);
 
-            if (!isCorrectPass) return null;
+            if (!isCorrectPass) throw CustomErrorException.InvalidData("No match found");
 
             IEnumerable<Claim> claims = [
                 new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
@@ -84,10 +93,8 @@ namespace BackendTeamwork.Services
         public async Task<UserReadDto?> UpdateOne(Guid userId, UserUpdateDto updatedUser)
         {
             User? targetUser = await _UserRepository.FindOne(userId);
-            if (targetUser is null)
-            {
-                return null;
-            }
+            if (targetUser is null) throw CustomErrorException.NotFound("No user found");
+
             targetUser.FirstName = updatedUser.FirstName;
             targetUser.LastName = updatedUser.LastName;
             targetUser.Phone = updatedUser.Phone;
@@ -98,17 +105,18 @@ namespace BackendTeamwork.Services
         public async Task<UserReadDto?> DeleteOne(Guid userId)
         {
             User? deletedUser = await _UserRepository.FindOne(userId);
-            if (deletedUser is null)
-            {
-                return null;
-            }
+            if (deletedUser is null) throw CustomErrorException.NotFound("User not found");
+
             return _mapper.Map<UserReadDto>(await _UserRepository.DeleteOne(deletedUser));
         }
 
         public IEnumerable<UserReadDto> Search(string searchTerm)
         {
-            return _UserRepository.Search(searchTerm).Select(_mapper.Map<UserReadDto>);
+            var user = _UserRepository.Search(searchTerm).Select(_mapper.Map<UserReadDto>);
+            if (user is null) throw CustomErrorException.NotFound("User not found");
+            return user;
         }
+
 
 
     }

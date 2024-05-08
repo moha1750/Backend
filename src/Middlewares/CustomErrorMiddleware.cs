@@ -1,6 +1,8 @@
 
+using System.Data.Common;
 using BackendTeamwork.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace BackendTeamwork.Middlewares
 {
@@ -13,36 +15,32 @@ namespace BackendTeamwork.Middlewares
                 await next(context);
 
             }
-            /*
-                exceptions to handle: 
-                1- DbUpdateException
-                2- DbUpdateConcurrencyException
-                3- InvalidDataException
-                4- EntityNotFoundException
-                5- UnauthorizedAccessException
-                */
+
             catch (CustomErrorException e)
             {
-                // throw and test
                 context.Response.StatusCode = e.StatusCode;
                 context.Response.ContentType = "text/plain";
-                Console.WriteLine($"Error Log: {e.Message}");
-
+                await context.Response.WriteAsync(e.Message);
+                Console.WriteLine("Custom Exception");
             }
 
             catch (DbUpdateException e)
             {
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "text/plain";
-                await context.Response.WriteAsync("Something went wrong in the database ...");
-                //await context.Response.WriteAsJsonAsync("JSON format"); // dont need to specify contentType
-                Console.WriteLine($"Error Log: {e.Message}");
+                await context.Response.WriteAsync(e.Message);
+                Console.WriteLine("Database Exception");
 
+                // Logging
+                //await File.AppendAllTextAsync("./Logs/DatabaseLogger.txt", $"{DateTime.Now} - {e.InnerException.Message} \n\n");
             }
-            // generic exceptioin
+
             catch (Exception e)
             {
-                Console.WriteLine($"Something went wrong.. {e.Message}");
+                context.Response.StatusCode = 400;
+                context.Response.ContentType = "text/plain";
+                await context.Response.WriteAsync(e.Message);
+                Console.WriteLine(e);
             }
         }
     }
