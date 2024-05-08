@@ -14,7 +14,7 @@ namespace BackendTeamwork.DTOs
         public string Description { get; set; }
         public Guid CategoryId { get; set; }
 
-        public IEnumerable<StockCreateDtoWithoutId> Stocks { get; set; }
+        public IEnumerable<StockCreateDtoWithoutId>? NewStocks { get; set; }
     }
 
     public class ProductReadDto

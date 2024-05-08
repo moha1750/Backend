@@ -51,6 +51,9 @@ namespace BackendTeamwork.Mappers
             CreateMap<OrderStockReduceDto, OrderStock>();
             CreateMap<OrderStock, OrderStockReduceDto>();
 
+            CreateMap<StockCreateDto, StockCreateDtoWithoutId>();
+            CreateMap<StockCreateDtoWithoutId, StockCreateDto>();
+
         }
     }
 }

@@ -47,6 +47,8 @@ namespace BackendTeamwork.Repositories
 
         public async Task<Product> CreateOne(Product newProduct)
         {
+
+
             await _products.AddAsync(newProduct);
             await _databaseContext.SaveChangesAsync();
             return newProduct;

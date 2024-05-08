@@ -4,6 +4,7 @@ using BackendTeamwork.Databases;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Enums;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace BackendTeamwork.Services
@@ -42,17 +43,24 @@ namespace BackendTeamwork.Services
                 try
                 {
                     Product product = await _productRepository.CreateOne(_mapper.Map<Product>(newProduct));
-
-                    IEnumerable<StockCreateDto> stocks = newProduct.Stocks.Select(_mapper.Map<StockCreateDto>);
-
-                    foreach (StockCreateDto stock in stocks)
+                    if (newProduct.NewStocks is not null)
                     {
-                        stock.ProductId = product.Id;
-                        await _stockService.CreateOne(stock);
+                        IEnumerable<StockCreateDto> stocks = newProduct.NewStocks.Select(_mapper.Map<StockCreateDto>);
+
+                        foreach (StockCreateDto stock in stocks)
+                        {
+                            stock.ProductId = product.Id;
+                            await _stockService.CreateOne(stock);
+                        }
                     }
 
                     transaction.Commit();
                     return _mapper.Map<ProductReadDto>(product);
+                }
+                catch (DbUpdateException ex)
+                {
+                    Console.WriteLine(ex.InnerException.Message);
+                    throw;
                 }
                 catch (Exception)
                 {
