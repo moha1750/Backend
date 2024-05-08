@@ -21,9 +21,9 @@ namespace BackendTeamwork.Controllers
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IEnumerable<UserReadDto> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset, [FromQuery(Name = "sort")] SortBy sortBy)
+        public ActionResult<IEnumerable<UserReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset, [FromQuery(Name = "sort")] SortBy sortBy)
         {
-            return _userService.FindMany(limit, offset, sortBy);
+            return Ok(_userService.FindMany(limit, offset, sortBy));
         }
 
         [HttpGet(":{userId}")]
@@ -32,12 +32,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> FindOne(Guid userId)
         {
-            UserReadDto? user = await _userService.FindOne(userId);
-            if (user is not null)
-            {
-                return Ok(user);
-            }
-            return NotFound();
+            return Ok(await _userService.FindOne(userId));
         }
 
         [HttpGet("email/:{email}")]
@@ -46,12 +41,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> FindOneByEmail(string email)
         {
-            UserReadDto? user = await _userService.FindOneByEmail(email);
-            if (user is not null)
-            {
-                return Ok(user);
-            }
-            return NotFound();
+            return Ok(await _userService.FindOneByEmail(email));
         }
 
         [HttpPost("signUp")]
@@ -59,11 +49,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserReadDto>> SignUp([FromBody] UserCreateDto newUser)
         {
-            UserReadDto? user = await _userService.SignUp(newUser);
-
-            if (user is null) return BadRequest();
-
-            return Ok(user);
+            return Ok(await _userService.SignUp(newUser));
         }
 
         [HttpPost("signIn")]
@@ -71,9 +57,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserReadDto>> SignIn([FromBody] UserSignInDto userSignIn)
         {
-            string? token = await _userService.SignIn(userSignIn);
-            if (token is null) return BadRequest();
-            return Ok(token);
+            return Ok(await _userService.SignIn(userSignIn));
         }
 
         [HttpPut(":{userId}")]
@@ -82,12 +66,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> UpdateOne(Guid userId, [FromBody] UserUpdateDto updatedUser)
         {
-            UserReadDto? user = await _userService.UpdateOne(userId, updatedUser);
-            if (user is not null)
-            {
-                return Ok(user);
-            }
-            return NotFound();
+            return Ok(await _userService.UpdateOne(userId, updatedUser));
         }
 
         [HttpDelete(":{userId}")]
@@ -96,12 +75,8 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserReadDto>> DeleteOne(Guid userId)
         {
-            UserReadDto? deletedUser = await _userService.DeleteOne(userId);
-            if (deletedUser is not null)
-            {
-                return NoContent();
-            }
-            return NotFound();
+            await _userService.DeleteOne(userId);
+            return NoContent();
         }
 
         [HttpGet("search")]
