@@ -18,7 +18,10 @@ namespace BackendTeamwork.Controllers
         [HttpGet]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<ProductReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset, [FromQuery(Name = "sort")] SortBy sortBy) => Ok(_productService.FindMany(limit, offset, sortBy));
+        public ActionResult<IEnumerable<ProductReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset, [FromQuery(Name = "sort")] SortBy sortBy)
+        {
+            return Ok(_productService.FindMany(limit, offset, sortBy));
+        }
 
         [HttpGet(":productId")]
         [Authorize(Roles = "Admin, Customer")]
@@ -26,12 +29,7 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ProductReadDto>> FindOne(Guid productId)
         {
-            ProductReadDto? targetProduct = await _productService.FindOne(productId);
-            if (targetProduct is not null)
-            {
-                return Ok(targetProduct);
-            }
-            return NotFound();
+            return Ok(await _productService.FindOne(productId));
         }
 
         [HttpPost]
@@ -49,27 +47,18 @@ namespace BackendTeamwork.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductReadDto?>> UpdateOne([FromQuery] Guid productId, [FromBody] ProductUpdateDto updatedProduct)
         {
-            ProductReadDto? targetProduct = await _productService.UpdateOne(productId, updatedProduct);
-            if (targetProduct is not null)
-            {
-                return Ok(updatedProduct);
-            }
-            return NotFound();
+            return Ok(await _productService.UpdateOne(productId, updatedProduct));
         }
 
 
         [HttpDelete(":productId")]
         [Authorize(Roles = "Admin")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductReadDto>> DeleteOne(Guid productId)
         {
-            ProductReadDto? deletedProduct = await _productService.DeleteOne(productId);
-            if (deletedProduct is not null)
-            {
-                return Ok(deletedProduct);
-            }
-            return NotFound();
+            await _productService.DeleteOne(productId);
+            return NoContent();
         }
 
         [HttpGet("search")]
