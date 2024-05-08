@@ -12,13 +12,13 @@ namespace BackendTeamwork.Entities
         [Key]
         public Guid Id { get; set; }
 
-        [Required, StringLength(30)]
+        [Required(AllowEmptyStrings = false), StringLength(30)]
         public string FirstName { get; set; }
 
         [Required, StringLength(30)]
         public string LastName { get; set; }
 
-        [EmailAddress, StringLength(100)]
+        [Required, StringLength(100)]
         public string Email { get; set; }
 
         [Required, StringLength(100)]
