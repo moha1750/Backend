@@ -45,8 +45,9 @@ namespace BackendTeamwork.Controllers
             foreach (OrderStock item in orderStock)
             {
                 item.OrderId = order.Id;
+                Stock stock = await _stockService.ReduceOne(_mapper.Map<OrderStockReduceDto>(item));
+                item.Price = stock.Price;
                 await _orderStockService.CreateOne(item);
-                await _stockService.ReduceOne(_mapper.Map<OrderStockReduceDto>(item));
             }
 
             return payment;

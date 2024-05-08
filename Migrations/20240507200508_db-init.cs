@@ -52,7 +52,6 @@ namespace Backend.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    price = table.Column<int>(type: "integer", nullable: false),
                     image = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     category_id = table.Column<Guid>(type: "uuid", nullable: false)
@@ -161,6 +160,7 @@ namespace Backend.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    price = table.Column<int>(type: "integer", nullable: false),
                     quantity = table.Column<int>(type: "integer", nullable: false),
                     size = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     color = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
@@ -233,6 +233,7 @@ namespace Backend.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    price = table.Column<int>(type: "integer", nullable: false),
                     quantity = table.Column<int>(type: "integer", nullable: false),
                     order_id = table.Column<Guid>(type: "uuid", nullable: false),
                     stock_id = table.Column<Guid>(type: "uuid", nullable: false)

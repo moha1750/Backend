@@ -142,6 +142,10 @@ namespace Backend.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("order_id");
 
+                    b.Property<int>("Price")
+                        .HasColumnType("integer")
+                        .HasColumnName("price");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("integer")
                         .HasColumnName("quantity");
@@ -228,10 +232,6 @@ namespace Backend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("name");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("integer")
-                        .HasColumnName("price");
 
                     b.HasKey("Id")
                         .HasName("pk_product");
@@ -344,6 +344,10 @@ namespace Backend.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
                         .HasColumnName("color");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("integer")
+                        .HasColumnName("price");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid")
