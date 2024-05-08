@@ -20,15 +20,14 @@ namespace BackendTeamwork.Repositories
 
         }
 
-
-        public IEnumerable<Shipping> FindMany(int limit, int offset)
+        public async Task<Shipping?> FindOneByOrderId(Guid orderId)
         {
-            return _shipping.Skip(offset).Take(limit).ToList();
+            return await _shipping.AsNoTracking().FirstOrDefaultAsync(shipping => shipping.OrderId == orderId);
         }
 
-        public async Task<Shipping?> FindOne(Guid id)
+        public async Task<Shipping?> FindOne(Guid shippingId)
         {
-            return await _shipping.AsNoTracking().FirstOrDefaultAsync(shipping => shipping.Id == id);
+            return await _shipping.AsNoTracking().FirstOrDefaultAsync(shipping => shipping.Id == shippingId);
         }
 
         public async Task<Shipping> CreateOne(Shipping newShipping)
