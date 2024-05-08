@@ -6,6 +6,7 @@ namespace BackendTeamwork.DTOs
 {
     public class StockCreateDto
     {
+        public int Price { get; set; }
         public int Quantity { get; set; }
         public string Size { get; set; }
         public string Color { get; set; }
@@ -16,6 +17,7 @@ namespace BackendTeamwork.DTOs
     public class StockReadDto
     {
         public Guid Id { get; set; }
+        public int Price { get; set; }
         public int Quantity { get; set; }
         public string Size { get; set; }
         public string Color { get; set; }
@@ -24,6 +26,7 @@ namespace BackendTeamwork.DTOs
 
     public class StockUpdateDto
     {
+        public int Price { get; set; }
         public int Quantity { get; set; }
         public string Size { get; set; }
         public string Color { get; set; }

@@ -46,6 +46,11 @@ namespace BackendTeamwork.Mappers
             CreateMap<Wishlist, WishlistReadDto>();
             CreateMap<Shipping, ShippingReadDto>();
 
+
+            CreateMap<OrderStockReduceDto, OrderStockCreateDto>();
+            CreateMap<OrderStockReduceDto, OrderStock>();
+            CreateMap<OrderStock, OrderStockReduceDto>();
+
         }
     }
 }

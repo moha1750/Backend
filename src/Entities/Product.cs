@@ -15,9 +15,6 @@ namespace BackendTeamwork.Entities
         [Required, StringLength(100)]
         public string Name { get; set; }
 
-        [Required]
-        public int Price { get; set; }
-
         [Required, StringLength(200)]
         public string Image { get; set; }
 

@@ -10,6 +10,9 @@ namespace BackendTeamwork.Entities
         public Guid Id { get; set; }
 
         [Required]
+        public int Price { get; set; }
+
+        [Required]
         public int Quantity { get; set; }
 
         [Required, StringLength(30)]

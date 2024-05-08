@@ -24,7 +24,16 @@ namespace BackendTeamwork.Repositories
         public async Task<OrderStock> CreateOne(OrderStock newOrderStock)
         {
             await _orderStocks.AddAsync(newOrderStock);
+            await _databaseContext.SaveChangesAsync();
             return newOrderStock;
+        }
+
+        public async Task<IEnumerable<OrderStock>> CreateMany(IEnumerable<OrderStock> newOrderStocks)
+        {
+            _orderStocks.AttachRange(newOrderStocks);
+            await _orderStocks.AddRangeAsync(newOrderStocks);
+            await _databaseContext.SaveChangesAsync();
+            return newOrderStocks;
         }
 
 

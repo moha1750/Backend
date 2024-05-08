@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 
 namespace BackendTeamwork.Abstractions
@@ -20,6 +21,9 @@ namespace BackendTeamwork.Abstractions
         public Task<Stock> UpdateOne(Stock updatedStock);
 
         public Task<Stock> DeleteOne(Stock deleteStock);
+
+        public Task<Stock> ReduceOne(OrderStockReduceDto orderStock);
+
 
     }
 }
