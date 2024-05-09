@@ -114,8 +114,7 @@ namespace BackendTeamwork.Services
 
         public IEnumerable<UserReadDto> Search(string searchTerm)
         {
-            var user = _UserRepository.Search(searchTerm).Select(_mapper.Map<UserReadDto>);
-            return user;
+            return _UserRepository.Search(searchTerm).Select(_mapper.Map<UserReadDto>);
         }
 
     }

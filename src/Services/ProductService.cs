@@ -3,6 +3,7 @@ using BackendTeamwork.Abstractions;
 using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Enums;
+using BackendTeamwork.Exceptions;
 using BackendTeamwork.Repositories;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -33,16 +34,17 @@ namespace BackendTeamwork.Services
 
         public async Task<ProductReadDto> CreateOne(ProductCreateDto newProduct)
         {
+            if (newProduct.Name.Length < 1 || newProduct.Description.Length < 1
+            || newProduct.Image.Length < 1) throw CustomErrorException.InvalidData("Invalid input");
+
             return _mapper.Map<ProductReadDto>(await _productRepository.CreateOne(_mapper.Map<Product>(newProduct)));
         }
 
         public async Task<ProductReadDto?> UpdateOne(Guid productId, ProductUpdateDto updatedProduct)
         {
             Product? oldProduct = await _productRepository.FindOne(productId);
-            if (oldProduct is null)
-            {
-                return null;
-            }
+            if (oldProduct is null) throw CustomErrorException.NotFound("Product is not found");
+
             Product product = _mapper.Map<Product>(updatedProduct);
             product.Id = productId;
             return _mapper.Map<ProductReadDto>(await _productRepository.UpdateOne(product));
@@ -51,11 +53,9 @@ namespace BackendTeamwork.Services
         public async Task<ProductReadDto?> DeleteOne(Guid productId)
         {
             Product? targetProduct = await _productRepository.FindOne(productId);
-            if (targetProduct is not null)
-            {
-                return _mapper.Map<ProductReadDto>(await _productRepository.DeleteOne(targetProduct));
-            }
-            return null;
+            if (targetProduct is null) throw CustomErrorException.NotFound("Product is not found");
+
+            return _mapper.Map<ProductReadDto>(await _productRepository.DeleteOne(targetProduct));
         }
 
         public IEnumerable<ProductReadDto> Search(string searchTerm)
