@@ -22,6 +22,8 @@ namespace BackendTeamwork.Middlewares
                 context.Response.ContentType = "text/plain";
                 await context.Response.WriteAsync(e.Message);
                 Console.WriteLine("Custom Exception");
+                // Logging
+                //await File.AppendAllTextAsync("./Logs/CustomErrorsLogger.txt", $"{DateTime.Now} - {e.Message} \n\n");
             }
 
             catch (DbUpdateException e)
@@ -41,6 +43,9 @@ namespace BackendTeamwork.Middlewares
                 context.Response.ContentType = "text/plain";
                 await context.Response.WriteAsync(e.Message);
                 Console.WriteLine(e);
+                // Logging
+                //await File.AppendAllTextAsync("./Logs/ErrorsLogger.txt", $"{DateTime.Now} - {e.InnerException.Message} \n\n");
+
             }
         }
     }
