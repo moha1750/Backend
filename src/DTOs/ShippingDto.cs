@@ -8,9 +8,13 @@ namespace BackendTeamwork.DTOs
 
     public class ShippingCreateDto
     {
+        [Required, StringLength(30)]
         public string TrackingNo { get; set; }
+        [Required, StringLength(30)]
         public string DeliveryMethod { get; set; }
+        [Required, ForeignKey("Address")]
         public Guid AddressId { get; set; }
+        [Required, ForeignKey("Order")]
         public Guid OrderId { get; set; }
 
     }

@@ -1,5 +1,4 @@
-
-
+#pragma warning disable CS0114
 
 namespace BackendTeamwork.Exceptions
 {

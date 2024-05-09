@@ -6,18 +6,26 @@ namespace BackendTeamwork.DTOs
 {
     public class StockCreateDto
     {
+        [Required]
         public int Price { get; set; }
+        [Required]
         public int Quantity { get; set; }
+        [Required, StringLength(30)]
         public string Size { get; set; }
+        [Required, StringLength(30)]
         public string Color { get; set; }
         public Guid ProductId { get; set; }
 
     }
     public class StockCreateDtoWithoutId
     {
+        [Required]
         public int Price { get; set; }
+        [Required]
         public int Quantity { get; set; }
+        [Required, StringLength(30)]
         public string Size { get; set; }
+        [Required, StringLength(30)]
         public string Color { get; set; }
 
     }

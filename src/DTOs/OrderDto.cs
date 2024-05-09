@@ -6,8 +6,11 @@ namespace BackendTeamwork.DTOs
 {
     public class OrderCreateDto
     {
+        [Required, StringLength(30)]
         public string Status { get; set; }
+        [Required, ForeignKey("Payment")]
         public Guid PaymentId { get; set; }
+        [Required, ForeignKey("User")]
         public Guid UserId { get; set; }
     }
 

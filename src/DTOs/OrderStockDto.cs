@@ -6,15 +6,21 @@ namespace BackendTeamwork.DTOs
 {
     public class OrderStockCreateDto
     {
+        [Required]
         public int Price { get; set; }
+        [Required]
         public int Quantity { get; set; }
+        [Required, ForeignKey("Order")]
         public Guid OrderId { get; set; }
+        [Required, ForeignKey("Stock")]
         public Guid StockId { get; set; }
     }
 
     public class OrderStockReduceDto
     {
+        [Required]
         public int Quantity { get; set; }
+        [Required, ForeignKey("Stock")]
         public Guid StockId { get; set; }
     }
 

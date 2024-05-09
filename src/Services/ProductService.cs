@@ -1,3 +1,4 @@
+#pragma warning disable CS8602
 using AutoMapper;
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;

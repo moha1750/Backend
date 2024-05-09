@@ -6,7 +6,9 @@ namespace BackendTeamwork.DTOs
 {
     public class CategoryCreateDto
     {
+        [Required, StringLength(30)]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
 
     }

@@ -6,7 +6,9 @@ namespace BackendTeamwork.DTOs
 {
     public class WishlistCreateDto
     {
+        [Required, StringLength(30)]
         public string Name { get; set; }
+        [Required, ForeignKey("User")]
         public Guid UserId { get; set; }
     }
 

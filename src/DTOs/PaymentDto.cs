@@ -6,8 +6,11 @@ namespace BackendTeamwork.DTOs
 {
     public class PaymentCreateDto
     {
+        [Required]
         public int Amount { get; set; }
+        [Required, StringLength(30)]
         public string Method { get; set; }
+        [Required, ForeignKey("User")]
         public Guid UserId { get; set; }
 
         public IEnumerable<OrderStockReduceDto> Items { get; set; }

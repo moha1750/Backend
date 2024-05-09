@@ -9,9 +9,13 @@ namespace BackendTeamwork.DTOs
 
     public class ProductCreateDto
     {
+        [Required, StringLength(100)]
         public string Name { get; set; }
+        [Required, StringLength(200)]
         public string Image { get; set; }
+        [Required, StringLength(500)]
         public string Description { get; set; }
+        [Required, ForeignKey("Category")]
         public Guid CategoryId { get; set; }
 
         public IEnumerable<StockCreateDtoWithoutId>? NewStocks { get; set; }
