@@ -10,19 +10,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using BackendTeamwork.Middlewares;
+using Npgsql;
+using BackendTeamwork.Enums;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<DatabaseContext>();
+// builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+// configuring DB
+var _config = builder.Configuration;
+var dataSourceBuilder = new NpgsqlDataSourceBuilder(_config["DB"]);
+dataSourceBuilder.MapEnum<Role>();
+
+var dataSource = dataSourceBuilder.Build();
+builder.Services.AddDbContext<DatabaseContext>((options) =>
+{
+    options.UseNpgsql(dataSource).UseSnakeCaseNamingConvention();
+});
+
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
+
 
 // dependency injection
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -64,6 +81,22 @@ builder.Services.AddScoped<IShippingService, ShippingService>();
 // middleware to handle exceptions
 builder.Services.AddScoped<CustomErrorMiddleware>();
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins(builder.Configuration["Cors:Origin"]!)
+                          .AllowAnyHeader()
+                            .AllowAnyMethod(); ;
+                      });
+});
+
+
+
+
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -87,7 +120,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 var app = builder.Build();
 
 app.UseMiddleware<CustomErrorMiddleware>();
-
+// Should be added
 app.MapControllers();
 
 // Configure the HTTP request pipeline.
@@ -99,7 +132,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(MyAllowSpecificOrigins);
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.Run();

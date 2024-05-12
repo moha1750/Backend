@@ -1,7 +1,6 @@
 using BackendTeamwork.Entities;
 using BackendTeamwork.Enums;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace BackendTeamwork.Databases
 {
@@ -20,19 +19,7 @@ namespace BackendTeamwork.Databases
         public DbSet<Category> Category { get; set; }
         public DbSet<Shipping> Shipping { get; set; }
 
-        private IConfiguration _config;
-        public DatabaseContext(IConfiguration config)
-        {
-            _config = config;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var dataSourceBuilder = new NpgsqlDataSourceBuilder(_config["DB"]);
-            dataSourceBuilder.MapEnum<Role>();
-            var dataSource = dataSourceBuilder.Build();
-            optionsBuilder.UseNpgsql(dataSource).UseSnakeCaseNamingConvention();
-        }
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
