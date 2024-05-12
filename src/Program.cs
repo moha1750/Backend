@@ -81,6 +81,8 @@ builder.Services.AddScoped<IShippingService, ShippingService>();
 // middleware to handle exceptions
 builder.Services.AddScoped<CustomErrorMiddleware>();
 
+
+
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
