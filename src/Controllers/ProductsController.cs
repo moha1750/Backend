@@ -16,15 +16,17 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Customer")]
+        // [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<ProductReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset, [FromQuery(Name = "sort")] SortBy sortBy)
+        public ActionResult<IEnumerable<ProductReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset,
+                                                    [FromQuery(Name = "sort")] SortBy sortBy,
+                                                    [FromQuery(Name = "search")] string? searchTerm)
         {
-            return Ok(_productService.FindMany(limit, offset, sortBy));
+            return Ok(_productService.FindMany(limit, offset, sortBy, searchTerm));
         }
 
-        [HttpGet(":productId")]
-        [Authorize(Roles = "Admin, Customer")]
+        [HttpGet("{productId}")]
+        // [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ProductReadDto>> FindOne(Guid productId)
@@ -33,7 +35,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ProductReadDto>> CreateOne([FromBody] ProductCreateDto newProduct)
@@ -41,18 +43,18 @@ namespace BackendTeamwork.Controllers
             return Ok(await _productService.CreateOne(newProduct));
         }
 
-        [HttpPut(":productId")]
-        [Authorize(Roles = "Admin")]
+        [HttpPut("{productId}")]
+        // [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ProductReadDto?>> UpdateOne([FromQuery] Guid productId, [FromBody] ProductUpdateDto updatedProduct)
+        public async Task<ActionResult<ProductReadDto?>> UpdateOne(Guid productId, [FromBody] ProductUpdateDto updatedProduct)
         {
             return Ok(await _productService.UpdateOne(productId, updatedProduct));
         }
 
 
-        [HttpDelete(":productId")]
-        [Authorize(Roles = "Admin")]
+        [HttpDelete("{productId}")]
+        // [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductReadDto>> DeleteOne(Guid productId)

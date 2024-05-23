@@ -21,12 +21,14 @@ namespace BackendTeamwork.Controllers
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<UserReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset, [FromQuery(Name = "sort")] SortBy sortBy)
+        public ActionResult<IEnumerable<UserReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset,
+                                                                [FromQuery(Name = "sort")] SortBy sortBy,
+                                                                [FromQuery(Name = "search")] string? searchTerm)
         {
-            return Ok(_userService.FindMany(limit, offset, sortBy));
+            return Ok(_userService.FindMany(limit, offset, sortBy, searchTerm));
         }
 
-        [HttpGet(":{userId}")]
+        [HttpGet("{userId}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -35,7 +37,7 @@ namespace BackendTeamwork.Controllers
             return Ok(await _userService.FindOne(userId));
         }
 
-        [HttpGet("email/:{email}")]
+        [HttpGet("email/{email}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -60,7 +62,7 @@ namespace BackendTeamwork.Controllers
             return Ok(await _userService.SignIn(userSignIn));
         }
 
-        [HttpPut(":{userId}")]
+        [HttpPut("{userId}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -69,7 +71,7 @@ namespace BackendTeamwork.Controllers
             return Ok(await _userService.UpdateOne(userId, updatedUser));
         }
 
-        [HttpDelete(":{userId}")]
+        [HttpDelete("{userId}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -21,16 +21,25 @@ namespace BackendTeamwork.Repositories
 
         }
 
-        public IEnumerable<Product> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending)
+        public IEnumerable<Product> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending, string? searchTerm = null)
         {
+            if (searchTerm != null)
+            {
+                IEnumerable<Product> searchedProducts = _products.Where(product =>
+                          product.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                          product.Description.ToLower().Contains(searchTerm.ToLower()));
+
+                return searchedProducts;
+            }
+
             IEnumerable<Product> sortedProducts;
             if (sortBy == SortBy.Ascending)
             {
-                sortedProducts = _products.OrderBy(_products => _products.Name);
+                sortedProducts = _products.OrderBy(searchedProduct => searchedProduct.Name);
             }
             else
             {
-                sortedProducts = _products.OrderByDescending(_products => _products.Name);
+                sortedProducts = _products.OrderByDescending(searchedProduct => searchedProduct.Name);
             }
             if (limit == 0 && offset == 0)
             {

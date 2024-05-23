@@ -36,7 +36,7 @@ namespace BackendTeamwork.Controllers
             return Ok(await _AddressService.CreateOne(newAddress));
         }
 
-        [HttpPut(":{addressId}")]
+        [HttpPut("{addressId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

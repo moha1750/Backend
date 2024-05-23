@@ -25,6 +25,10 @@ namespace BackendTeamwork.Repositories
 
         public IEnumerable<Category> FindMany(int limit, int offset)
         {
+            if (limit == 0 && offset == 0)
+            {
+                return _categories.ToList();
+            }
             return _categories.Skip(offset).Take(limit).ToList();
         }
 

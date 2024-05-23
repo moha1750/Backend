@@ -14,7 +14,7 @@ namespace BackendTeamwork.Controllers
       _paymentService = paymentService;
     }
 
-    [HttpGet(":{paymentId}")]
+    [HttpGet("{paymentId}")]
     [Authorize(Roles = "Admin, Customer")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -6,7 +6,7 @@ namespace BackendTeamwork.Abstractions
 {
     public interface IUserService
     {
-        public IEnumerable<UserReadDto> FindMany(int limit, int offset, SortBy sortBy);
+        public IEnumerable<UserReadDto> FindMany(int limit, int offset, SortBy sortBy, string? searchTerm = null);
         public Task<UserReadDto?> FindOne(Guid userId);
         public Task<UserReadDto> FindOneByEmail(string email);
 

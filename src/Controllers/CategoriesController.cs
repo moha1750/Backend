@@ -23,7 +23,7 @@ namespace BackendTeamwork.Controllers
             return Ok(_categoryService.FindMany(limit, offset));
         }
 
-        [HttpGet(":{categoryId}")]
+        [HttpGet("{categoryId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -45,7 +45,7 @@ namespace BackendTeamwork.Controllers
             return Ok(await _categoryService.CreateOne(newCategory));
         }
 
-        [HttpPut(":{categoryId}")]
+        [HttpPut("{categoryId}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -59,7 +59,7 @@ namespace BackendTeamwork.Controllers
             return NotFound();
         }
 
-        [HttpDelete(":{categoryId}")]
+        [HttpDelete("{categoryId}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

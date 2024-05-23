@@ -22,7 +22,7 @@ namespace BackendTeamwork.Controllers
             return Ok(_wishlistService.FindMany(limit, offset));
         }
 
-        [HttpGet(":{wishlistId}")]
+        [HttpGet("{wishlistId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -36,7 +36,7 @@ namespace BackendTeamwork.Controllers
             return NotFound();
         }
 
-        [HttpPut(":{wishlistId}/:{productId}")]
+        [HttpPut("{wishlistId}/:{productId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -64,7 +64,7 @@ namespace BackendTeamwork.Controllers
             return BadRequest();
         }
 
-        [HttpPut(":WishlistId")]
+        [HttpPut("{WishlistId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -79,7 +79,7 @@ namespace BackendTeamwork.Controllers
         }
 
 
-        [HttpDelete(":wishlistId")]
+        [HttpDelete("{wishlistId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

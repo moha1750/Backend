@@ -60,7 +60,7 @@ namespace BackendTeamwork.Controllers
         }
 
 
-        [HttpPut(":{stockId}")]
+        [HttpPut("{stockId}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -74,7 +74,7 @@ namespace BackendTeamwork.Controllers
             return NoContent();
         }
 
-        [HttpDelete(":{stockId}")]
+        [HttpDelete("{stockId}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

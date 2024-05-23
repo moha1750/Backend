@@ -24,7 +24,7 @@ namespace BackendTeamwork.Controllers
             return Ok(_reviewService.FindMany(limit, offset));
         }
 
-        [HttpGet(":reviewId")]
+        [HttpGet("{reviewId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -47,7 +47,7 @@ namespace BackendTeamwork.Controllers
             return NotFound();
         }
 
-        [HttpPut(":reviewId")]
+        [HttpPut("{reviewId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

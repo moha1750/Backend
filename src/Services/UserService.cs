@@ -28,9 +28,9 @@ namespace BackendTeamwork.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<UserReadDto> FindMany(int limit, int offset, SortBy sortBy)
+        public IEnumerable<UserReadDto> FindMany(int limit, int offset, SortBy sortBy, string? searchTerm)
         {
-            return _UserRepository.FindMany(limit, offset, sortBy).Select(_mapper.Map<UserReadDto>);
+            return _UserRepository.FindMany(limit, offset, sortBy, searchTerm).Select(_mapper.Map<UserReadDto>);
         }
         public async Task<UserReadDto?> FindOne(Guid userId)
         {

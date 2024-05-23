@@ -18,16 +18,23 @@ namespace BackendTeamwork.Repositories
         }
 
 
-        public IEnumerable<User> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending)
+        public IEnumerable<User> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending, string? searchTerm = null)
         {
+            if (searchTerm != null)
+            {
+                IEnumerable<User> searchedUser = _users.Where(user =>
+                    user.FirstName.ToLower().Contains(searchTerm.ToLower()) ||
+                    user.LastName.ToLower().Contains(searchTerm.ToLower()));
+                return searchedUser;
+            }
             IEnumerable<User> sortedUsers;
             if (sortBy == SortBy.Ascending)
             {
-                sortedUsers = _users.OrderBy(_users => _users.FirstName);
+                sortedUsers = _users.OrderBy(searchedUser => searchedUser.FirstName);
             }
             else
             {
-                sortedUsers = _users.OrderByDescending(_users => _users.FirstName);
+                sortedUsers = _users.OrderByDescending(searchedUser => searchedUser.FirstName);
             }
             // sorting by Name
             if (limit == 0 && offset == 0)

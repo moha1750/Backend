@@ -17,7 +17,7 @@ namespace BackendTeamwork.Controllers
             _orderService = orderService;
         }
 
-        [HttpGet("user/:{userId}")]
+        [HttpGet("user/{userId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<OrderReadDto>> FindMany(Guid userId, [FromQuery(Name = "sort")] SortBy sortBy)
@@ -25,7 +25,7 @@ namespace BackendTeamwork.Controllers
             return Ok(_orderService.FindMany(userId, sortBy));
         }
 
-        [HttpGet(":{orderId}")]
+        [HttpGet("{orderId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<OrderReadDto?>> FindOne(Guid orderId)
