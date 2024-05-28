@@ -20,6 +20,8 @@ namespace BackendTeamwork.Entities
 
         [Required, StringLength(30)]
         public string Color { get; set; }
+        public string Status { get; set; } = "Card";
+
 
         [Required, ForeignKey("Product")]
         public Guid ProductId { get; set; }

@@ -28,9 +28,9 @@ namespace BackendTeamwork.Services
         }
 
 
-        public IEnumerable<ProductReadDto> FindMany(int limit, int offset, SortBy sortBy, string? searchTerm)
+        public IEnumerable<ProductWithStock> FindMany(int limit, int offset, SortBy sortBy, string? searchTerm)
         {
-            return _productRepository.FindMany(limit, offset, sortBy, searchTerm).Select(_mapper.Map<ProductReadDto>);
+            return _productRepository.FindMany(limit, offset, sortBy, searchTerm);
         }
 
         public async Task<ProductReadDto?> FindOne(Guid productId)

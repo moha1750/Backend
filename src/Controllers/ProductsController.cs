@@ -18,7 +18,7 @@ namespace BackendTeamwork.Controllers
         [HttpGet]
         // [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<ProductReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset,
+        public ActionResult<IEnumerable<ProductWithStock>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset,
                                                     [FromQuery(Name = "sort")] SortBy sortBy,
                                                     [FromQuery(Name = "search")] string? searchTerm)
         {

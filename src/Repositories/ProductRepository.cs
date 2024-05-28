@@ -1,6 +1,7 @@
 
 using BackendTeamwork.Abstractions;
 using BackendTeamwork.Databases;
+using BackendTeamwork.DTOs;
 using BackendTeamwork.Entities;
 using BackendTeamwork.Enums;
 using BackendTeamwork.Services;
@@ -12,34 +13,55 @@ namespace BackendTeamwork.Repositories
     public class ProductRepository : IProductRepository
     {
         private DbSet<Product> _products;
+        private DbSet<Stock> _stocks;
         private DatabaseContext _databaseContext;
 
         public ProductRepository(DatabaseContext databaseContext)
         {
             _products = databaseContext.Product;
             _databaseContext = databaseContext;
+            _stocks = databaseContext.Stock;
 
         }
 
-        public IEnumerable<Product> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending, string? searchTerm = null)
+        public IEnumerable<ProductWithStock> FindMany(int limit, int offset, SortBy sortBy = SortBy.Ascending, string? searchTerm = null)
         {
+            var products = from product in _products
+                           join stock in _stocks on product.Id equals stock.ProductId into ps
+                           from s in ps.DefaultIfEmpty()
+                           select new ProductWithStock
+                           {
+                               Id = product.Id,
+                               Name = product.Name,
+                               Image = product.Image,
+                               Description = product.Description,
+                               CategoryId = product.CategoryId,
+                               Status = product.Status,
+                               StockId = s.Id,
+                               Price = s.Price,
+                               Quantity = s.Quantity,
+                               Size = s.Size,
+                               Color = s.Color
+                           };
+
+
             if (searchTerm != null)
             {
-                IEnumerable<Product> searchedProducts = _products.Where(product =>
+                IEnumerable<ProductWithStock> searchedProducts = products.Where(product =>
                           product.Name.ToLower().Contains(searchTerm.ToLower()) ||
                           product.Description.ToLower().Contains(searchTerm.ToLower()));
 
                 return searchedProducts;
             }
 
-            IEnumerable<Product> sortedProducts;
+            IEnumerable<ProductWithStock> sortedProducts;
             if (sortBy == SortBy.Ascending)
             {
-                sortedProducts = _products.OrderBy(searchedProduct => searchedProduct.Name);
+                sortedProducts = products.OrderBy(searchedProduct => searchedProduct.Name);
             }
             else
             {
-                sortedProducts = _products.OrderByDescending(searchedProduct => searchedProduct.Name);
+                sortedProducts = products.OrderByDescending(searchedProduct => searchedProduct.Name);
             }
             if (limit == 0 && offset == 0)
             {

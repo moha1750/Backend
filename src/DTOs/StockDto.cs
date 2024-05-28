@@ -27,6 +27,8 @@ namespace BackendTeamwork.DTOs
         public string Size { get; set; }
         [Required, StringLength(30)]
         public string Color { get; set; }
+        public string Status { get; set; }
+
 
     }
 
@@ -38,6 +40,8 @@ namespace BackendTeamwork.DTOs
         public string Size { get; set; }
         public string Color { get; set; }
         public Guid ProductId { get; set; }
+        public string Status { get; set; } = "Card";
+
     }
 
     public class StockUpdateDto
@@ -47,5 +51,7 @@ namespace BackendTeamwork.DTOs
         public string Size { get; set; }
         public string Color { get; set; }
         public Guid ProductId { get; set; }
+        public string Status { get; set; } = "Card";
+
     }
 }

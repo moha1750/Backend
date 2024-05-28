@@ -23,6 +23,8 @@ namespace BackendTeamwork.Entities
 
         [Required, ForeignKey("Category")]
         public Guid CategoryId { get; set; }
+        [Required, StringLength(30)]
+        public string Status { get; set; } = "Draft";
 
         public Category Category { get; set; }
         public IEnumerable<Wishlist> Wishlists { get; set; }
