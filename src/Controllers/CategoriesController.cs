@@ -16,7 +16,6 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<CategoryReadDto>> FindMany([FromQuery(Name = "limit")] int limit, [FromQuery(Name = "offset")] int offset)
         {
@@ -24,7 +23,6 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet("{categoryId}")]
-        [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CategoryReadDto>> FindOne(Guid categoryId)
