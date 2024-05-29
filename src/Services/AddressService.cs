@@ -16,9 +16,9 @@ namespace BackendTeamwork.Services
             _mapper = mapper;
         }
 
-        public async Task<AddressReadDto?> FindOne(Guid addressId)
+        public async Task<AddressReadDto?> FindOne(Guid userId)
         {
-            return _mapper.Map<AddressReadDto>(await _addressRepository.FindOne(addressId));
+            return _mapper.Map<AddressReadDto>(await _addressRepository.FindOne(userId));
         }
 
         public async Task<AddressReadDto> CreateOne(AddressCreateDto newAddress)

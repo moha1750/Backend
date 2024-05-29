@@ -18,9 +18,9 @@ namespace BackendTeamwork.Repositories
 
         }
 
-        public async Task<Address?> FindOne(Guid AddressId)
+        public async Task<Address?> FindOne(Guid userId)
         {
-            return await _addresses.AsNoTracking().FirstOrDefaultAsync(address => address.Id == AddressId);
+            return await _addresses.AsNoTracking().FirstOrDefaultAsync(address => address.UserId == userId);
         }
 
         public async Task<Address> CreateOne(Address newAddress)

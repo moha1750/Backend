@@ -5,6 +5,7 @@ using BackendTeamwork.Entities;
 using Microsoft.AspNetCore.Authorization;
 using BackendTeamwork.Enums;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BackendTeamwork.Controllers
 {
@@ -38,11 +39,23 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpGet("email/{email}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Customer,Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<UserReadDto>> FindOneByEmail(string email)
         {
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            var loggedInEmail = User.FindFirstValue(ClaimTypes.Email);
+
+            if (role == Role.Customer.ToString())
+            {
+                if (loggedInEmail != email)
+                {
+                    return Forbid();
+                }
+                return Ok(await _userService.FindOneByEmail(email));
+            }
             return Ok(await _userService.FindOneByEmail(email));
         }
 

@@ -14,13 +14,13 @@ namespace BackendTeamwork.Controllers
             _AddressService = AddressService;
         }
 
-        [HttpGet(":{addressId}")]
+        [HttpGet("{userId}")]
         [Authorize(Roles = "Admin, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<AddressReadDto>> FindOne(Guid addressId)
+        public async Task<ActionResult<AddressReadDto>> FindOne(Guid userId)
         {
-            AddressReadDto? address = await _AddressService.FindOne(addressId);
+            AddressReadDto? address = await _AddressService.FindOne(userId);
             if (address is not null)
             {
                 return Ok(address);
