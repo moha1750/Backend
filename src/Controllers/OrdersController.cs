@@ -34,7 +34,7 @@ namespace BackendTeamwork.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Customer,Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<OrderReadDto>> CreateOne([FromBody] OrderCreateDto newOrder)
         {

@@ -54,8 +54,6 @@ namespace BackendTeamwork.Repositories
 
         public async Task<Stock> UpdateOne(Stock updatedStock)
         {
-            Console.WriteLine($"{updatedStock}");
-
             _stocks.Update(updatedStock);
             await _databaseContext.SaveChangesAsync();
             return updatedStock;
@@ -71,8 +69,7 @@ namespace BackendTeamwork.Repositories
 
         public async Task<Stock> ReduceOne(OrderStockReduceDto orderStock)
         {
-            Stock stock = _stocks.AsNoTracking().First(stock => stock.Id == orderStock.StockId);
-
+            Stock? stock = _stocks.AsNoTracking().First(stock => stock.Id == orderStock.StockId);
             stock.Quantity -= orderStock.Quantity;
 
             _stocks.Update(stock);

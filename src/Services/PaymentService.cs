@@ -37,7 +37,6 @@ namespace BackendTeamwork.Controllers
                 try
                 {
                     PaymentReadDto payment = _mapper.Map<PaymentReadDto>(await _paymentRepository.CreateOne(_mapper.Map<Payment>(newPayment)));
-
                     OrderCreateDto orderDetails = new OrderCreateDto
                     {
                         Status = "Pending",
@@ -51,6 +50,7 @@ namespace BackendTeamwork.Controllers
                     foreach (OrderStock item in orderStock)
                     {
                         item.OrderId = order.Id;
+
                         Stock stock = await _stockService.ReduceOne(_mapper.Map<OrderStockReduceDto>(item));
                         item.Price = stock.Price;
                         await _orderStockService.CreateOne(item);
@@ -59,8 +59,10 @@ namespace BackendTeamwork.Controllers
                     transaction.Commit();
                     return payment;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Console.WriteLine($"{e}");
+
                     transaction.Rollback();
                     throw new Exception("Something went wrong");
                 }

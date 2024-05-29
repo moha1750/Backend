@@ -29,7 +29,7 @@ namespace BackendTeamwork.Controllers
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Customer,Admin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<PaymentReadDto>> CreateOne([FromBody] PaymentCreateDto newPayment)
     {
